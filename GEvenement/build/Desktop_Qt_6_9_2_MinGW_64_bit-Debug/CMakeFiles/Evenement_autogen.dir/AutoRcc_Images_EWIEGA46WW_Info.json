@@ -1,0 +1,28 @@
+{
+	"BUILD_DIR" : "C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/Evenement_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/ASUS/Documents/Evenement",
+	"CMAKE_SOURCE_DIR" : "C:/Users/ASUS/Documents/Evenement",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/Evenement_autogen/include",
+	"INPUTS" : 
+	[
+		"C:/Users/ASUS/Documents/Evenement/caratteristiche-smart-city.JPG",
+		"C:/Users/ASUS/Documents/Evenement/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png",
+		"C:/Users/ASUS/Downloads/download-icon-png-4384.png",
+		"C:/Users/ASUS/Downloads/Statistique-removebg-preview.png"
+	],
+	"LOCK_FILE" : "C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/Evenement_autogen.dir/AutoRcc_Images_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "--no-zstd", "-name", "Images" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_Images.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.9.2/mingw_64/bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/Evenement_autogen.dir/AutoRcc_Images_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/ASUS/Documents/Evenement/Images.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}

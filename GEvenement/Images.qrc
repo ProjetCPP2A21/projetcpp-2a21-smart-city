@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/new/Img"/>
+    <qresource prefix="/">
+        <file>caratteristiche-smart-city.JPG</file>
+        <file>551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</file>
+        <file>Statistique-removebg-preview.png</file>
+    </qresource>
+</RCC>
