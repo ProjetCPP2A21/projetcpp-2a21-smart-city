@@ -2,6 +2,8 @@
 #define EVENTS_H
 
 #include <QMainWindow>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,6 +22,10 @@ public:
 private slots:
 
     void on_pushButton_6_clicked();
+
+    void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
+
+    void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::Events *ui;

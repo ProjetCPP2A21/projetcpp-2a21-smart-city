@@ -15,7 +15,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-	background-color : #e1e5ff;
+		background-color : #fffffff;
+
 }</string>
   </property>
   <widget class="QLabel" name="label">
@@ -499,7 +500,7 @@ QPushButton:pressed {
 }</string>
     </property>
     <property name="text">
-     <string>Tableau de Bord</string>
+     <string>RH</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
@@ -572,41 +573,6 @@ QPushButton:pressed {
      <string>Services</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_6">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>310</y>
-      <width>171</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Bahnschrift</family>
-      <pointsize>-1</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    background-color: #2C3E50;
-    color: white;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 18px;
-}
-QPushButton:hover {
-    background-color: #1E5BB8;
-}
-QPushButton:pressed {
-    background-color: #FFFFFF;
-}</string>
-    </property>
-    <property name="text">
-     <string>Evenements</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_10">
     <property name="geometry">
      <rect>
@@ -625,6 +591,75 @@ QPushButton:pressed {
     <property name="scaledContents">
      <bool>true</bool>
     </property>
+   </widget>
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>330</y>
+      <width>151</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="rootIsDecorated">
+     <bool>true</bool>
+    </property>
+    <property name="itemsExpandable">
+     <bool>true</bool>
+    </property>
+    <property name="animated">
+     <bool>false</bool>
+    </property>
+    <property name="expandsOnDoubleClick">
+     <bool>true</bool>
+    </property>
+    <attribute name="headerVisible">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>Evénements</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Bahnschrift</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <item>
+      <property name="text">
+       <string>Accueil</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>11</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Fonctionnalités</string>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>11</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+     </item>
+    </item>
    </widget>
   </widget>
   <widget class="QPushButton" name="pushButton_7">

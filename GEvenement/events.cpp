@@ -21,3 +21,16 @@ void Events::on_pushButton_6_clicked()
     this->close();
 }
 
+
+void Events::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+{
+}
+
+
+void Events::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    Accueil *page = new Accueil();
+    page->show();
+    this->close();
+}
+
