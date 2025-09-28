@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 17.0.1, 2025-09-28T22:02:42. -->
+<!-- Written by QtCreator 17.0.1, 2025-09-28T21:33:56. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -115,7 +115,7 @@
 -DQT_QMAKE_EXECUTABLE:FILEPATH=%{Qt:qmakeExecutable}
 -DCMAKE_GENERATOR:STRING=Ninja</value>
     <value type="int" key="EnableQmlDebugging">0</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">C:\Users\ASUS\Documents\Evenement\build\Desktop_Qt_6_9_2_MinGW_64_bit-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">C:\Users\ASUS\Desktop\Smart City\employée\build\Desktop_Qt_6_9_2_MinGW_64_bit-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -216,14 +216,14 @@
      <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
      <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
      <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph &quot;dwarf,4096&quot; -F 250</value>
-     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Evenement</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">untitled6</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.</value>
-     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Evenement</value>
+     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">untitled6</value>
      <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
      <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
      <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
      <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-     <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug</value>
+     <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/ASUS/Desktop/Smart City/employée/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug</value>
     </valuemap>
     <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
    </valuemap>
@@ -285,14 +285,14 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
     <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph &quot;dwarf,4096&quot; -F 250</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Evenement</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">untitled6</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Evenement</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">untitled6</value>
     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/ASUS/Documents/Evenement/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/ASUS/Desktop/Smart City/employée/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
