@@ -1,0 +1,91 @@
+/* Scoped QSS for the ServiceWindow only */
+QWidget#ServiceWindow {
+    background-color: #001f3f; /* Navy blue */
+    color: #eaf6ff;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 11pt;
+}
+
+/* Group boxes styling */
+QGroupBox {
+    background: transparent;
+    border: 1px solid rgba(234,246,255,0.08);
+    border-radius: 8px;
+    margin-top: 8px;
+    padding: 8px;
+}
+QGroupBox::title {
+    color: #dbeeff;
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 3px 0 3px;
+}
+
+/* Labels */
+QLabel {
+    color: #dbeeff;
+    font-weight: 500;
+}
+
+/* Input widgets: white inside for readability */
+QLineEdit, QComboBox, QDateEdit, QDoubleSpinBox {
+    background-color: #ffffff;
+    color: #001f3f;
+    border: 1px solid #004b75;
+    border-radius: 6px;
+    padding: 4px;
+    min-height: 24px;
+}
+
+/* Push buttons: rounded and navy */
+QPushButton {
+    background-color: #0b5f9a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    min-width: 90px;
+}
+QPushButton:hover {
+    background-color: #146da8;
+}
+QPushButton:pressed {
+    background-color: #083d5a;
+}
+
+/* Table styling */
+QTableWidget {
+    background-color: #012435;
+    color: #eaf6ff;
+    gridline-color: rgba(234,246,255,0.04);
+    border: 1px solid rgba(234,246,255,0.04);
+    selection-background-color: #065c8a;
+    selection-color: #ffffff;
+}
+QTableWidget::item {
+    padding: 6px;
+}
+QHeaderView::section {
+    background-color: #0b4f7a;
+    color: #eaf6ff;
+    padding: 6px;
+    border: none;
+    font-weight: bold;
+}
+QTableCornerButton::section {
+    background-color: #0b4f7a;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: transparent;
+    width: 12px;
+}
+QScrollBar::handle:vertical {
+    background: #0b5f9a;
+    min-height: 20px;
+    border-radius: 6px;
+}
+QScrollBar::add-line, QScrollBar::sub-line {
+    background: none;
+}
