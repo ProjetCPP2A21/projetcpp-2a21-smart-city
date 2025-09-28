@@ -27,6 +27,7 @@ private slots:
 
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+
 private:
     Ui::Events *ui;
 };
