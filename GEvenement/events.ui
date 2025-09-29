@@ -328,9 +328,9 @@ QLineEdit:focus {
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>30</x>
        <y>110</y>
-       <width>131</width>
+       <width>81</width>
        <height>21</height>
       </rect>
      </property>
@@ -346,7 +346,7 @@ QLineEdit:focus {
 color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
-      <string>Identifiant Unique</string>
+      <string>ID</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_3">
@@ -521,7 +521,7 @@ QPushButton:pressed {
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>240</y>
+       <y>310</y>
        <width>171</width>
        <height>61</height>
       </rect>
@@ -571,74 +571,75 @@ QPushButton:pressed {
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QTreeWidget" name="treeWidget">
+    <widget class="QPushButton" name="pushButton_10">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>330</y>
-       <width>151</width>
-       <height>111</height>
+       <x>0</x>
+       <y>380</y>
+       <width>171</width>
+       <height>61</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Bahnschrift</family>
+       <pointsize>-1</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);</string>
+      <string notr="true">QPushButton {
+    background-color: #2C3E50;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 18px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
      </property>
-     <property name="rootIsDecorated">
-      <bool>true</bool>
+     <property name="text">
+      <string>Evenements</string>
      </property>
-     <property name="itemsExpandable">
-      <bool>true</bool>
+    </widget>
+    <widget class="QPushButton" name="pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>240</y>
+       <width>171</width>
+       <height>61</height>
+      </rect>
      </property>
-     <property name="animated">
-      <bool>false</bool>
+     <property name="font">
+      <font>
+       <family>Bahnschrift</family>
+       <pointsize>-1</pointsize>
+       <bold>true</bold>
+      </font>
      </property>
-     <property name="expandsOnDoubleClick">
-      <bool>true</bool>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #2C3E50;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 18px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
      </property>
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>1</string>
-      </property>
-     </column>
-     <item>
-      <property name="text">
-       <string>Evénements</string>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bahnschrift</family>
-        <pointsize>14</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <item>
-       <property name="text">
-        <string>Accueil</string>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>11</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Fonctionnalités</string>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>11</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-      </item>
-     </item>
+     <property name="text">
+      <string>Résident</string>
+     </property>
     </widget>
    </widget>
    <widget class="QPushButton" name="pushButton_4">
@@ -689,9 +690,15 @@ QPushButton:pressed {
       <height>651</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Bahnschrift</family>
+      <pointsize>11</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="styleSheet">
-     <string notr="true">border-radius : 20px
-</string>
+     <string notr="true"/>
     </property>
     <property name="currentIndex">
      <number>0</number>

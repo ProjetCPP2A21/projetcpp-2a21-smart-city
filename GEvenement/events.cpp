@@ -1,6 +1,7 @@
 #include "events.h"
 #include "./ui_events.h"
 #include "accueil.h"
+#include "../residence/mainwindow.h"
 
 Events::Events(QWidget *parent)
     : QMainWindow(parent)
@@ -21,18 +22,10 @@ void Events::on_pushButton_6_clicked()
     this->close();
 }
 
-
-void Events::on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous)
+void Events::on_pushButton_5_clicked()
 {
-}
-
-
-void Events::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
-{
-    Accueil *page = new Accueil();
+    MainWindow *page = new MainWindow();
     page->show();
     this->close();
 }
-
-
 

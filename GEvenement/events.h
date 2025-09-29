@@ -23,10 +23,8 @@ private slots:
 
     void on_pushButton_6_clicked();
 
-    void on_treeWidget_currentItemChanged(QTreeWidgetItem *current, QTreeWidgetItem *previous);
 
-    void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
-
+    void on_pushButton_5_clicked();
 
 private:
     Ui::Events *ui;
