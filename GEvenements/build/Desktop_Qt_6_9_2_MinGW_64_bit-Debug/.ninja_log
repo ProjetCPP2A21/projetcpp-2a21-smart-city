@@ -1,0 +1,21 @@
+# ninja log v6
+21	1568	7808798877740081	events_autogen/timestamp	af08a0a7c908d02f
+21	1568	7808798877740081	events_autogen/mocs_compilation.cpp	af08a0a7c908d02f
+21	1568	7808798877740081	C:/Users/ASUS/Desktop/events/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/events_autogen/timestamp	af08a0a7c908d02f
+21	1568	7808798877740081	C:/Users/ASUS/Desktop/events/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/events_autogen/mocs_compilation.cpp	af08a0a7c908d02f
+1607	7305	7808798879161806	CMakeFiles/events.dir/events_autogen/mocs_compilation.cpp.obj	f68ca70eec0510d8
+1619	7483	7808798879328472	CMakeFiles/events.dir/main.cpp.obj	d5e9d97c1353cb21
+1637	9061	7808798879585109	CMakeFiles/events.dir/events.cpp.obj	649f684b8751be8
+9062	9505	7808798953834608	events.exe	39b6e2c6320b7d2b
+29	310	7808799492214994	events_autogen/timestamp	af08a0a7c908d02f
+29	310	7808799492214994	events_autogen/mocs_compilation.cpp	af08a0a7c908d02f
+29	310	7808799492214994	C:/Users/ASUS/Desktop/events/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/events_autogen/timestamp	af08a0a7c908d02f
+29	310	7808799492214994	C:/Users/ASUS/Desktop/events/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/events_autogen/mocs_compilation.cpp	af08a0a7c908d02f
+311	5400	7808799495184125	CMakeFiles/events.dir/events.cpp.obj	649f684b8751be8
+5400	5797	7808799546068241	events.exe	39b6e2c6320b7d2b
+35	307	7808805729488972	events_autogen/timestamp	af08a0a7c908d02f
+35	307	7808805729488972	events_autogen/mocs_compilation.cpp	af08a0a7c908d02f
+35	307	7808805729488972	C:/Users/ASUS/Desktop/events/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/events_autogen/timestamp	af08a0a7c908d02f
+35	307	7808805729488972	C:/Users/ASUS/Desktop/events/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/events_autogen/mocs_compilation.cpp	af08a0a7c908d02f
+309	5386	7808805732290590	CMakeFiles/events.dir/events.cpp.obj	649f684b8751be8
+5387	5786	7808805783065892	events.exe	39b6e2c6320b7d2b
