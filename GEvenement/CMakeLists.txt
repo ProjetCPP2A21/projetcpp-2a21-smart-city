@@ -17,6 +17,9 @@ set(PROJECT_SOURCES
         events.cpp
         events.h
         events.ui
+        ../residence/mainwindow.cpp
+        ../residence/mainwindow.h
+        ../residence/mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
