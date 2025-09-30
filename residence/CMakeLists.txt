@@ -17,6 +17,14 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        ../GEvenement/events.cpp
+        ../GEvenement/events.h
+        ../GEvenement/events.ui
+        ../GEvenement/accueil.cpp
+        ../GEvenement/accueil.h
+        ../GEvenement/accueil.ui
+
+	
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
