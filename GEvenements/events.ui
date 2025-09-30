@@ -797,13 +797,10 @@ QPushButton:pressed {
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">image: url(:/cropped_circle_image.png);</string>
+      <string notr="true">image: url(:/Images/Images/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png);</string>
      </property>
      <property name="text">
       <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>:/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -895,7 +892,7 @@ QPushButton:pressed {
 </string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
