@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>cropped_circle_image.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix1"/>
+    <qresource prefix="/"/>
+</RCC>

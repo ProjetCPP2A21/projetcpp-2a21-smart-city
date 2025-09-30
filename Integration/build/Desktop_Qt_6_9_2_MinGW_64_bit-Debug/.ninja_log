@@ -1,0 +1,21 @@
+# ninja log v6
+17	51	7809354356189964	CMakeFiles/clean.additional	baedbe210acaa455
+51	67	7809354356675341	clean	577b940aee94fbd7
+15	3664	7809355455874310	rh_autogen/timestamp	5274ff69308ac757
+15	3664	7809355455874310	rh_autogen/mocs_compilation.cpp	5274ff69308ac757
+15	3664	7809355455874310	C:/Users/ASUS/Desktop/Smart City/Integration/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/rh_autogen/timestamp	5274ff69308ac757
+15	3664	7809355455874310	C:/Users/ASUS/Desktop/Smart City/Integration/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/rh_autogen/mocs_compilation.cpp	5274ff69308ac757
+3703	3835	7809355458411214	rh_autogen/EWIEGA46WW/qrc_image.cpp	3260ae356e4089f3
+3703	3835	7809355458411214	C:/Users/ASUS/Desktop/Smart City/Integration/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/rh_autogen/EWIEGA46WW/qrc_image.cpp	3260ae356e4089f3
+3712	3845	7809355458531719	rh_autogen/EWIEGA46WW/qrc_img.cpp	f6f18d21862ad509
+3712	3845	7809355458531719	C:/Users/ASUS/Desktop/Smart City/Integration/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/rh_autogen/EWIEGA46WW/qrc_img.cpp	f6f18d21862ad509
+3859	14804	7809355458751389	CMakeFiles/rh.dir/main.cpp.obj	9cc49c600ff5be8b
+3846	14926	7809355458641610	CMakeFiles/rh.dir/rh_autogen/mocs_compilation.cpp.obj	b26f383c3454af7b
+3911	17683	7809355459220041	CMakeFiles/rh.dir/residence.cpp.obj	93c3fd477ec54e6d
+14927	17920	7809355569481126	CMakeFiles/rh.dir/rh_autogen/EWIEGA46WW/qrc_image.cpp.obj	96ca062ed14f1151
+3875	18011	7809355458907647	CMakeFiles/rh.dir/rh.cpp.obj	d10c82c0e79e6df8
+3892	18295	7809355459063815	CMakeFiles/rh.dir/events.cpp.obj	5a0308b9e8fd4ce7
+3946	18310	7809355459662555	CMakeFiles/rh.dir/service.cpp.obj	119f327e19bdb65f
+17684	19543	7809355597049435	CMakeFiles/rh.dir/rh_autogen/EWIEGA46WW/qrc_img.cpp.obj	98c4df4307cdb7ef
+14805	22231	7809355568258724	CMakeFiles/rh.dir/mainwindow.cpp.obj	2bb8d872d97a5ef3
+22231	23047	7809355642525908	rh.exe	2f3a91a7cf52085c
