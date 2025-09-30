@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Images/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>../../../Downloads/550257038_24341153312235248_8315106079710079274_n__1_-removebg-preview.png</file>
+    </qresource>
+</RCC>
