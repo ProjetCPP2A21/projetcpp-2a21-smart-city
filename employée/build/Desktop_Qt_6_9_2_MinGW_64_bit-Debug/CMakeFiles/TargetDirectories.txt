@@ -1,9 +1,0 @@
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/untitled6.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/install.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/untitled6_autogen_timestamp_deps.dir
-C:/Users/mi5ou/Documents/untitled6/build/Desktop_Qt_6_9_2_MinGW_64_bit-Debug/CMakeFiles/untitled6_autogen.dir
