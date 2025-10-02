@@ -176,7 +176,7 @@ QPushButton:pressed {
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>:/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</pixmap>
+      <pixmap resource="Images.qrc">:/Images/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -411,7 +411,7 @@ color: rgb(0, 0, 0);</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -433,7 +433,7 @@ QLineEdit:focus {
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -455,7 +455,7 @@ QLineEdit:focus {
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -477,7 +477,7 @@ QLineEdit:focus {
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -523,7 +523,7 @@ color: rgb(0, 0, 0);</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -545,7 +545,7 @@ QLineEdit:focus {
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -699,7 +699,7 @@ QPushButton:pressed {
      </property>
      <property name="styleSheet">
       <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -793,7 +793,7 @@ color: rgb(0, 0, 0);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
+    border: 1px solid #7e7e7e;
     border-radius: 6px;
     padding: 8px;
     font-size: 12px;
@@ -830,8 +830,8 @@ QLineEdit:focus {
       <widget class="QTableWidget" name="tableWidget">
        <property name="geometry">
         <rect>
-         <x>35</x>
-         <y>81</y>
+         <x>30</x>
+         <y>120</y>
          <width>691</width>
          <height>381</height>
         </rect>
@@ -879,7 +879,7 @@ background-color : #e1e5ff;</string>
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>490</x>
+         <x>570</x>
          <y>20</y>
          <width>41</width>
          <height>21</height>
@@ -902,7 +902,7 @@ background-color : #e1e5ff;</string>
       <widget class="QComboBox" name="comboBox">
        <property name="geometry">
         <rect>
-         <x>540</x>
+         <x>620</x>
          <y>20</y>
          <width>101</width>
          <height>21</height>
@@ -921,6 +921,19 @@ background-color : #e1e5ff;</string>
          <string>Nombre d'inscrits</string>
         </property>
        </item>
+      </widget>
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>20</y>
+         <width>75</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>PushButton</string>
+       </property>
       </widget>
      </widget>
     </widget>
@@ -1005,9 +1018,9 @@ border-radius: 8px;</string>
       <property name="geometry">
        <rect>
         <x>480</x>
-        <y>110</y>
+        <y>80</y>
         <width>341</width>
-        <height>191</height>
+        <height>221</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -1025,9 +1038,9 @@ background-color : #2C3E50;
       <widget class="QLabel" name="label_18">
        <property name="geometry">
         <rect>
-         <x>80</x>
+         <x>90</x>
          <y>20</y>
-         <width>161</width>
+         <width>201</width>
          <height>16</height>
         </rect>
        </property>
@@ -1042,14 +1055,14 @@ background-color : #2C3E50;
         <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>Envoyer une notification d'un nouveau événement</string>
+        <string>Localisation de l'evenement</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="lineEdit">
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>80</y>
+         <y>70</y>
          <width>141</width>
          <height>41</height>
         </rect>
@@ -1071,7 +1084,7 @@ QLineEdit:focus {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>89</y>
+         <y>80</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1476,6 +1489,23 @@ border-radius: 8px;</string>
        <string/>
       </property>
      </widget>
+     <zorder>line_5</zorder>
+     <zorder>line_2</zorder>
+     <zorder>line_6</zorder>
+     <zorder>line_3</zorder>
+     <zorder>line</zorder>
+     <zorder>label_15</zorder>
+     <zorder>frame_2</zorder>
+     <zorder>label_3</zorder>
+     <zorder>line_4</zorder>
+     <zorder>label_20</zorder>
+     <zorder>pushButton_11</zorder>
+     <zorder>frame_4</zorder>
+     <zorder>label_24</zorder>
+     <zorder>label_4</zorder>
+     <zorder>label_5</zorder>
+     <zorder>label_6</zorder>
+     <zorder>label_25</zorder>
     </widget>
    </widget>
    <widget class="QPushButton" name="pushButton_12">
@@ -1530,6 +1560,8 @@ QPushButton:pressed {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="Images.qrc"/>
+ </resources>
  <connections/>
 </ui>
