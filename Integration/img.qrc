@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>cropped_circle_image.png</file>
-    </qresource>
-    <qresource prefix="/imgage"/>
-</RCC>
