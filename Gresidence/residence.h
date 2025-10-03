@@ -2,7 +2,6 @@
 #define RESIDENCE_H
 
 #include <QWidget>
-#include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -15,13 +14,16 @@ class residence : public QWidget
     Q_OBJECT
 
 public:
-    residence(QWidget *parent = nullptr);
+    explicit residence(QWidget *parent = nullptr);
     ~residence();
+
+private slots:
+    void openOtherWindow();     // function that opens the 2nd window
 
 private:
     Ui::residence *ui;
 };
-#endif // RESIDENCE_H*/
 
+#endif // RESIDENCE_H
 
 

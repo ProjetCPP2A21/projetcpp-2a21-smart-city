@@ -10,15 +10,18 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    residence.cpp
+    residence.cpp\
+    gemployer.cpp
 
 
 HEADERS += \
-    residence.h
+    residence.h\
+    gemployer.h
 
 
 FORMS += \
-    residence.ui
+    residence.ui\
+    gemployer.ui
 
 
 # Default rules for deployment.
