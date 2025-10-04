@@ -17,6 +17,9 @@ public:
     GEvenement(QWidget *parent = nullptr);
     ~GEvenement();
 
+private slots:
+
+
 private:
     Ui::GEvenement *ui;
 };
