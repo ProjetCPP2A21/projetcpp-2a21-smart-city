@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>cropped_circle_image.png</file>
+        <file>statisque.png</file>
+        <file>diagramme_circulaire3.png</file>
+    </qresource>
+</RCC>
