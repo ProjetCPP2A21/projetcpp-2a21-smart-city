@@ -1,6 +1,6 @@
 #ifndef GEVENEMENT_H
 #define GEVENEMENT_H
-
+#include "../Atelier_Connexion/connection.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
