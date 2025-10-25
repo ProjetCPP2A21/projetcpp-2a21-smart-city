@@ -11,17 +11,19 @@ CONFIG += c++17
 SOURCES += \
     evenement.cpp \
     main.cpp \
-    gevenement.cpp
+    gevenement.cpp \
+    connection.cpp
 
 HEADERS += \
     evenement.h \
-    gevenement.h
+    gevenement.h \
+    connection.h
 
 FORMS += \
     gevenement.ui
 
 
-INCLUDEPATH += "C:/Users/ASUS/Desktop/Smart City/Atelier_Connexion"
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

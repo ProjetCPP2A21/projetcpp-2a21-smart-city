@@ -1,6 +1,6 @@
 #include "gevenement.h"
 #include <QMessageBox>
-#include "../Atelier_Connexion/connection.h"
+#include "connection.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
