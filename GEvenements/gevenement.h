@@ -20,6 +20,8 @@ public:
 private slots:
 
 
+    void on_Ajouterbutton_clicked();
+
 private:
     Ui::GEvenement *ui;
 };
