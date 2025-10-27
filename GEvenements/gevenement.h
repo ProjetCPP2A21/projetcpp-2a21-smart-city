@@ -1,6 +1,7 @@
 #ifndef GEVENEMENT_H
 #define GEVENEMENT_H
-#include "../Atelier_Connexion/connection.h"
+#include "connection.h"
+#include "evenement.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -22,7 +23,10 @@ private slots:
 
     void on_Ajouterbutton_clicked();
 
+    void on_Supprimer_clicked();
+
 private:
     Ui::GEvenement *ui;
+    Evenement E;
 };
 #endif // GEVENEMENT_H
