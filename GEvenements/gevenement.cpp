@@ -4,12 +4,15 @@
 #include "connection.h"
 #include <QString>
 #include <QMessageBox>
+#include <QTableView>
+#include <QSqlDatabase>
 
 GEvenement::GEvenement(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GEvenement)
 {
     ui->setupUi(this);
+    ui->tableView->setModel(E.afficher());
 }
 
 GEvenement::~GEvenement()
@@ -83,4 +86,3 @@ void GEvenement::on_Supprimer_clicked()
                               QObject::tr("Suppression non effectue !!\n""Click Cancel to exit."), QMessageBox::Cancel);
     }
 }
-
