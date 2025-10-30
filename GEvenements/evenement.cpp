@@ -3,6 +3,9 @@
 #include <QString>
 #include <QSqlError>
 #include <QDebug>
+#include <QSqlQueryModel>
+#include <QSqlDatabase>
+
 
 Evenement::Evenement()
 {
@@ -56,4 +59,19 @@ bool Evenement::supprimer(int id)
     query.prepare("Delete from Evenement where ID_Evenement = :id");
     query.bindValue(":id", res);
     return query.exec();
+}
+
+QSqlQueryModel *Evenement::afficher()
+{
+
+    QSqlQueryModel *model = new QSqlQueryModel();
+   model->setQuery("SELECT * FROM Evenement");
+    model->setHeaderData(0,Qt::Horizontal, QObject::tr("ID_Evenement"));
+    model->setHeaderData(1,Qt::Horizontal, QObject::tr("Nom"));
+    model->setHeaderData(2,Qt::Horizontal, QObject::tr("Type_Evenement"));
+    model->setHeaderData(3,Qt::Horizontal, QObject::tr("Date_Evenement"));
+    model->setHeaderData(4,Qt::Horizontal, QObject::tr("Heure"));
+    model->setHeaderData(5,Qt::Horizontal, QObject::tr("Lieu"));
+    model->setHeaderData(6,Qt::Horizontal, QObject::tr("Nbr_Participants"));
+    return model;
 }

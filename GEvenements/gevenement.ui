@@ -80,55 +80,6 @@ QLineEdit:focus {
       <string>Rechercher Un Evenement</string>
      </property>
     </widget>
-    <widget class="QTableWidget" name="tableWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>401</width>
-       <height>361</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border-raduis : 20px;
-background-color : #e1e5ff;</string>
-     </property>
-     <column>
-      <property name="text">
-       <string>ID</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Nom</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Type</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Lieu</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Date</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Heure</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string/>
-      </property>
-     </column>
-    </widget>
     <widget class="QComboBox" name="comboBox">
      <property name="geometry">
       <rect>
@@ -711,6 +662,20 @@ QPushButton:pressed {
      </property>
      <property name="text">
       <string>Statistiques</string>
+     </property>
+    </widget>
+    <widget class="QTableView" name="tableView">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>80</y>
+       <width>411</width>
+       <height>361</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border-raduis : 20px;
+background-color : #e1e5ff;</string>
      </property>
     </widget>
    </widget>
