@@ -25,6 +25,10 @@ private slots:
 
     void on_Supprimer_clicked();
 
+    void on_Modifier_clicked();
+
+    void on_Rechercher_clicked();
+
 private:
     Ui::GEvenement *ui;
     Evenement E;

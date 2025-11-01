@@ -5,8 +5,10 @@
 #include <QDebug>
 #include <QSqlQueryModel>
 #include <QSqlDatabase>
+#include <onnxruntime_c_api.h>
 
 
+//costructeur par défaut
 Evenement::Evenement()
 {
     ID = 0;
@@ -17,7 +19,7 @@ Evenement::Evenement()
     Lieu = "";
     Nbr_Participants = 0;
 }
-
+// constructeur paramétré
 Evenement::Evenement(int ID,int ID_Employe, QString Nom, QString Type, QString Date, QString Heure, QString Lieu, int Nbr_Participants)
 {
     this->ID = ID;
@@ -32,7 +34,7 @@ Evenement::Evenement(int ID,int ID_Employe, QString Nom, QString Type, QString D
 
 Evenement::~Evenement() {}
 
-
+// ajouter un évènement
  bool Evenement::ajouter()
 {
      QSqlQuery query;
@@ -51,7 +53,7 @@ Evenement::~Evenement() {}
 
     return query.exec();
 }
-
+// supprimer un évènement
 bool Evenement::supprimer(int id)
 {
     QSqlQuery query;
@@ -60,18 +62,70 @@ bool Evenement::supprimer(int id)
     query.bindValue(":id", res);
     return query.exec();
 }
-
+// afficher un évènement
 QSqlQueryModel *Evenement::afficher()
 {
 
     QSqlQueryModel *model = new QSqlQueryModel();
    model->setQuery("SELECT * FROM Evenement");
     model->setHeaderData(0,Qt::Horizontal, QObject::tr("ID_Evenement"));
-    model->setHeaderData(1,Qt::Horizontal, QObject::tr("Nom"));
-    model->setHeaderData(2,Qt::Horizontal, QObject::tr("Type_Evenement"));
-    model->setHeaderData(3,Qt::Horizontal, QObject::tr("Date_Evenement"));
-    model->setHeaderData(4,Qt::Horizontal, QObject::tr("Heure"));
-    model->setHeaderData(5,Qt::Horizontal, QObject::tr("Lieu"));
-    model->setHeaderData(6,Qt::Horizontal, QObject::tr("Nbr_Participants"));
+    model->setHeaderData(2,Qt::Horizontal, QObject::tr("Nom"));
+    model->setHeaderData(3,Qt::Horizontal, QObject::tr("Type_Evenement"));
+    model->setHeaderData(4,Qt::Horizontal, QObject::tr("Date_Evenement"));
+    model->setHeaderData(5,Qt::Horizontal, QObject::tr("Heure"));
+    model->setHeaderData(6,Qt::Horizontal, QObject::tr("Lieu"));
+    model->setHeaderData(7,Qt::Horizontal, QObject::tr("Nbr_Participants"));
     return model;
 }
+// modifier un évènement
+bool Evenement::modifier(int id)
+{
+    QSqlQuery query(QSqlDatabase::database("oracleConnection")); // utilise la connexion existante
+
+    query.prepare("UPDATE Evenement "
+                  "SET Nom = :nom, "
+                  "Type_Evenement = :type, "
+                  "Date_Evenement = :date, "
+                  "Heure = :heure, "
+                  "Lieu = :lieu, "
+                  "Nbr_Participants = :nbr "
+                  "WHERE ID_Evenement = :id");
+
+    query.bindValue(":nom", Nom);
+    query.bindValue(":type", Type);
+    query.bindValue(":date", Date);
+    query.bindValue(":heure", Heure);
+    query.bindValue(":lieu", Lieu);
+    query.bindValue(":nbr", Nbr_Participants);
+    query.bindValue(":id", id);
+
+    if(!query.exec())
+    {
+        qDebug() << "Erreur modification Evenement :" << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
+QSqlQueryModel *Evenement::rechercher(int id)
+{
+    QSqlQueryModel *model = new QSqlQueryModel();
+
+    // Requête : l'événement correspondant à l'ID en premier, puis les autres après
+    model->setQuery(QString(
+                        "SELECT * FROM Evenement "
+                        "ORDER BY CASE WHEN ID_Evenement = %1 THEN 0 ELSE 1 END, ID_Evenement ASC"
+                        ).arg(id));
+
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("ID_Evenement"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Nom"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Type_Evenement"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Date_Evenement"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Heure"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("Lieu"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("Nbr_Participants"));
+
+    return model;
+}
+
+

@@ -23,6 +23,8 @@ FORMS += \
     gevenement.ui
 
 
+INCLUDEPATH += "C:/Users/ASUS/Desktop/Smart City/GEvenements/ONNX_IA/include"
+LIBS += -L"C:/Users/ASUS/Desktop/Smart City/GEvenements/ONNX_IA/lib" -lonnxruntime
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

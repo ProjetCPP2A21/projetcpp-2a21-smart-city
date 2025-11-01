@@ -45,6 +45,14 @@ public:
     bool ajouter();
     QSqlQueryModel *afficher();
     bool supprimer(int);
+    bool modifier(int id);
+
+    //metier
+    QSqlQueryModel *rechercher(int id);
+
+
+    //metiers Avancés
+    float predireImpact(int id, int nbrParticipants);
 
 };
 
