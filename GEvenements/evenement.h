@@ -53,7 +53,6 @@ public:
 
     //metiers Avancés
     float predireImpact(int id, int nbrParticipants);
-
 };
 
 #endif // EVENEMENT_H

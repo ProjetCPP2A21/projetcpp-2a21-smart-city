@@ -2,7 +2,9 @@
 #include <QMessageBox>
 #include "connection.h"
 #include <QApplication>
+#include <iostream>
 #include <QSqlDatabase>
+
 
 
 int main(int argc, char *argv[])

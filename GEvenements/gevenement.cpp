@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QTableView>
 #include <QSqlDatabase>
+#include <onnxruntime_cxx_api.h>
 
 GEvenement::GEvenement(QWidget *parent)
     : QMainWindow(parent)
@@ -139,21 +140,74 @@ void GEvenement::on_Modifier_clicked()
 
 void GEvenement::on_Rechercher_clicked()
 {
-        int id = ui->Recherche_Line->text().toInt();
+    QString textId = ui->Recherche_Line->text();
 
-        if (id == 0 && ui->Recherche_Line->text().isEmpty()) {
-            QMessageBox::warning(this, "Recherche", "Veuillez saisir un ID valide !");
-            return;
-        }
+    // Si le champ est vide → afficher tout le tableau
+    if (textId.isEmpty()) {
+        QMessageBox::warning(this, "Recherche", "Veuillez saisir un ID !");
+        ui->tableView->setModel(E.afficher()); // réutilise ta fonction afficher()
+        return;
+    }
 
-        QSqlQueryModel *model = E.rechercher(id);
-        ui->tableView->setModel(model);
+    int id = textId.toInt();
+    if (id <= 0) {
+        QMessageBox::warning(this, "Recherche", "ID invalide !");
+        return;
+    }
 
-        // Facultatif : indiquer visuellement que la recherche a été effectuée
-         if (model->rowCount() > 0)
-            QMessageBox::information(this, "Recherche", "Résultat de la recherche affiché !");
-         else
-             QMessageBox::warning(this, "Recherche", "Aucun événement trouvé avec cet ID.");
+    QSqlQueryModel *model = E.rechercher(id);
 
+    if (!model) {
+        QMessageBox::warning(this, "Recherche", "Aucun événement trouvé avec cet ID.");
+        return;
+    }
+
+    ui->tableView->setModel(model);
+    QMessageBox::information(this, "Recherche", "Résultat de la recherche affiché !");
 }
 
+
+void GEvenement::on_Prediction_clicked()
+{
+    int id = ui->Id_Evenement->text().toInt();
+    int nbr = ui->NombreP->text().toInt();
+
+    float impact = E.predireImpact(id, nbr);
+
+    if (impact >= 0) {
+        ui->Prediction->setText(QString("Impact prédicté : %1").arg(impact));
+    } else {
+        QMessageBox::warning(this, "Erreur", "Impossible de charger le modèle ONNX.");
+    }
+}
+
+
+void GEvenement::on_tableView_clicked(const QModelIndex &index)
+{
+    // Récupérer le modèle actuellement affiché
+    QSqlQueryModel *model = qobject_cast<QSqlQueryModel*>(ui->tableView->model());
+    if (!model)
+        return;
+
+    int row = index.row();
+
+    // Récupérer les données de la ligne sélectionnée
+    QString idStr    = model->data(model->index(row, 0)).toString();
+    QString nomStr   = model->data(model->index(row, 2)).toString();
+    QString typeStr  = model->data(model->index(row, 3)).toString();
+    QString dateStr  = model->data(model->index(row, 4)).toString();
+    QString heureStr = model->data(model->index(row, 5)).toString();
+    QString lieuStr  = model->data(model->index(row, 6)).toString();
+    QString nbrStr   = model->data(model->index(row, 7)).toString();
+
+    // Conversion de la date et de l'heure
+    QDate date = QDate::fromString(dateStr, "dd/MM/yyyy");
+    if (!date.isValid())
+        date = QDate::fromString(dateStr, "yyyy-MM-dd");
+
+    QTime time = QTime::fromString(heureStr, "HH:mm");
+
+    // Remplir les champs du formulaire
+    ui->dateEdit->setDate(date);
+    ui->timeEdit->setTime(time);
+}
