@@ -29,6 +29,11 @@ private slots:
 
     void on_Rechercher_clicked();
 
+    void on_Prediction_clicked();
+    void on_tableView_clicked(const QModelIndex &index);
+
+
+
 private:
     Ui::GEvenement *ui;
     Evenement E;

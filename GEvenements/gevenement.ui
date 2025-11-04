@@ -723,6 +723,12 @@ color: rgb(0, 0, 0);</string>
       <height>741</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QTabWidget{
+	font: 700 12pt &quot;Bahnschrift&quot;;
+	 border-radius: 20px
+}</string>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
@@ -996,7 +1002,7 @@ background-color : #2C3E50;
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>80</y>
+         <y>60</y>
          <width>141</width>
          <height>41</height>
         </rect>
@@ -1018,7 +1024,7 @@ QLineEdit:focus {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>89</y>
+         <y>69</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1041,7 +1047,7 @@ QLineEdit:focus {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>139</y>
+         <y>119</y>
          <width>151</width>
          <height>21</height>
         </rect>
@@ -1060,11 +1066,11 @@ QLineEdit:focus {
         <string>Nombre d'inscrits</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_11">
+      <widget class="QLineEdit" name="NombreP">
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>130</y>
+         <y>110</y>
          <width>141</width>
          <height>41</height>
         </rect>
@@ -1086,7 +1092,7 @@ QLineEdit:focus {
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>230</y>
+         <y>170</y>
          <width>141</width>
          <height>41</height>
         </rect>
@@ -1119,6 +1125,19 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>Prédire</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>250</y>
+         <width>49</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>

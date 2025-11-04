@@ -5,7 +5,9 @@
 #include <QDebug>
 #include <QSqlQueryModel>
 #include <QSqlDatabase>
-#include <onnxruntime_c_api.h>
+#include <iostream>
+#include <onnxruntime_cxx_api.h>
+
 
 
 //costructeur par défaut
@@ -111,11 +113,18 @@ QSqlQueryModel *Evenement::rechercher(int id)
 {
     QSqlQueryModel *model = new QSqlQueryModel();
 
-    // Requête : l'événement correspondant à l'ID en premier, puis les autres après
-    model->setQuery(QString(
-                        "SELECT * FROM Evenement "
-                        "ORDER BY CASE WHEN ID_Evenement = %1 THEN 0 ELSE 1 END, ID_Evenement ASC"
-                        ).arg(id));
+    // Vérifie si l'ID existe
+    QSqlQuery query;
+    query.prepare("SELECT * FROM Evenement WHERE ID_Evenement = :id");
+    query.bindValue(":id", id);
+    query.exec();
+
+    if (!query.next()) { // aucun résultat
+        return nullptr; // on retournera nullptr si ID invalide
+    }
+
+    // Si ID existe, on le charge dans le modèle
+    model->setQuery(query);
 
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("ID_Evenement"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Nom"));
@@ -128,4 +137,84 @@ QSqlQueryModel *Evenement::rechercher(int id)
     return model;
 }
 
+float Evenement::predireImpact(int id, int nbrParticipants)
+{
+    const OrtApi* g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
+    OrtEnv* env = nullptr;
+     OrtStatus* status = g_ort->CreateEnv(ORT_LOGGING_LEVEL_WARNING, "GEvenement", &env);
+    if (status) {
+        std::cerr << "Erreur création de l'environnement ONNX : "
+                  << g_ort->GetErrorMessage(status) << std::endl;
+        g_ort->ReleaseStatus(status);
+        return -1;
+    }
 
+    OrtSessionOptions* session_options = nullptr;
+    status = g_ort->CreateSessionOptions(&session_options);
+    if (status) {
+        std::cerr << "Erreur création des options de session ONNX : "
+                  << g_ort->GetErrorMessage(status) << std::endl;
+        g_ort->ReleaseStatus(status);
+        g_ort->ReleaseEnv(env);
+        return -1;
+    }
+
+    OrtSession* session = nullptr;
+    status = g_ort->CreateSession(env, L"impact_model.onnx", session_options, &session);
+    if (status != nullptr) {
+        std::cerr << "Erreur chargement du modèle ONNX : "
+                  << g_ort->GetErrorMessage(status) << std::endl;
+        g_ort->ReleaseStatus(status);
+        g_ort->ReleaseSessionOptions(session_options);
+        g_ort->ReleaseEnv(env);
+        return -1;
+    }
+
+    float input_data[2] = { float(id), float(nbrParticipants) };
+    int64_t dims[2] = {1, 2};
+
+    OrtMemoryInfo* memory_info = nullptr;
+    status = g_ort->CreateCpuMemoryInfo(OrtArenaAllocator, OrtMemTypeDefault, &memory_info);
+    if (status) {
+        std::cerr << "Erreur création MemoryInfo : " << g_ort->GetErrorMessage(status) << std::endl;
+        g_ort->ReleaseSession(session);
+        g_ort->ReleaseSessionOptions(session_options);
+        g_ort->ReleaseEnv(env);
+        g_ort->ReleaseStatus(status);
+        return -1;
+    }
+
+    OrtValue* input_tensor = nullptr;
+    status = g_ort->CreateTensorWithDataAsOrtValue(memory_info, input_data, sizeof(input_data),
+                                                   dims, 2, ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT, &input_tensor);
+    if (status) {
+        std::cerr << "Erreur création du tenseur d'entrée : " << g_ort->GetErrorMessage(status) << std::endl;
+        g_ort->ReleaseMemoryInfo(memory_info);
+        g_ort->ReleaseSession(session);
+        g_ort->ReleaseSessionOptions(session_options);
+        g_ort->ReleaseEnv(env);
+        g_ort->ReleaseStatus(status);
+        return -1;
+    }
+
+    const char* input_names[] = {"input"};
+    const char* output_names[] = {"output"};
+    OrtValue* output_tensor = nullptr;
+
+    g_ort->Run(session, nullptr, input_names, (const OrtValue* const*)&input_tensor, 1,
+               output_names, 1, &output_tensor);
+
+    float* output_data = nullptr;
+    g_ort->GetTensorMutableData(output_tensor, (void**)&output_data);
+    float impact = *output_data;
+
+    // Libération des ressources
+    g_ort->ReleaseValue(output_tensor);
+    g_ort->ReleaseValue(input_tensor);
+    g_ort->ReleaseMemoryInfo(memory_info);
+    g_ort->ReleaseSession(session);
+    g_ort->ReleaseSessionOptions(session_options);
+    g_ort->ReleaseEnv(env);
+
+    return impact;
+}
