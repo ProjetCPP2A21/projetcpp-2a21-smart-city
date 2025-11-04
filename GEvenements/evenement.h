@@ -5,6 +5,11 @@
 #include <QSqlQueryModel>
 #include <QString>
 using namespace std;
+struct ImpactResult {
+    float co2;
+    float pollution;
+    float impact;
+};
 
 class Evenement
 {
@@ -52,7 +57,7 @@ public:
 
 
     //metiers Avancés
-    float predireImpact(int id, int nbrParticipants);
+    ImpactResult predireImpact(int id);
 };
 
 #endif // EVENEMENT_H
