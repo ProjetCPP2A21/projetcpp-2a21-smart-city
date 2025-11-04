@@ -2732,7 +2732,7 @@ color: rgb(0, 0, 0);</string>
         <string>profession</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Nom_9">
+      <widget class="QLineEdit" name="lineEdit_nom">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -2756,7 +2756,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Type_5">
+      <widget class="QLineEdit" name="lineEdit_age">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -2780,7 +2780,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_16">
+      <widget class="QLineEdit" name="lineEdit_sexe">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -2803,7 +2803,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_17">
+      <widget class="QLineEdit" name="lineEdit_profession">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -2826,7 +2826,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_18">
+      <widget class="QLineEdit" name="lineEdit_situation">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -2849,7 +2849,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Nom_10">
+      <widget class="QLineEdit" name="lineEdit_identifiant">
        <property name="geometry">
         <rect>
          <x>230</x>
@@ -3147,51 +3147,6 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QTableWidget" name="tableWidget_3">
-       <property name="geometry">
-        <rect>
-         <x>40</x>
-         <y>80</y>
-         <width>601</width>
-         <height>321</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-raduis : 20px;
-color: rgb(0, 0, 0);
-background-color : #e1e5ff;</string>
-       </property>
-       <column>
-        <property name="text">
-         <string>Identifiant unique</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Nom</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Age</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Sexe</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Profession</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Situation familiale</string>
-        </property>
-       </column>
-      </widget>
       <widget class="QPushButton" name="pushButton_34">
        <property name="geometry">
         <rect>
@@ -3227,6 +3182,21 @@ QPushButton:pressed {
         <string>Recherche</string>
        </property>
       </widget>
+      <widget class="QTableView" name="tableView">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>70</y>
+         <width>601</width>
+         <height>321</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-raduis : 20px;
+color: rgb(0, 0, 0);
+background-color : #e1e5ff;</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QGraphicsView" name="graphicsView_2">
       <property name="geometry">
@@ -3250,7 +3220,7 @@ QPushButton:pressed {
      <x>0</x>
      <y>0</y>
      <width>1367</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

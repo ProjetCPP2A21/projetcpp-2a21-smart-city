@@ -22,6 +22,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
@@ -130,12 +131,12 @@ public:
     QLabel *label_46;
     QLabel *label_47;
     QLabel *label_48;
-    QLineEdit *Nom_9;
-    QLineEdit *Type_5;
-    QLineEdit *lineEdit_16;
-    QLineEdit *lineEdit_17;
-    QLineEdit *lineEdit_18;
-    QLineEdit *Nom_10;
+    QLineEdit *lineEdit_nom;
+    QLineEdit *lineEdit_age;
+    QLineEdit *lineEdit_sexe;
+    QLineEdit *lineEdit_profession;
+    QLineEdit *lineEdit_situation;
+    QLineEdit *lineEdit_identifiant;
     QLabel *label_49;
     QPushButton *pushButton_31;
     QLabel *label_50;
@@ -146,8 +147,8 @@ public:
     QLabel *label_51;
     QLabel *label_52;
     QLineEdit *lineEdit_19;
-    QTableWidget *tableWidget_3;
     QPushButton *pushButton_34;
+    QTableView *tableView;
     QGraphicsView *graphicsView_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -1341,10 +1342,10 @@ public:
         label_48->setFont(font1);
         label_48->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        Nom_9 = new QLineEdit(Ajouter_3);
-        Nom_9->setObjectName("Nom_9");
-        Nom_9->setGeometry(QRect(230, 160, 141, 41));
-        Nom_9->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        lineEdit_nom = new QLineEdit(Ajouter_3);
+        lineEdit_nom->setObjectName("lineEdit_nom");
+        lineEdit_nom->setGeometry(QRect(230, 160, 141, 41));
+        lineEdit_nom->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	color: rgb(0, 0, 0);\n"
 "	color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
@@ -1356,10 +1357,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Type_5 = new QLineEdit(Ajouter_3);
-        Type_5->setObjectName("Type_5");
-        Type_5->setGeometry(QRect(230, 220, 141, 41));
-        Type_5->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        lineEdit_age = new QLineEdit(Ajouter_3);
+        lineEdit_age->setObjectName("lineEdit_age");
+        lineEdit_age->setGeometry(QRect(230, 220, 141, 41));
+        lineEdit_age->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	color: rgb(0, 0, 0);\n"
 "	color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
@@ -1371,10 +1372,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_16 = new QLineEdit(Ajouter_3);
-        lineEdit_16->setObjectName("lineEdit_16");
-        lineEdit_16->setGeometry(QRect(230, 280, 141, 41));
-        lineEdit_16->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        lineEdit_sexe = new QLineEdit(Ajouter_3);
+        lineEdit_sexe->setObjectName("lineEdit_sexe");
+        lineEdit_sexe->setGeometry(QRect(230, 280, 141, 41));
+        lineEdit_sexe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
@@ -1385,10 +1386,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_17 = new QLineEdit(Ajouter_3);
-        lineEdit_17->setObjectName("lineEdit_17");
-        lineEdit_17->setGeometry(QRect(230, 340, 141, 41));
-        lineEdit_17->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        lineEdit_profession = new QLineEdit(Ajouter_3);
+        lineEdit_profession->setObjectName("lineEdit_profession");
+        lineEdit_profession->setGeometry(QRect(230, 340, 141, 41));
+        lineEdit_profession->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
@@ -1399,10 +1400,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_18 = new QLineEdit(Ajouter_3);
-        lineEdit_18->setObjectName("lineEdit_18");
-        lineEdit_18->setGeometry(QRect(230, 410, 141, 41));
-        lineEdit_18->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        lineEdit_situation = new QLineEdit(Ajouter_3);
+        lineEdit_situation->setObjectName("lineEdit_situation");
+        lineEdit_situation->setGeometry(QRect(230, 410, 141, 41));
+        lineEdit_situation->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
@@ -1413,10 +1414,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Nom_10 = new QLineEdit(Ajouter_3);
-        Nom_10->setObjectName("Nom_10");
-        Nom_10->setGeometry(QRect(230, 100, 141, 41));
-        Nom_10->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        lineEdit_identifiant = new QLineEdit(Ajouter_3);
+        lineEdit_identifiant->setObjectName("lineEdit_identifiant");
+        lineEdit_identifiant->setGeometry(QRect(230, 100, 141, 41));
+        lineEdit_identifiant->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
@@ -1536,26 +1537,6 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        tableWidget_3 = new QTableWidget(frame_4);
-        if (tableWidget_3->columnCount() < 6)
-            tableWidget_3->setColumnCount(6);
-        QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
-        tableWidget_3->setHorizontalHeaderItem(0, __qtablewidgetitem15);
-        QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
-        tableWidget_3->setHorizontalHeaderItem(1, __qtablewidgetitem16);
-        QTableWidgetItem *__qtablewidgetitem17 = new QTableWidgetItem();
-        tableWidget_3->setHorizontalHeaderItem(2, __qtablewidgetitem17);
-        QTableWidgetItem *__qtablewidgetitem18 = new QTableWidgetItem();
-        tableWidget_3->setHorizontalHeaderItem(3, __qtablewidgetitem18);
-        QTableWidgetItem *__qtablewidgetitem19 = new QTableWidgetItem();
-        tableWidget_3->setHorizontalHeaderItem(4, __qtablewidgetitem19);
-        QTableWidgetItem *__qtablewidgetitem20 = new QTableWidgetItem();
-        tableWidget_3->setHorizontalHeaderItem(5, __qtablewidgetitem20);
-        tableWidget_3->setObjectName("tableWidget_3");
-        tableWidget_3->setGeometry(QRect(40, 80, 601, 321));
-        tableWidget_3->setStyleSheet(QString::fromUtf8("border-raduis : 20px;\n"
-"color: rgb(0, 0, 0);\n"
-"background-color : #e1e5ff;"));
         pushButton_34 = new QPushButton(frame_4);
         pushButton_34->setObjectName("pushButton_34");
         pushButton_34->setGeometry(QRect(450, 20, 91, 41));
@@ -1573,6 +1554,12 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
+        tableView = new QTableView(frame_4);
+        tableView->setObjectName("tableView");
+        tableView->setGeometry(QRect(50, 70, 601, 321));
+        tableView->setStyleSheet(QString::fromUtf8("border-raduis : 20px;\n"
+"color: rgb(0, 0, 0);\n"
+"background-color : #e1e5ff;"));
         graphicsView_2 = new QGraphicsView(page);
         graphicsView_2->setObjectName("graphicsView_2");
         graphicsView_2->setGeometry(QRect(870, 470, 311, 192));
@@ -1581,7 +1568,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1367, 21));
+        menubar->setGeometry(QRect(0, 0, 1367, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -1706,7 +1693,7 @@ public:
         label_46->setText(QCoreApplication::translate("MainWindow", "Age", nullptr));
         label_47->setText(QCoreApplication::translate("MainWindow", "Situation familiale", nullptr));
         label_48->setText(QCoreApplication::translate("MainWindow", "profession", nullptr));
-        Nom_10->setText(QString());
+        lineEdit_identifiant->setText(QString());
         label_49->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
         pushButton_31->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
         label_50->setText(QCoreApplication::translate("MainWindow", "Sexe", nullptr));
@@ -1719,18 +1706,6 @@ public:
 
         label_51->setText(QCoreApplication::translate("MainWindow", "Trier", nullptr));
         label_52->setText(QCoreApplication::translate("MainWindow", "Rechercher Un Evenement", nullptr));
-        QTableWidgetItem *___qtablewidgetitem15 = tableWidget_3->horizontalHeaderItem(0);
-        ___qtablewidgetitem15->setText(QCoreApplication::translate("MainWindow", "Identifiant unique", nullptr));
-        QTableWidgetItem *___qtablewidgetitem16 = tableWidget_3->horizontalHeaderItem(1);
-        ___qtablewidgetitem16->setText(QCoreApplication::translate("MainWindow", "Nom", nullptr));
-        QTableWidgetItem *___qtablewidgetitem17 = tableWidget_3->horizontalHeaderItem(2);
-        ___qtablewidgetitem17->setText(QCoreApplication::translate("MainWindow", "Age", nullptr));
-        QTableWidgetItem *___qtablewidgetitem18 = tableWidget_3->horizontalHeaderItem(3);
-        ___qtablewidgetitem18->setText(QCoreApplication::translate("MainWindow", "Sexe", nullptr));
-        QTableWidgetItem *___qtablewidgetitem19 = tableWidget_3->horizontalHeaderItem(4);
-        ___qtablewidgetitem19->setText(QCoreApplication::translate("MainWindow", "Profession", nullptr));
-        QTableWidgetItem *___qtablewidgetitem20 = tableWidget_3->horizontalHeaderItem(5);
-        ___qtablewidgetitem20->setText(QCoreApplication::translate("MainWindow", "Situation familiale", nullptr));
         pushButton_34->setText(QCoreApplication::translate("MainWindow", "Recherche", nullptr));
     } // retranslateUi
 
