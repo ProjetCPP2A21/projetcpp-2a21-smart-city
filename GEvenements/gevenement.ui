@@ -1127,14 +1127,24 @@ QPushButton:pressed {
         <string>Prédire</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="Dioxyde">
        <property name="geometry">
         <rect>
-         <x>140</x>
-         <y>250</y>
-         <width>49</width>
-         <height>16</height>
+         <x>60</x>
+         <y>230</y>
+         <width>231</width>
+         <height>71</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
         <string/>

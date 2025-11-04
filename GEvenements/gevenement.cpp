@@ -170,15 +170,19 @@ void GEvenement::on_Rechercher_clicked()
 void GEvenement::on_Prediction_clicked()
 {
     int id = ui->Id_Evenement->text().toInt();
-    int nbr = ui->NombreP->text().toInt();
+    ImpactResult impact = E.predireImpact(id);
 
-    float impact = E.predireImpact(id, nbr);
-
-    if (impact >= 0) {
-        ui->Prediction->setText(QString("Impact prédicté : %1").arg(impact));
-    } else {
-        QMessageBox::warning(this, "Erreur", "Impossible de charger le modèle ONNX.");
+    if (impact.co2 < 0) {
+        QMessageBox::warning(this, "Erreur", "Impossible de prédire l'impact.");
+        return;
     }
+
+    ui->Dioxyde->setText(
+        QString("🌫️ CO₂ : %1 kg\n🏭 Pollution : %2\n💥 Score d'impact : %3")
+            .arg(impact.co2, 0, 'f', 2)
+            .arg(impact.pollution, 0, 'f', 2)
+            .arg(impact.impact, 0, 'f', 2)
+        );
 }
 
 
