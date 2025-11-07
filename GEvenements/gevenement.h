@@ -27,12 +27,18 @@ private slots:
 
     void on_Modifier_clicked();
 
-    void on_Rechercher_clicked();
+    //void on_Rechercher_clicked();
 
     void on_Prediction_clicked();
     void on_tableView_clicked(const QModelIndex &index);
 
 
+
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_Recherche_Line_textChanged(const QString &text);
+
+    void on_Excel_clicked();
 
 private:
     Ui::GEvenement *ui;

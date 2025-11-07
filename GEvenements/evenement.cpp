@@ -159,7 +159,7 @@ ImpactResult Evenement::predireImpact(int id)
     if (type.contains("musique") || type.contains("manifestation") ||
         type.contains("jour") || type.contains("débat"))
         type_code = 1;
-    else if (type.contains("cinéma") || type.contains("vote"))
+    else if (type.contains("cinéma") || type.contains("vote") || type.contains("Restaurant") || type.contains("Culture") )
         type_code = 0;
     else
         type_code = (lieu.contains("parc") || lieu.contains("place") || lieu.contains("stade")) ? 1 : 0;
