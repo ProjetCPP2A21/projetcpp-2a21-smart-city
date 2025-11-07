@@ -1,5 +1,6 @@
 QT       += core gui
 QT       += core gui sql
+QT += core gui widgets sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -23,6 +24,12 @@ FORMS += \
     gevenement.ui
 
 
+
+# (optionnel) si Qt n’arrive toujours pas à inclure, ajoute une ligne includePath :
+INCLUDEPATH += $$PWD/Excel
+DEPENDPATH += $$PWD/Excel
+# Ajouter le dossier où se trouve QXlsx
+include(Excel/QXlsx/QXlsx/qxlsx.pri)
 INCLUDEPATH += "C:/Users/ASUS/Desktop/Smart City/GEvenements/ONNX_IA/include"
 LIBS += -L"C:/Users/ASUS/Desktop/Smart City/GEvenements/ONNX_IA/lib" -lonnxruntime
 

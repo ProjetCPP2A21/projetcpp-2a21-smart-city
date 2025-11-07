@@ -7,12 +7,20 @@
 #include <QTableView>
 #include <QSqlDatabase>
 #include <onnxruntime_cxx_api.h>
+#include "Excel/QXlsx/QXlsx/header/xlsxdocument.h"
+#include "Excel/QXlsx/QXlsx/header/xlsxformat.h"
+#include "Excel/QXlsx/QXlsx/header/xlsxcellrange.h"
+#include <QFileDialog>
+using namespace QXlsx;
+
 
 GEvenement::GEvenement(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::GEvenement)
 {
     ui->setupUi(this);
+    ui->ID->setValidator(new QIntValidator(1, 999999, this));
+    ui->NbrP->setValidator(new QIntValidator(1, 100000, this));
     ui->tableView->setModel(E.afficher());
 }
 
@@ -32,10 +40,10 @@ void GEvenement::on_Ajouterbutton_clicked()
         return;
     }
     int ID_Employe = 1;
-    QString Nom = ui->Nom->text();
-    QString Type = ui->Type->text();
-    QString Lieu = ui->Lieu->text();
-    QString Date = ui->dateEdit->date().toString("yyyy-MM-dd");
+    QString Nom = ui->Nom->text().trimmed();
+    QString Type = ui->Type->text().trimmed();
+    QString Lieu = ui->Lieu->text().trimmed();
+    QString Date = ui->dateEdit->date().toString("dd/MM/yyyy");
     QString Heure = ui->timeEdit->time().toString("HH:mm");
     int Nbr_Participants = ui->NbrP->text().toInt();
 
@@ -138,33 +146,29 @@ void GEvenement::on_Modifier_clicked()
 
 
 
-void GEvenement::on_Rechercher_clicked()
+void GEvenement::on_Recherche_Line_textChanged(const QString &text)
 {
-    QString textId = ui->Recherche_Line->text();
-
-    // Si le champ est vide → afficher tout le tableau
-    if (textId.isEmpty()) {
-        QMessageBox::warning(this, "Recherche", "Veuillez saisir un ID !");
-        ui->tableView->setModel(E.afficher()); // réutilise ta fonction afficher()
+    if (text.isEmpty()) {
+        ui->tableView->setModel(E.afficher());
         return;
     }
 
-    int id = textId.toInt();
-    if (id <= 0) {
-        QMessageBox::warning(this, "Recherche", "ID invalide !");
-        return;
-    }
+    QSqlQueryModel *model = new QSqlQueryModel();
 
-    QSqlQueryModel *model = E.rechercher(id);
+    QString requete = QString(
+                          "SELECT * FROM EVENEMENT WHERE TO_CHAR(ID_Evenement) LIKE '%1'"
+                          ).arg(text + "%");
 
-    if (!model) {
-        QMessageBox::warning(this, "Recherche", "Aucun événement trouvé avec cet ID.");
+    model->setQuery(requete);
+
+    if (model->lastError().isValid()) {
+        QMessageBox::warning(this, "Erreur SQL", model->lastError().text());
         return;
     }
 
     ui->tableView->setModel(model);
-    QMessageBox::information(this, "Recherche", "Résultat de la recherche affiché !");
 }
+
 
 
 void GEvenement::on_Prediction_clicked()
@@ -214,4 +218,80 @@ void GEvenement::on_tableView_clicked(const QModelIndex &index)
     // Remplir les champs du formulaire
     ui->dateEdit->setDate(date);
     ui->timeEdit->setTime(time);
+
+    QString nom = model->index(row, 2).data().toString();
+    QString type = model->index(row, 3).data().toString();
+    QString lieu = model->index(row, 6).data().toString();
+    int Nbr_Participants = model->index(row, 7).data().toInt();
+
+    ui->Nom->setText(nom);
+    ui->Type->setText(type);
+    ui->Lieu->setText(lieu);
+    ui->NbrP->setText(QString::number(Nbr_Participants));
 }
+
+void GEvenement::on_comboBox_currentIndexChanged(int index)
+{
+    QString requete;
+    QSqlQueryModel *model = new QSqlQueryModel();
+
+    if (index == 1) { // Tri par date (puis heure)
+        requete = "SELECT * FROM EVENEMENT ORDER BY Date_Evenement ASC, Heure ASC";
+    }
+    else if (index == 2) { // Tri par nombre de participants (décroissant)
+        requete = "SELECT * FROM EVENEMENT ORDER BY Nbr_Participants DESC";
+    }
+    else {
+        ui->tableView->setModel(E.afficher());
+        return;
+    }
+
+    model->setQuery(requete);
+
+    if (model->lastError().isValid()) {
+        QMessageBox::warning(this, "Erreur SQL", model->lastError().text());
+        return;
+    }
+
+    ui->tableView->setModel(model);
+}
+
+
+
+
+void GEvenement::on_Excel_clicked()
+{
+    QAbstractItemModel *model = ui->tableView->model();
+    if (!model) {
+        QMessageBox::warning(this, "Erreur", "Aucune donnée à exporter !");
+        return;
+    }
+
+    QString fileName = QFileDialog::getSaveFileName(
+        this, "Enregistrer sous", "Evenements.xlsx", "Fichiers Excel (*.xlsx)"
+        );
+    if (fileName.isEmpty())
+        return;
+
+    QXlsx::Document xlsx;
+
+    // Écrire les en-têtes
+    for (int col = 0; col < model->columnCount(); ++col) {
+        QString header = model->headerData(col, Qt::Horizontal).toString();
+        xlsx.write(1, col + 1, header);
+    }
+
+    // Écrire les lignes
+    for (int row = 0; row < model->rowCount(); ++row) {
+        for (int col = 0; col < model->columnCount(); ++col) {
+            QVariant value = model->data(model->index(row, col));
+            xlsx.write(row + 2, col + 1, value);
+        }
+    }
+
+    if (xlsx.saveAs(fileName))
+        QMessageBox::information(this, "Succès", "Exportation réussie !");
+    else
+        QMessageBox::warning(this, "Erreur", "Impossible d’enregistrer le fichier.");
+}
+
