@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_3">
      <widget class="QFrame" name="Ajouter">
@@ -991,7 +991,7 @@ QPushButton:pressed {
        <string>Recherche</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="Nom_3">
+     <widget class="QLineEdit" name="lineEditRecherche_2">
       <property name="geometry">
        <rect>
         <x>590</x>
@@ -1013,11 +1013,11 @@ QPushButton:pressed {
 }
 QLineEdit:focus {
     border: 1px solid #2D89EF;
-    background-color: #FFFFFF;
+    background-color: #000000;
 }</string>
       </property>
       <property name="text">
-       <string>Recherche/Trie d'une résidence</string>
+       <string/>
       </property>
      </widget>
     </widget>
@@ -1090,35 +1090,6 @@ QPushButton:pressed {
       </property>
       <property name="text">
        <string>trier</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="Nom_6">
-      <property name="geometry">
-       <rect>
-        <x>620</x>
-        <y>80</y>
-        <width>291</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;recherche un employée&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QLineEdit {
-	background-color: rgb(0, 0, 0);
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 8px;
-    font-size: 12px;
-}
-QLineEdit:focus {
-    border: 1px solid #2D89EF;
-    background-color: #FFFFFF;
-}</string>
-      </property>
-      <property name="text">
-       <string>rechercher un employée</string>
       </property>
      </widget>
      <widget class="QFrame" name="frame">
@@ -1617,8 +1588,8 @@ QPushButton:pressed {
      <widget class="QFrame" name="Ajouter_2">
       <property name="geometry">
        <rect>
-        <x>190</x>
-        <y>0</y>
+        <x>220</x>
+        <y>-10</y>
         <width>381</width>
         <height>791</height>
        </rect>
@@ -1761,7 +1732,7 @@ color: rgb(0, 0, 0);</string>
         <string>salaire</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Nom_4">
+      <widget class="QLineEdit" name="lineEditPrenom_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -1783,7 +1754,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Type_2">
+      <widget class="QLineEdit" name="lineEditID_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -1805,7 +1776,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_5">
+      <widget class="QLineEdit" name="lineEditTelephone_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -1827,7 +1798,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_6">
+      <widget class="QLineEdit" name="lineEditSalaire_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -1873,7 +1844,7 @@ color: rgb(0, 0, 0);</string>
         <string>sexe</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_10">
+      <widget class="QLineEdit" name="lineEditSexe_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -1895,7 +1866,7 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Nom_5">
+      <widget class="QLineEdit" name="lineEditNom_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -1944,41 +1915,6 @@ color: rgb(0, 0, 0);</string>
         <string>Nom</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_6">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>540</y>
-         <width>101</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>-1</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    background-color: #2D89EF;
-    color: white;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 14px;
-}
-QPushButton:hover {
-    background-color: #1E5BB8;
-}
-QPushButton:pressed {
-    background-color: #FFFFFF;
-}</string>
-       </property>
-       <property name="text">
-        <string>Ajouter</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_26">
        <property name="geometry">
         <rect>
@@ -2003,7 +1939,7 @@ color: rgb(0, 0, 0);</string>
         <string>responsabilite</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_11">
+      <widget class="QLineEdit" name="lineEditTache_2">
        <property name="geometry">
         <rect>
          <x>170</x>
@@ -2025,10 +1961,10 @@ QLineEdit:focus {
 }</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_20">
+      <widget class="QPushButton" name="Modifier">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>140</x>
          <y>540</y>
          <width>101</width>
          <height>51</height>
@@ -2060,6 +1996,76 @@ QPushButton:pressed {
         <string>modifier</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="Supprimer">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>540</y>
+         <width>101</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #2D89EF;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
+       </property>
+       <property name="text">
+        <string>suprimer</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ajouter">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>540</y>
+         <width>101</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #2D89EF;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
+       </property>
+       <property name="text">
+        <string>Ajouter</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QLabel" name="label_27">
       <property name="geometry">
@@ -2085,7 +2091,7 @@ color: rgb(0, 0, 0);</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;rechcerche d'un employée&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_22">
+     <widget class="QPushButton" name="rechercher">
       <property name="geometry">
        <rect>
         <x>930</x>
@@ -2155,7 +2161,7 @@ QPushButton:pressed {
        <string>statistique</string>
       </property>
      </widget>
-     <widget class="QTableWidget" name="tableWidget">
+     <widget class="QTableWidget" name="tableWidgetEmployes">
       <property name="geometry">
        <rect>
         <x>600</x>
@@ -2211,6 +2217,35 @@ QPushButton:pressed {
       </property>
       <property name="styleSheet">
        <string notr="true">border-image: url(:/statisque.png);</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEditRecherche">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>80</y>
+        <width>291</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;recherche un employée&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+	background-color: rgb(0, 0, 0);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 12px;
+}
+QLineEdit:focus {
+    border: 1px solid #2D89EF;
+    background-color: #000000;
+}</string>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>

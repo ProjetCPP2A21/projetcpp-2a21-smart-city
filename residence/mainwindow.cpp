@@ -1,7 +1,7 @@
-#include "residence.h"
-#include "ui_residence.h"
-#include "connection.h"
-#include "crud.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "crud_residence.h"
+#include "crud_employe.h"
 #include <QMessageBox>
 
 
@@ -10,8 +10,27 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    crudEmp = new CRUD_emp(db, ui, this);
+
+    db = QSqlDatabase::addDatabase("QODBC"); // or "QODBC", "QMYSQL", etc.
+    db.setDatabaseName("XE");
+    db.setUserName("system");//inserer nom de l'utilisateur
+    db.setPassword("22180595");
+    bool success = db.open();
+    if (!db.open()) {
+        qDebug() << "❌ ERREUR FATALE DE CONNEXION:";
+        qDebug() << "  Cause:" << db.lastError().text(); // <-- C'EST LE MESSAGE CLÉ
+        // (If the app is crashing, you may need to exit gracefully here)
+    } else {
+        qDebug() << "✅ Connexion à la base de données réussie.";
+    }
+
+
+
     QObject :: connect(ui->RH, SIGNAL(clicked()),this ,SLOT(page_4()));
       QObject :: connect(ui->residence_2, SIGNAL(clicked()),this ,SLOT(page_3()));
+
+
 }
 void MainWindow :: page_3()
 {
@@ -26,6 +45,7 @@ void MainWindow :: page_4()
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete crudEmp;
 }
 void MainWindow::afficherTable()
 {
@@ -139,5 +159,20 @@ void MainWindow::on_pushButton_delete_clicked()
     } else {
         QMessageBox::critical(this, "Erreur", "La suppression a échoué !");
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+void MainWindow::on_Ajouter_3_clicked()
+{
+
 }
 

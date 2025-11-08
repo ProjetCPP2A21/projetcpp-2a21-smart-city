@@ -9,20 +9,24 @@ CONFIG += c++17  console
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    crud.cpp \
-    residence.cpp \
+    crud_employe.cpp \
+    crud_residence.cpp \
         main.cpp \
     connection.cpp \
+    employer.cpp \
+    mainwindow.cpp
 
 
 HEADERS += \
-    crud.h \
-    residence.h \
+    crud_employe.h \
+    crud_residence.h \
     connection.h \
+    employer.h \
+    mainwindow.h
 
 
 FORMS += \
-    residence.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

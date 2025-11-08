@@ -1,5 +1,5 @@
-#ifndef CRUD_H
-#define CRUD_H
+#ifndef CRUD_RESIDENCE_H
+#define CRUD_RESIDENCE_H
 
 #include <QString>
 #include <QSqlQuery>
@@ -18,4 +18,4 @@ public:
     QSqlQueryModel* afficher();
 };
 
-#endif // CRUD_H
+#endif // CRUD_RESIDENCE_H
