@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "connection.h"
 #include "CrudResidence.h"
+#include "gemployer.h"
 #include <QMessageBox>
 #include "ui_mainwindow.h"
 
@@ -9,7 +10,7 @@ void MainWindow::afficherTableResidence()
 {
     // récupère DATE_CONST comme number
     QSqlQuery query("SELECT ID_RESIDENCE, NOM, ADRESSE, TYPE_RESIDENCE, "
-                    "NBR_UNITE, NBR_HABITANTS, ETAT, DATE_CONST FROM RESIDENCE");
+                    "NBR_UNITE, NBR_HABITANTS, ETAT, DATE_CREATION FROM RESIDENCE");
 
     ui->affichage->clear();
     ui->affichage->setRowCount(0);
@@ -57,6 +58,7 @@ void MainWindow::on_Ajouter_Residence_clicked()
     if (crud.ajouter(id, nom, adresse, type, nbrUnite, nbrHabitants, etat, dateCreation)) {
         QMessageBox::information(this, "Succès", "Résidence ajoutée avec succès !");
         afficherTableResidence();
+        clearChamps();
     } else {
         QMessageBox::critical(this, "Erreur", "L’ajout a échoué !");
     }
@@ -77,6 +79,7 @@ void MainWindow::on_Modifier_Residence_clicked()
     if (crud.modifier(id, nom, adresse, type, nbrUnite, nbrHabitants, etat, dateCreation)) {
         QMessageBox::information(this, "Succès","Résidence modifiée !");
         afficherTableResidence();
+        clearChamps();
 
     } else {
         QMessageBox::critical(this, "Erreur", "La modification a échoué !");
@@ -91,8 +94,10 @@ void MainWindow::on_Supprimer_Residence_clicked()
     if (crud.supprimer(id)) {
         QMessageBox::information(this, "Succès","Résidence supprimer !");
         afficherTableResidence();
+        clearChamps();
 
     } else {
         QMessageBox::critical(this, "Erreur", "La suppression a échoué !");
     }
 }
+

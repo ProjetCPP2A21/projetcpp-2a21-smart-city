@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="page_3">
      <widget class="QFrame" name="Ajouter">
@@ -860,7 +860,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
+        <pixmap>:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1638,7 +1638,7 @@ QPushButton:pressed {
          <enum>Qt::TextFormat::MarkdownText</enum>
         </property>
         <property name="pixmap">
-         <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
+         <pixmap>:/cropped_circle_image.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -2553,7 +2553,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
+        <pixmap>:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -3503,7 +3503,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
+        <pixmap>:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -5446,7 +5446,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
+        <pixmap>:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -6166,14 +6166,12 @@ background-color : #e1e5ff;</string>
      <x>0</x>
      <y>0</y>
      <width>1367</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="img.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

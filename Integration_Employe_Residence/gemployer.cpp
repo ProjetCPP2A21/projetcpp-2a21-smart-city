@@ -12,7 +12,7 @@
 
 // Définition de la requête SELECT pour garantir l'ordre des colonnes
 // L'ordre doit correspondre à vos en-têtes : {"ID", "nom", "prenom", "telephone", "salaire", "Sexe", "Tâche"}
-const QString SELECT_QUERY = "SELECT id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite FROM EMPLOYE";
+const QString SELECT_QUERY = "SELECT ID_EMPLOYE, NOM, PRENOM, NUMTEL_EMPLOYE, SALAIRE, SEXE_EMPLOYE, RESPONSABILITE FROM EMPLOYER";
 // ==================== TABLE ====================
 void MainWindow::afficherEmployes() // Modifié
 {
@@ -146,7 +146,7 @@ void MainWindow::on_Modifier_Employe_clicked()
     QString tache = ui->Responsabilite->text();
 
     QSqlQuery query;
-    query.prepare("UPDATE EMPLOYE SET nom=?, prenom=?, sexe=?, responsabilite=?, salaire=?, num_tel=? WHERE id_employe=?");
+    query.prepare("UPDATE EMPLOYER SET NOM=?, PRENOM=?, SEXE_EMPLOYE=?, RESPONSABILITE=?, SALAIRE=?, NUMTEL_EMPLOYE=? WHERE ID_EMPLOYE=?");
     query.addBindValue(nom);
     query.addBindValue(prenom);
     query.addBindValue(sexe);
@@ -174,7 +174,7 @@ void MainWindow::on_Supprimer_Employe_clicked()
     }
 
     QSqlQuery query;
-    query.prepare("DELETE FROM EMPLOYE WHERE id_employe=?");
+    query.prepare("DELETE FROM EMPLOYER WHERE ID_EMPLOYE=?");
     query.addBindValue(id);
 
     if (query.exec()) {
@@ -237,12 +237,18 @@ void MainWindow::on_Rechercher_Employe_2_clicked()
     if (critere.isEmpty()) {
         query.prepare(SELECT_QUERY);
     } else {
+        /*query.prepare(QString("%1 WHERE "
+                              "CAST(ID_EMPLOYE AS VARCHAR(10)) LIKE :critere OR "
+                              "LOWER(NOM) LIKE LOWER(:critere) OR "
+                              "LOWER(PRENOM) LIKE LOWER(:critere) OR "
+                              "LOWER(SEXE_EMPLOYE) LIKE LOWER(:critere) OR "
+                              "LOWER(RESPONSABILITE) LIKE LOWER(:critere)").arg(SELECT_QUERY));*/
         query.prepare(QString("%1 WHERE "
-                              "CAST(id_employe AS VARCHAR(10)) LIKE :critere OR "
-                              "LOWER(nom) LIKE LOWER(:critere) OR "
-                              "LOWER(prenom) LIKE LOWER(:critere) OR "
-                              "LOWER(sexe) LIKE LOWER(:critere) OR "
-                              "LOWER(responsabilite) LIKE LOWER(:critere)").arg(SELECT_QUERY));
+                              "TO_CHAR(ID_EMPLOYE) LIKE :critere OR "
+                              "LOWER(NOM) LIKE LOWER(:critere) OR "
+                              "LOWER(PRENOM) LIKE LOWER(:critere) OR "
+                              "LOWER(SEXE_EMPLOYE) LIKE LOWER(:critere) OR "
+                              "LOWER(RESPONSABILITE) LIKE LOWER(:critere)"));
 
         query.bindValue(":critere", "%" + critere + "%");
     }

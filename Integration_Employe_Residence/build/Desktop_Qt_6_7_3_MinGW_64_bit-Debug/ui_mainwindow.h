@@ -45,21 +45,21 @@ public:
     QLabel *label_13;
     QLabel *label_14;
     QLabel *label_15;
-    QLineEdit *Nom;
-    QLineEdit *Type;
-    QLineEdit *lineEdit_3;
-    QLineEdit *lineEdit_4;
+    QLineEdit *Id_Residence;
+    QLineEdit *Adresse_Residence;
+    QLineEdit *Type_Residence;
+    QLineEdit *Nbr_Habitants;
     QLabel *label_16;
-    QLineEdit *lineEdit_7;
-    QLineEdit *Nom_2;
+    QLineEdit *Nbr_Unites;
+    QLineEdit *Nom_Residence;
     QLabel *label_17;
-    QPushButton *pushButton_3;
-    QPushButton *pushButton_8;
-    QPushButton *pushButton_4;
-    QLineEdit *lineEdit_8;
+    QPushButton *Ajouter_Residence;
+    QPushButton *Modifier_Residence;
+    QPushButton *Supprimer_Residence;
+    QLineEdit *Etat;
     QLabel *label_18;
     QLabel *label_19;
-    QLineEdit *lineEdit_9;
+    QLineEdit *Date_Creation;
     QPushButton *ajouter_3;
     QPushButton *supprimer_2;
     QFrame *frame_2;
@@ -78,7 +78,7 @@ public:
     QWidget *page_4;
     QPushButton *pushButton_23;
     QPushButton *pushButton_21;
-    QLineEdit *Nom_6;
+    QLineEdit *Rechercher_Employe;
     QFrame *frame;
     QLabel *label_20;
     QPushButton *pushButton;
@@ -101,23 +101,23 @@ public:
     QLabel *label_7;
     QLabel *label_8;
     QLabel *label_9;
-    QLineEdit *Nom_4;
-    QLineEdit *Type_2;
-    QLineEdit *lineEdit_5;
-    QLineEdit *lineEdit_6;
+    QLineEdit *Prenom_Employe;
+    QLineEdit *ID_Employe;
+    QLineEdit *Telephone_Employe;
+    QLineEdit *Salaire;
     QLabel *label_25;
-    QLineEdit *lineEdit_10;
-    QLineEdit *Nom_5;
+    QLineEdit *Sexe_Employe;
+    QLineEdit *Nom_Employe;
     QLabel *label_11;
-    QPushButton *pushButton_6;
+    QPushButton *Ajouter_Employe;
     QLabel *label_26;
-    QLineEdit *lineEdit_11;
-    QPushButton *pushButton_20;
-    QPushButton *pushButton_11;
+    QLineEdit *Responsabilite;
+    QPushButton *Modifier_Employe;
+    QPushButton *Supprimer_Employe;
     QLabel *label_27;
-    QPushButton *pushButton_22;
+    QPushButton *Rechercher_Employe_2;
     QPushButton *pushButton_19;
-    QTableWidget *tableWidget;
+    QTableWidget *tableWidgetEmployes;
     QGraphicsView *graphicsView;
     QLabel *label_39;
     QWidget *page_6;
@@ -224,14 +224,14 @@ public:
     QTextBrowser *textBrowser_8;
     QLabel *label_67;
     QPushButton *retour;
-    QWidget *page_5;
+    QWidget *Connection;
     QLabel *label;
     QTextBrowser *textBrowser;
     QLabel *label_62;
-    QLineEdit *Nom_8;
+    QLineEdit *Username;
     QTextBrowser *textBrowser_2;
     QTextBrowser *textBrowser_3;
-    QLineEdit *Nom_11;
+    QLineEdit *Motdepasse;
     QPushButton *quitter;
     QPushButton *connecter;
     QPushButton *mdpo_2;
@@ -339,10 +339,10 @@ public:
         label_15->setFont(font1);
         label_15->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        Nom = new QLineEdit(Ajouter);
-        Nom->setObjectName("Nom");
-        Nom->setGeometry(QRect(170, 120, 141, 41));
-        Nom->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Id_Residence = new QLineEdit(Ajouter);
+        Id_Residence->setObjectName("Id_Residence");
+        Id_Residence->setGeometry(QRect(170, 120, 141, 41));
+        Id_Residence->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -352,10 +352,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Type = new QLineEdit(Ajouter);
-        Type->setObjectName("Type");
-        Type->setGeometry(QRect(170, 170, 141, 41));
-        Type->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Adresse_Residence = new QLineEdit(Ajouter);
+        Adresse_Residence->setObjectName("Adresse_Residence");
+        Adresse_Residence->setGeometry(QRect(170, 170, 141, 41));
+        Adresse_Residence->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -365,10 +365,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_3 = new QLineEdit(Ajouter);
-        lineEdit_3->setObjectName("lineEdit_3");
-        lineEdit_3->setGeometry(QRect(170, 220, 141, 41));
-        lineEdit_3->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Type_Residence = new QLineEdit(Ajouter);
+        Type_Residence->setObjectName("Type_Residence");
+        Type_Residence->setGeometry(QRect(170, 220, 141, 41));
+        Type_Residence->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -378,10 +378,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_4 = new QLineEdit(Ajouter);
-        lineEdit_4->setObjectName("lineEdit_4");
-        lineEdit_4->setGeometry(QRect(170, 270, 141, 41));
-        lineEdit_4->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Nbr_Habitants = new QLineEdit(Ajouter);
+        Nbr_Habitants->setObjectName("Nbr_Habitants");
+        Nbr_Habitants->setGeometry(QRect(170, 270, 141, 41));
+        Nbr_Habitants->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -397,10 +397,10 @@ public:
         label_16->setFont(font1);
         label_16->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        lineEdit_7 = new QLineEdit(Ajouter);
-        lineEdit_7->setObjectName("lineEdit_7");
-        lineEdit_7->setGeometry(QRect(170, 320, 141, 41));
-        lineEdit_7->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Nbr_Unites = new QLineEdit(Ajouter);
+        Nbr_Unites->setObjectName("Nbr_Unites");
+        Nbr_Unites->setGeometry(QRect(170, 320, 141, 41));
+        Nbr_Unites->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -410,10 +410,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Nom_2 = new QLineEdit(Ajouter);
-        Nom_2->setObjectName("Nom_2");
-        Nom_2->setGeometry(QRect(170, 70, 141, 41));
-        Nom_2->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Nom_Residence = new QLineEdit(Ajouter);
+        Nom_Residence->setObjectName("Nom_Residence");
+        Nom_Residence->setGeometry(QRect(170, 70, 141, 41));
+        Nom_Residence->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -433,14 +433,14 @@ public:
         label_17->setFont(font2);
         label_17->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        pushButton_3 = new QPushButton(Ajouter);
-        pushButton_3->setObjectName("pushButton_3");
-        pushButton_3->setGeometry(QRect(120, 530, 101, 41));
+        Ajouter_Residence = new QPushButton(Ajouter);
+        Ajouter_Residence->setObjectName("Ajouter_Residence");
+        Ajouter_Residence->setGeometry(QRect(120, 530, 101, 41));
         QFont font3;
         font3.setFamilies({QString::fromUtf8("Bahnschrift")});
         font3.setBold(true);
-        pushButton_3->setFont(font3);
-        pushButton_3->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Ajouter_Residence->setFont(font3);
+        Ajouter_Residence->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -453,11 +453,11 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        pushButton_8 = new QPushButton(Ajouter);
-        pushButton_8->setObjectName("pushButton_8");
-        pushButton_8->setGeometry(QRect(10, 530, 101, 41));
-        pushButton_8->setFont(font3);
-        pushButton_8->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Modifier_Residence = new QPushButton(Ajouter);
+        Modifier_Residence->setObjectName("Modifier_Residence");
+        Modifier_Residence->setGeometry(QRect(10, 530, 101, 41));
+        Modifier_Residence->setFont(font3);
+        Modifier_Residence->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -470,11 +470,11 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        pushButton_4 = new QPushButton(Ajouter);
-        pushButton_4->setObjectName("pushButton_4");
-        pushButton_4->setGeometry(QRect(230, 530, 101, 41));
-        pushButton_4->setFont(font3);
-        pushButton_4->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Supprimer_Residence = new QPushButton(Ajouter);
+        Supprimer_Residence->setObjectName("Supprimer_Residence");
+        Supprimer_Residence->setGeometry(QRect(230, 530, 101, 41));
+        Supprimer_Residence->setFont(font3);
+        Supprimer_Residence->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -487,10 +487,10 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_8 = new QLineEdit(Ajouter);
-        lineEdit_8->setObjectName("lineEdit_8");
-        lineEdit_8->setGeometry(QRect(170, 370, 141, 41));
-        lineEdit_8->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Etat = new QLineEdit(Ajouter);
+        Etat->setObjectName("Etat");
+        Etat->setGeometry(QRect(170, 370, 141, 41));
+        Etat->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -512,10 +512,10 @@ public:
         label_19->setFont(font1);
         label_19->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        lineEdit_9 = new QLineEdit(Ajouter);
-        lineEdit_9->setObjectName("lineEdit_9");
-        lineEdit_9->setGeometry(QRect(170, 420, 141, 41));
-        lineEdit_9->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Date_Creation = new QLineEdit(Ajouter);
+        Date_Creation->setObjectName("Date_Creation");
+        Date_Creation->setGeometry(QRect(170, 420, 141, 41));
+        Date_Creation->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -793,10 +793,10 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Nom_6 = new QLineEdit(page_4);
-        Nom_6->setObjectName("Nom_6");
-        Nom_6->setGeometry(QRect(620, 80, 291, 41));
-        Nom_6->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Rechercher_Employe = new QLineEdit(page_4);
+        Rechercher_Employe->setObjectName("Rechercher_Employe");
+        Rechercher_Employe->setGeometry(QRect(620, 80, 291, 41));
+        Rechercher_Employe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "	background-color: rgb(0, 0, 0);\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
@@ -1065,10 +1065,10 @@ public:
         label_9->setFont(font1);
         label_9->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        Nom_4 = new QLineEdit(Ajouter_2);
-        Nom_4->setObjectName("Nom_4");
-        Nom_4->setGeometry(QRect(170, 160, 141, 41));
-        Nom_4->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Prenom_Employe = new QLineEdit(Ajouter_2);
+        Prenom_Employe->setObjectName("Prenom_Employe");
+        Prenom_Employe->setGeometry(QRect(170, 160, 141, 41));
+        Prenom_Employe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1078,10 +1078,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Type_2 = new QLineEdit(Ajouter_2);
-        Type_2->setObjectName("Type_2");
-        Type_2->setGeometry(QRect(170, 220, 141, 41));
-        Type_2->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        ID_Employe = new QLineEdit(Ajouter_2);
+        ID_Employe->setObjectName("ID_Employe");
+        ID_Employe->setGeometry(QRect(170, 220, 141, 41));
+        ID_Employe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1091,10 +1091,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_5 = new QLineEdit(Ajouter_2);
-        lineEdit_5->setObjectName("lineEdit_5");
-        lineEdit_5->setGeometry(QRect(170, 280, 141, 41));
-        lineEdit_5->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Telephone_Employe = new QLineEdit(Ajouter_2);
+        Telephone_Employe->setObjectName("Telephone_Employe");
+        Telephone_Employe->setGeometry(QRect(170, 280, 141, 41));
+        Telephone_Employe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1104,10 +1104,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        lineEdit_6 = new QLineEdit(Ajouter_2);
-        lineEdit_6->setObjectName("lineEdit_6");
-        lineEdit_6->setGeometry(QRect(170, 340, 141, 41));
-        lineEdit_6->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Salaire = new QLineEdit(Ajouter_2);
+        Salaire->setObjectName("Salaire");
+        Salaire->setGeometry(QRect(170, 340, 141, 41));
+        Salaire->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1123,10 +1123,10 @@ public:
         label_25->setFont(font1);
         label_25->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        lineEdit_10 = new QLineEdit(Ajouter_2);
-        lineEdit_10->setObjectName("lineEdit_10");
-        lineEdit_10->setGeometry(QRect(170, 410, 141, 41));
-        lineEdit_10->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Sexe_Employe = new QLineEdit(Ajouter_2);
+        Sexe_Employe->setObjectName("Sexe_Employe");
+        Sexe_Employe->setGeometry(QRect(170, 410, 141, 41));
+        Sexe_Employe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1136,10 +1136,10 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        Nom_5 = new QLineEdit(Ajouter_2);
-        Nom_5->setObjectName("Nom_5");
-        Nom_5->setGeometry(QRect(170, 100, 141, 41));
-        Nom_5->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Nom_Employe = new QLineEdit(Ajouter_2);
+        Nom_Employe->setObjectName("Nom_Employe");
+        Nom_Employe->setGeometry(QRect(170, 100, 141, 41));
+        Nom_Employe->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1155,11 +1155,11 @@ public:
         label_11->setFont(font2);
         label_11->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        pushButton_6 = new QPushButton(Ajouter_2);
-        pushButton_6->setObjectName("pushButton_6");
-        pushButton_6->setGeometry(QRect(30, 540, 101, 51));
-        pushButton_6->setFont(font3);
-        pushButton_6->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Ajouter_Employe = new QPushButton(Ajouter_2);
+        Ajouter_Employe->setObjectName("Ajouter_Employe");
+        Ajouter_Employe->setGeometry(QRect(30, 540, 101, 51));
+        Ajouter_Employe->setFont(font3);
+        Ajouter_Employe->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -1178,10 +1178,10 @@ public:
         label_26->setFont(font1);
         label_26->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        lineEdit_11 = new QLineEdit(Ajouter_2);
-        lineEdit_11->setObjectName("lineEdit_11");
-        lineEdit_11->setGeometry(QRect(170, 470, 141, 41));
-        lineEdit_11->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Responsabilite = new QLineEdit(Ajouter_2);
+        Responsabilite->setObjectName("Responsabilite");
+        Responsabilite->setGeometry(QRect(170, 470, 141, 41));
+        Responsabilite->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -1191,11 +1191,11 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        pushButton_20 = new QPushButton(Ajouter_2);
-        pushButton_20->setObjectName("pushButton_20");
-        pushButton_20->setGeometry(QRect(150, 540, 101, 51));
-        pushButton_20->setFont(font3);
-        pushButton_20->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Modifier_Employe = new QPushButton(Ajouter_2);
+        Modifier_Employe->setObjectName("Modifier_Employe");
+        Modifier_Employe->setGeometry(QRect(150, 540, 101, 51));
+        Modifier_Employe->setFont(font3);
+        Modifier_Employe->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -1208,11 +1208,11 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        pushButton_11 = new QPushButton(Ajouter_2);
-        pushButton_11->setObjectName("pushButton_11");
-        pushButton_11->setGeometry(QRect(270, 540, 101, 51));
-        pushButton_11->setFont(font3);
-        pushButton_11->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Supprimer_Employe = new QPushButton(Ajouter_2);
+        Supprimer_Employe->setObjectName("Supprimer_Employe");
+        Supprimer_Employe->setGeometry(QRect(270, 540, 101, 51));
+        Supprimer_Employe->setFont(font3);
+        Supprimer_Employe->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -1231,11 +1231,11 @@ public:
         label_27->setFont(font);
         label_27->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
-        pushButton_22 = new QPushButton(page_4);
-        pushButton_22->setObjectName("pushButton_22");
-        pushButton_22->setGeometry(QRect(930, 70, 101, 51));
-        pushButton_22->setFont(font3);
-        pushButton_22->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        Rechercher_Employe_2 = new QPushButton(page_4);
+        Rechercher_Employe_2->setObjectName("Rechercher_Employe_2");
+        Rechercher_Employe_2->setGeometry(QRect(930, 70, 101, 51));
+        Rechercher_Employe_2->setFont(font3);
+        Rechercher_Employe_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
 "    border-radius: 8px;\n"
@@ -1265,25 +1265,25 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        tableWidget = new QTableWidget(page_4);
-        if (tableWidget->columnCount() < 7)
-            tableWidget->setColumnCount(7);
+        tableWidgetEmployes = new QTableWidget(page_4);
+        if (tableWidgetEmployes->columnCount() < 7)
+            tableWidgetEmployes->setColumnCount(7);
         QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem8);
+        tableWidgetEmployes->setHorizontalHeaderItem(0, __qtablewidgetitem8);
         QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem9);
+        tableWidgetEmployes->setHorizontalHeaderItem(1, __qtablewidgetitem9);
         QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(2, __qtablewidgetitem10);
+        tableWidgetEmployes->setHorizontalHeaderItem(2, __qtablewidgetitem10);
         QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(3, __qtablewidgetitem11);
+        tableWidgetEmployes->setHorizontalHeaderItem(3, __qtablewidgetitem11);
         QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(4, __qtablewidgetitem12);
+        tableWidgetEmployes->setHorizontalHeaderItem(4, __qtablewidgetitem12);
         QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(5, __qtablewidgetitem13);
+        tableWidgetEmployes->setHorizontalHeaderItem(5, __qtablewidgetitem13);
         QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(6, __qtablewidgetitem14);
-        tableWidget->setObjectName("tableWidget");
-        tableWidget->setGeometry(QRect(600, 140, 711, 241));
+        tableWidgetEmployes->setHorizontalHeaderItem(6, __qtablewidgetitem14);
+        tableWidgetEmployes->setObjectName("tableWidgetEmployes");
+        tableWidgetEmployes->setGeometry(QRect(600, 140, 711, 241));
         graphicsView = new QGraphicsView(page_4);
         graphicsView->setObjectName("graphicsView");
         graphicsView->setGeometry(QRect(630, 390, 521, 321));
@@ -1296,13 +1296,13 @@ public:
         label_39->raise();
         pushButton_23->raise();
         pushButton_21->raise();
-        Nom_6->raise();
+        Rechercher_Employe->raise();
         frame->raise();
         Ajouter_2->raise();
         label_27->raise();
-        pushButton_22->raise();
+        Rechercher_Employe_2->raise();
         pushButton_19->raise();
-        tableWidget->raise();
+        tableWidgetEmployes->raise();
         graphicsView->raise();
         page_6 = new QWidget();
         page_6->setObjectName("page_6");
@@ -2462,26 +2462,26 @@ public:
 "    background-color: #FFFFFF;\n"
 "}"));
         stackedWidget->addWidget(page_7);
-        page_5 = new QWidget();
-        page_5->setObjectName("page_5");
-        label = new QLabel(page_5);
+        Connection = new QWidget();
+        Connection->setObjectName("Connection");
+        label = new QLabel(Connection);
         label->setObjectName("label");
         label->setGeometry(QRect(-20, 20, 1381, 781));
         label->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
 "background-color: rgb(44, 62, 80);"));
-        textBrowser = new QTextBrowser(page_5);
+        textBrowser = new QTextBrowser(Connection);
         textBrowser->setObjectName("textBrowser");
         textBrowser->setGeometry(QRect(300, 50, 711, 111));
         textBrowser->setStyleSheet(QString::fromUtf8("background-color: rgb(44, 62, 80);"));
         textBrowser->setFrameShape(QFrame::Shape::NoFrame);
-        label_62 = new QLabel(page_5);
+        label_62 = new QLabel(Connection);
         label_62->setObjectName("label_62");
         label_62->setGeometry(QRect(580, 180, 141, 141));
         label_62->setStyleSheet(QString::fromUtf8("border-image: url(:/cropped_circle_image.png);"));
-        Nom_8 = new QLineEdit(page_5);
-        Nom_8->setObjectName("Nom_8");
-        Nom_8->setGeometry(QRect(510, 400, 341, 41));
-        Nom_8->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Username = new QLineEdit(Connection);
+        Username->setObjectName("Username");
+        Username->setGeometry(QRect(510, 400, 341, 41));
+        Username->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -2491,20 +2491,20 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        textBrowser_2 = new QTextBrowser(page_5);
+        textBrowser_2 = new QTextBrowser(Connection);
         textBrowser_2->setObjectName("textBrowser_2");
         textBrowser_2->setGeometry(QRect(250, 390, 301, 61));
         textBrowser_2->setStyleSheet(QString::fromUtf8("background-color: rgb(44, 62, 80);"));
         textBrowser_2->setFrameShape(QFrame::Shape::NoFrame);
-        textBrowser_3 = new QTextBrowser(page_5);
+        textBrowser_3 = new QTextBrowser(Connection);
         textBrowser_3->setObjectName("textBrowser_3");
         textBrowser_3->setGeometry(QRect(220, 450, 321, 61));
         textBrowser_3->setStyleSheet(QString::fromUtf8("background-color: rgb(44, 62, 80);"));
         textBrowser_3->setFrameShape(QFrame::Shape::NoFrame);
-        Nom_11 = new QLineEdit(page_5);
-        Nom_11->setObjectName("Nom_11");
-        Nom_11->setGeometry(QRect(510, 460, 341, 41));
-        Nom_11->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+        Motdepasse = new QLineEdit(Connection);
+        Motdepasse->setObjectName("Motdepasse");
+        Motdepasse->setGeometry(QRect(510, 460, 341, 41));
+        Motdepasse->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
 "    border: 1px solid #ccc;\n"
 "    border-radius: 6px;\n"
 "    padding: 8px;\n"
@@ -2514,7 +2514,7 @@ public:
 "    border: 1px solid #2D89EF;\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        quitter = new QPushButton(page_5);
+        quitter = new QPushButton(Connection);
         quitter->setObjectName("quitter");
         quitter->setGeometry(QRect(690, 530, 101, 51));
         quitter->setFont(font3);
@@ -2531,7 +2531,7 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        connecter = new QPushButton(page_5);
+        connecter = new QPushButton(Connection);
         connecter->setObjectName("connecter");
         connecter->setGeometry(QRect(580, 530, 101, 51));
         connecter->setFont(font3);
@@ -2548,7 +2548,7 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        mdpo_2 = new QPushButton(page_5);
+        mdpo_2 = new QPushButton(Connection);
         mdpo_2->setObjectName("mdpo_2");
         mdpo_2->setGeometry(QRect(880, 450, 241, 51));
         mdpo_2->setFont(font3);
@@ -2565,14 +2565,14 @@ public:
 "QPushButton:pressed {\n"
 "    background-color: #FFFFFF;\n"
 "}"));
-        stackedWidget->addWidget(page_5);
+        stackedWidget->addWidget(Connection);
         label->raise();
         textBrowser_2->raise();
         textBrowser->raise();
         label_62->raise();
-        Nom_8->raise();
+        Username->raise();
         textBrowser_3->raise();
-        Nom_11->raise();
+        Motdepasse->raise();
         quitter->raise();
         connecter->raise();
         mdpo_2->raise();
@@ -2984,7 +2984,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(3);
+        stackedWidget->setCurrentIndex(5);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -2999,11 +2999,11 @@ public:
         label_14->setText(QCoreApplication::translate("MainWindow", "Adresse", nullptr));
         label_15->setText(QCoreApplication::translate("MainWindow", "Nbr Habitants", nullptr));
         label_16->setText(QCoreApplication::translate("MainWindow", "Nbr Unit\303\251s", nullptr));
-        Nom_2->setText(QString());
+        Nom_Residence->setText(QString());
         label_17->setText(QCoreApplication::translate("MainWindow", "ID", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
-        pushButton_8->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "Supprimer", nullptr));
+        Ajouter_Residence->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
+        Modifier_Residence->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
+        Supprimer_Residence->setText(QCoreApplication::translate("MainWindow", "Supprimer", nullptr));
         label_18->setText(QCoreApplication::translate("MainWindow", "Etat", nullptr));
         label_19->setText(QCoreApplication::translate("MainWindow", "Date de constiction", nullptr));
         ajouter_3->setText(QCoreApplication::translate("MainWindow", "Trie", nullptr));
@@ -3041,9 +3041,9 @@ public:
         pushButton_23->setText(QCoreApplication::translate("MainWindow", "export", nullptr));
         pushButton_21->setText(QCoreApplication::translate("MainWindow", "trier", nullptr));
 #if QT_CONFIG(tooltip)
-        Nom_6->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\">recherche un employ\303\251e</p></body></html>", nullptr));
+        Rechercher_Employe->setToolTip(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\">recherche un employ\303\251e</p></body></html>", nullptr));
 #endif // QT_CONFIG(tooltip)
-        Nom_6->setText(QCoreApplication::translate("MainWindow", "rechercher un employ\303\251e", nullptr));
+        Rechercher_Employe->setText(QCoreApplication::translate("MainWindow", "rechercher un employ\303\251e", nullptr));
         label_20->setText(QCoreApplication::translate("MainWindow", "NEOCITY", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "RH", nullptr));
         pushButton_5->setText(QCoreApplication::translate("MainWindow", "R\303\251sidence", nullptr));
@@ -3064,28 +3064,28 @@ public:
         label_8->setText(QCoreApplication::translate("MainWindow", "telephone", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "salaire", nullptr));
         label_25->setText(QCoreApplication::translate("MainWindow", "sexe", nullptr));
-        Nom_5->setText(QString());
+        Nom_Employe->setText(QString());
         label_11->setText(QCoreApplication::translate("MainWindow", "Nom", nullptr));
-        pushButton_6->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
+        Ajouter_Employe->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
         label_26->setText(QCoreApplication::translate("MainWindow", "responsabilite", nullptr));
-        pushButton_20->setText(QCoreApplication::translate("MainWindow", "modifier", nullptr));
-        pushButton_11->setText(QCoreApplication::translate("MainWindow", "suprimer", nullptr));
+        Modifier_Employe->setText(QCoreApplication::translate("MainWindow", "modifier", nullptr));
+        Supprimer_Employe->setText(QCoreApplication::translate("MainWindow", "suprimer", nullptr));
         label_27->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p align=\"center\">rechcerche d'un employ\303\251e</p><p align=\"center\"><br/></p></body></html>", nullptr));
-        pushButton_22->setText(QCoreApplication::translate("MainWindow", "rechercher", nullptr));
+        Rechercher_Employe_2->setText(QCoreApplication::translate("MainWindow", "rechercher", nullptr));
         pushButton_19->setText(QCoreApplication::translate("MainWindow", "statistique", nullptr));
-        QTableWidgetItem *___qtablewidgetitem8 = tableWidget->horizontalHeaderItem(0);
+        QTableWidgetItem *___qtablewidgetitem8 = tableWidgetEmployes->horizontalHeaderItem(0);
         ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "nom", nullptr));
-        QTableWidgetItem *___qtablewidgetitem9 = tableWidget->horizontalHeaderItem(1);
+        QTableWidgetItem *___qtablewidgetitem9 = tableWidgetEmployes->horizontalHeaderItem(1);
         ___qtablewidgetitem9->setText(QCoreApplication::translate("MainWindow", "prenom", nullptr));
-        QTableWidgetItem *___qtablewidgetitem10 = tableWidget->horizontalHeaderItem(2);
+        QTableWidgetItem *___qtablewidgetitem10 = tableWidgetEmployes->horizontalHeaderItem(2);
         ___qtablewidgetitem10->setText(QCoreApplication::translate("MainWindow", "Id", nullptr));
-        QTableWidgetItem *___qtablewidgetitem11 = tableWidget->horizontalHeaderItem(3);
+        QTableWidgetItem *___qtablewidgetitem11 = tableWidgetEmployes->horizontalHeaderItem(3);
         ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "telephone", nullptr));
-        QTableWidgetItem *___qtablewidgetitem12 = tableWidget->horizontalHeaderItem(4);
+        QTableWidgetItem *___qtablewidgetitem12 = tableWidgetEmployes->horizontalHeaderItem(4);
         ___qtablewidgetitem12->setText(QCoreApplication::translate("MainWindow", "salaire", nullptr));
-        QTableWidgetItem *___qtablewidgetitem13 = tableWidget->horizontalHeaderItem(5);
+        QTableWidgetItem *___qtablewidgetitem13 = tableWidgetEmployes->horizontalHeaderItem(5);
         ___qtablewidgetitem13->setText(QCoreApplication::translate("MainWindow", "sexe", nullptr));
-        QTableWidgetItem *___qtablewidgetitem14 = tableWidget->horizontalHeaderItem(6);
+        QTableWidgetItem *___qtablewidgetitem14 = tableWidgetEmployes->horizontalHeaderItem(6);
         ___qtablewidgetitem14->setText(QCoreApplication::translate("MainWindow", "responsabilite", nullptr));
         label_39->setText(QString());
         label_64->setText(QCoreApplication::translate("MainWindow", "NEOCITY", nullptr));
@@ -3253,7 +3253,7 @@ public:
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:36pt; font-weight:700; color:#3668f2;\">Bienvenu \303\240 neocity</span></p></body></html>", nullptr));
         label_62->setText(QString());
-        Nom_8->setText(QString());
+        Username->setText(QString());
         textBrowser_2->setHtml(QCoreApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -3270,7 +3270,7 @@ public:
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt; font-weight:700; color:#3668f2;\">Mot de pass</span></p></body></html>", nullptr));
-        Nom_11->setText(QString());
+        Motdepasse->setText(QString());
         quitter->setText(QCoreApplication::translate("MainWindow", "quitter", nullptr));
         connecter->setText(QCoreApplication::translate("MainWindow", "connecter", nullptr));
         mdpo_2->setText(QCoreApplication::translate("MainWindow", "mot de pass oublier", nullptr));

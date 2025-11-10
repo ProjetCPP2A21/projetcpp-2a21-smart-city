@@ -10,8 +10,8 @@ employer::employer(int id, float salaire, int telephone, QString nom, QString pr
 bool employer::ajouter()
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO EMPLOYE (id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite) "
-                  "VALUES (:id_employe, :nom, :prenom, :num_tel, :salaire, :sexe, :responsabilite)");
+    query.prepare("INSERT INTO EMPLOYER (ID_EMPLOYE, NOM, PRENOM, NUMTEL_EMPLOYE, SALAIRE, SEXE_EMPLOYE, RESPONSABILITE) "
+                  "VALUES (?, ?, ?, ?, ?, ?, ?)");
     query.bindValue(":id_employe", id);
     query.bindValue(":salaire", salaire);
     query.bindValue(":num_tel", telephone);

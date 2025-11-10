@@ -2,9 +2,6 @@
     <qresource prefix="/">
         <file>cropped_circle_image.png</file>
         <file>statisque.png</file>
-<<<<<<<< HEAD:Integration_Employe_Residence/img.qrc
         <file>diagramme_circulaire3.png</file>
-========
->>>>>>>> 3ea5370cfe4c9135ebe650bdac6720d8a706de5f:residence/img.qrc
     </qresource>
 </RCC>
