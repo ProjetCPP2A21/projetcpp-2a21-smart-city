@@ -730,7 +730,7 @@ color: rgb(0, 0, 0);</string>
 }</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -978,56 +978,11 @@ QLineEdit:focus {
         <string>Identifiant Evénement</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_30">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>119</y>
-         <width>151</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>11</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string>Nombre d'inscrits</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="NombreP">
-       <property name="geometry">
-        <rect>
-         <x>170</x>
-         <y>110</y>
-         <width>141</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QLineEdit {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 8px;
-    font-size: 12px;
-}
-QLineEdit:focus {
-    border: 1px solid #2D89EF;
-    background-color: #FFFFFF;
-}</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="Prediction">
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>170</y>
+         <y>140</y>
          <width>141</width>
          <height>41</height>
         </rect>
