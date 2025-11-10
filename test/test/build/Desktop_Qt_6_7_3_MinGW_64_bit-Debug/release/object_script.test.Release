@@ -1,0 +1,17 @@
+release/main.o
+release/mainwindow.o
+release/connection.o
+release/employer.o
+release/gemployer.o
+release/residence.o
+release/CrudResidence.o
+release/service.o
+release/Gservice.o
+release/Gresident.o
+release/residents.o
+release/qrc_img.o
+release/moc_mainwindow.o
+release/moc_gemployer.o
+release/moc_residence.o
+release/moc_Gservice.o
+release/moc_Gresident.o

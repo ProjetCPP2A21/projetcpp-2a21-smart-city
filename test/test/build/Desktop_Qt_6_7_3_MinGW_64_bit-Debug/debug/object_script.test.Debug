@@ -1,0 +1,17 @@
+debug/main.o
+debug/mainwindow.o
+debug/connection.o
+debug/employer.o
+debug/gemployer.o
+debug/residence.o
+debug/CrudResidence.o
+debug/service.o
+debug/Gservice.o
+debug/Gresident.o
+debug/residents.o
+debug/qrc_img.o
+debug/moc_mainwindow.o
+debug/moc_gemployer.o
+debug/moc_residence.o
+debug/moc_Gservice.o
+debug/moc_Gresident.o
