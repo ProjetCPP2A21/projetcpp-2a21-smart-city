@@ -1,25 +1,30 @@
 #include "mainwindow.h"
-#include <QMessageBox>
 #include "connection.h"
 #include <QApplication>
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    Connection c;
-    bool test=c.createconnect();
-    if(test)
-    {w.show();
-        QMessageBox::information(nullptr, QObject::tr("database is open"),
-                                 QObject::tr("connection successful.\n"
-                                             "Click Cancel to exit."), QMessageBox::Cancel);
 
+    Connection c;
+    bool test = c.createconnect(); // Try to connect to Oracle DB
+
+    if (test)
+    {
+        // ✅ Connection successful → show main window
+        QMessageBox::information(nullptr, QObject::tr("Succès"),
+                                 QObject::tr("Connexion à la base réussie !"));
+        MainWindow w;
+        w.show();
+        return a.exec(); // Start the application
     }
     else
-        QMessageBox::critical(nullptr, QObject::tr("database is not open"),
-                              QObject::tr("connection failed.\n"
-                                          "Click Cancel to exit."), QMessageBox::Cancel);
-    w.show();
-    return a.exec();
+    {
+        // ❌ Connection failed → show error message and exit
+        QMessageBox::critical(nullptr, QObject::tr("Erreur"),
+                              QObject::tr("Échec de connexion à la base de données.\n"
+                                          "Vérifiez votre configuration ODBC."));
+        return 1;
+    }
 }

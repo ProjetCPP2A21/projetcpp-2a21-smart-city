@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include "ui_mainwindow.h"
+
 #include <QMainWindow>
-#include <QtGui>
-#include <QStackedWidget>
+#include "residents.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -18,12 +18,18 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
-    Ui::MainWindow *ui;
-public slots :
+private slots:
     void page();
     void page_3();
     void page_4();
+    void on_btn_ajouter_clicked();
+    void on_btn_supprimer_clicked();
+    void on_btn_modifier_clicked();
+    void on_lineEdit_recherche_textChanged(const QString &arg1);
+    void on_comboBox_tri_currentIndexChanged(int index);
 
+private:
+    Ui::MainWindow *ui;
 };
+
 #endif // MAINWINDOW_H
