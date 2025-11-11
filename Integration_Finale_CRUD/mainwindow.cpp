@@ -7,6 +7,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+// Connecter la gestion automatique de visibilité de la sidebar
+connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [this](int idx){
+    QWidget *w = ui->stackedWidget->widget(idx);
+    qDebug() << "stackedWidget changed to index" << idx << "widgetName =" << w->objectName();
+    if (w == ui->Connection || w == ui->page_7) {
+        ui->leftmenu->hide();
+    } else {
+        ui->leftmenu->show();
+    }
+    });
     //afficher tableau residence
     afficherTableResidence();
     // affichage tableau service
@@ -45,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
     //
     connect(ui->RH, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
     connect(ui->resident_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
-    connect(ui->residence_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
+    connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
     connect(ui->Evenements_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
     connect(ui->service_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
@@ -53,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     // --- RÉSIDENT PAGE (page) ---
     //
     connect(ui->RH_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
-    connect(ui->residence_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
+    connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
     connect(ui->Evenements_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
     connect(ui->service, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
@@ -69,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
     // --- ÉVÈNEMENTS PAGE (page_2) ---
     //
     connect(ui->RH_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
-    connect(ui->residence_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
+    connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
     connect(ui->resident_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
     connect(ui->service_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
@@ -77,7 +87,7 @@ MainWindow::MainWindow(QWidget *parent)
     // --- SERVICE PAGE (page_6) ---
     //
     connect(ui->RH_6, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
-    connect(ui->residence_7, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); }); // ✅ FIXED
+    connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); }); // ✅ FIXED
     connect(ui->resident_8, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
     connect(ui->Evenements_8, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
 }
@@ -92,8 +102,16 @@ MainWindow::~MainWindow()
 //
 void MainWindow::goToPage(QWidget *page)
 {
-    if (page && ui->stackedWidget->indexOf(page) != -1)
-        ui->stackedWidget->setCurrentWidget(page);
+    if (!page || ui->stackedWidget->indexOf(page) == -1) return;
+
+    ui->stackedWidget->setCurrentWidget(page);
+
+    // Masquer la barre gauche pour la page de connexion et mot de passe oublié
+    if (page == ui->Connection || page == ui->page_7) {
+        ui->leftmenu->setVisible(false);
+    } else {
+        ui->leftmenu->setVisible(true);
+    }
 }
 
 
