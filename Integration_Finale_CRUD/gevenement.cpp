@@ -19,7 +19,23 @@ void MainWindow::on_Ajouterbutton_clicked()
         QMessageBox::warning(this, "Erreur", "ID invalide !");
         return;
     }
-    int ID_Employe = 1;
+    int ID_Employe = ui->ID_Employe_Evenement->text().toInt();
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT COUNT(*) FROM EMPLOYE WHERE ID_EMPLOYE = :id");
+    checkQuery.bindValue(":id", ID_Employe);
+
+    if (!checkQuery.exec()) {
+        QMessageBox::critical(this, "Erreur SQL", checkQuery.lastError().text());
+        return;
+    }
+
+    checkQuery.next();
+    int count = checkQuery.value(0).toInt();
+
+    if (count == 0) {
+        QMessageBox::warning(this, "Erreur", "L'employé avec cet ID n'existe pas !");
+        return; // ❌ Stop l'ajout
+    }
     QString Nom = ui->Nom->text().trimmed();
     QString Type = ui->Type->text().trimmed();
     QString Lieu = ui->Lieu->text().trimmed();
