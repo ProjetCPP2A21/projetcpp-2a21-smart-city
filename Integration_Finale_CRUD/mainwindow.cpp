@@ -17,6 +17,7 @@ connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [this](int idx
         ui->leftmenu->show();
     }
     });
+    afficherEmployes();
     //afficher tableau residence
     afficherTableResidence();
     // affichage tableau service

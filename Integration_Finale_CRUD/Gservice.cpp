@@ -116,7 +116,13 @@ void MainWindow::on_Ajouter_Service_clicked()
                              "Le responsable est obligatoire!");
         return;
     }
-
+    // Vérifier que le responsable contient uniquement des lettres et espaces
+    QRegularExpression regex("^[A-Za-zÀ-ÿ\\s]+$");
+    if (!regex.match(responsable).hasMatch()) {
+        QMessageBox::warning(this, "Attention",
+                             "Le nom du responsable ne doit contenir que des lettres et des espaces !");
+        return;
+    }
     // ========== CALCULER LE PROCHAIN ID ==========
 
     // Trouver le plus grand ID existant et ajouter 1
