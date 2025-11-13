@@ -1319,6 +1319,16 @@ QPushButton:pressed {
        <string>Statistiques</string>
       </property>
      </widget>
+     <widget class="Statistique" name="StatisqueWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>140</y>
+        <width>311</width>
+        <height>271</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -1334,6 +1344,14 @@ QPushButton:pressed {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Statistique</class>
+   <extends>QWidget</extends>
+   <header>statistique.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="Images.qrc"/>
  </resources>

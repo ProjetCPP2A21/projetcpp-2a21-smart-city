@@ -1,6 +1,7 @@
 QT       += core gui
 QT       += core gui sql
 QT += core gui widgets sql
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -13,12 +14,14 @@ SOURCES += \
     evenement.cpp \
     main.cpp \
     gevenement.cpp \
-    connection.cpp
+    connection.cpp \
+    statistique.cpp
 
 HEADERS += \
     evenement.h \
     gevenement.h \
-    connection.h
+    connection.h \
+    statistique.h
 
 FORMS += \
     gevenement.ui

@@ -2,6 +2,7 @@
 #include "ui_gevenement.h"
 #include "evenement.h"
 #include "connection.h"
+#include "statistique.h"
 #include <QString>
 #include <QMessageBox>
 #include <QTableView>
@@ -295,3 +296,48 @@ void GEvenement::on_Excel_clicked()
         QMessageBox::warning(this, "Erreur", "Impossible d’enregistrer le fichier.");
 }
 
+
+void GEvenement::on_Statistiques_2_clicked()
+{
+    QSqlQuery query;
+    // On récupère toutes les lignes, on fera les regroupements en C++
+    if (!query.exec("SELECT Type_Evenement, Nbr_Participants FROM Evenement")) {
+        QMessageBox::warning(this, "Erreur SQL",
+                             "Impossible de récupérer les évènements :\n"
+                                 + query.lastError().text());
+        return;
+    }
+
+    int nbMusique = 0;
+    int nbCinema  = 0;
+    int nbAutre   = 0;
+
+    while (query.next()) {
+        QString type = query.value(0).toString().trimmed().toLower();
+        int nbr      = query.value(1).toInt();
+
+        // 💿 Musique
+        if (type.contains("musique")) {
+            nbMusique += nbr;
+        }
+        // 🎬 Cinéma (on gère sans / avec accent)
+        else if (type.contains("cinema") || type.contains("cinéma")) {
+            nbCinema += nbr;
+        }
+        // 🌈 Tous les autres types → "Autre"
+        else {
+            nbAutre += nbr;
+        }
+    }
+
+    int total = nbMusique + nbCinema + nbAutre;
+
+    if (total == 0) {
+        QMessageBox::information(this, "Statistiques",
+                                 "Aucun évènement trouvé dans la base.");
+        return;
+    }
+
+    // ⚠️ Remplace 'widgetStat' par l'objectName réel de ton widget promu
+    ui->StatisqueWidget->setData(nbMusique, nbCinema, nbAutre);
+}
