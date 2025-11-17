@@ -37,6 +37,8 @@ private slots:
 
     void on_Statistiques_2_clicked();
 
+    void on_Localiser_clicked();
+
 private:
     Ui::GEvenement *ui;
     Evenement E;

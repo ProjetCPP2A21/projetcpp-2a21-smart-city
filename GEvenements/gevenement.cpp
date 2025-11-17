@@ -12,6 +12,8 @@
 #include "Excel/QXlsx/QXlsx/header/xlsxformat.h"
 #include "Excel/QXlsx/QXlsx/header/xlsxcellrange.h"
 #include <QFileDialog>
+#include <QPainter>
+#include <QPixmap>
 using namespace QXlsx;
 
 
@@ -44,7 +46,7 @@ void GEvenement::on_Ajouterbutton_clicked()
     QString Nom = ui->Nom->text().trimmed();
     QString Type = ui->Type->text().trimmed();
     QString Lieu = ui->Lieu->text().trimmed();
-    QString Date = ui->dateEdit->date().toString("dd/MM/yyyy");
+    QDate Date = ui->dateEdit->date();
     QString Heure = ui->timeEdit->time().toString("HH:mm");
     int Nbr_Participants = ui->NbrP->text().toInt();
 
@@ -113,7 +115,7 @@ void GEvenement::on_Modifier_clicked()
         // Utiliser les anciennes valeurs si les champs sont vides
         QString nom   = ui->Nom->text().isEmpty()      ? query.value(0).toString() : ui->Nom->text();
         QString type  = ui->Type->text().isEmpty()     ? query.value(1).toString() : ui->Type->text();
-        QString date  = ui->dateEdit->text().isEmpty() ? query.value(2).toString() : ui->dateEdit->text();
+        QDate date = ui->dateEdit->text().isEmpty()    ? query.value(2).toDate()   : ui->dateEdit->date();
         QString heure = ui->timeEdit->text().isEmpty() ? query.value(3).toString() : ui->timeEdit->text();
         QString lieu  = ui->Lieu->text().isEmpty()     ? query.value(4).toString() : ui->Lieu->text();
         int nbr       = ui->NbrP->text().isEmpty()     ? query.value(5).toInt()    : ui->NbrP->text().toInt();
@@ -204,20 +206,20 @@ void GEvenement::on_tableView_clicked(const QModelIndex &index)
     QString idStr    = model->data(model->index(row, 0)).toString();
     QString nomStr   = model->data(model->index(row, 2)).toString();
     QString typeStr  = model->data(model->index(row, 3)).toString();
-    QString dateStr  = model->data(model->index(row, 4)).toString();
+    // --- DATE : conversion correcte ---
+   QVariant dateVar = model->data(model->index(row, 4));
+     // après type_evenement
+    QDate dt = dateVar.toDate();
     QString heureStr = model->data(model->index(row, 5)).toString();
     QString lieuStr  = model->data(model->index(row, 6)).toString();
     QString nbrStr   = model->data(model->index(row, 7)).toString();
 
     // Conversion de la date et de l'heure
-    QDate date = QDate::fromString(dateStr, "dd/MM/yyyy");
-    if (!date.isValid())
-        date = QDate::fromString(dateStr, "yyyy-MM-dd");
 
     QTime time = QTime::fromString(heureStr, "HH:mm");
 
     // Remplir les champs du formulaire
-    ui->dateEdit->setDate(date);
+    ui->dateEdit->setDate(dt);
     ui->timeEdit->setTime(time);
 
     QString nom = model->index(row, 2).data().toString();
@@ -237,10 +239,16 @@ void GEvenement::on_comboBox_currentIndexChanged(int index)
     QSqlQueryModel *model = new QSqlQueryModel();
 
     if (index == 1) { // Tri par date (puis heure)
-        requete = "SELECT * FROM EVENEMENT ORDER BY Date_Evenement ASC, Heure ASC";
+        requete = "SELECT ID_EVENEMENT, ID_EMPLOYE, NOM, TYPE_EVENEMENT, "
+                  "TO_CHAR(DATE_EVENEMENT, 'DD/MM/YYYY') AS DATE_EVENEMENT, "
+                  "HEURE, LIEU, NBR_PARTICIPANTS "
+                  "FROM EVENEMENT ORDER BY Date_Evenement DESC, Heure DESC";
     }
     else if (index == 2) { // Tri par nombre de participants (décroissant)
-        requete = "SELECT * FROM EVENEMENT ORDER BY Nbr_Participants DESC";
+        requete = "SELECT ID_EVENEMENT, ID_EMPLOYE, NOM, TYPE_EVENEMENT, "
+                  "TO_CHAR(DATE_EVENEMENT, 'DD/MM/YYYY') AS DATE_EVENEMENT, "
+                  "HEURE, LIEU, NBR_PARTICIPANTS "
+                  "FROM EVENEMENT ORDER BY Nbr_Participants DESC";
     }
     else {
         ui->tableView->setModel(E.afficher());
@@ -341,3 +349,63 @@ void GEvenement::on_Statistiques_2_clicked()
     // ⚠️ Remplace 'widgetStat' par l'objectName réel de ton widget promu
     ui->StatisqueWidget->setData(nbMusique, nbCinema, nbAutre);
 }
+
+void GEvenement::on_Localiser_clicked()
+{
+    QString idstr = ui->ID_localisation->text();
+
+    if(idstr.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez saisir un ID !");
+        return;
+    }
+
+    int id = idstr.toInt();
+    QString lieu = E.RecupererLieu(id);
+
+    if(lieu.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Événement introuvable !");
+        return;
+    }
+
+    // Normaliser le texte
+    lieu = lieu.toLower().trimmed();
+
+    // Charger la carte
+    QPixmap map("C:/Users/ASUS/Desktop/Smart City/GEvenements/Map/tunisie-carte.jpg");
+    if (map.isNull()) {
+        QMessageBox::warning(this, "Erreur", "Impossible de charger la carte !");
+        return;
+    }
+
+    // Dictionnaire nom → position pixel (à ajuster selon la carte)
+    QMap<QString, QPoint> mapPositions = {
+        {"tunis", QPoint(250, 80)},
+        {"ariana", QPoint(245, 70)},
+        {"sousse", QPoint(300, 200)},
+        {"sfax", QPoint(320, 260)},
+        {"bizerte", QPoint(230, 40)},
+        {"gabes", QPoint(200, 300)},
+        {"azur city", QPoint(260, 100)},
+        {"geant", QPoint(250, 85)}
+    };
+
+    if (!mapPositions.contains(lieu)) {
+        QMessageBox::warning(this, "Erreur", "Lieu non reconnu dans la carte !");
+        return;
+    }
+
+    QPoint pos = mapPositions[lieu];
+
+    // Tracer un point rouge
+    QPainter painter(&map);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(QPen(Qt::red, 4));
+    painter.setBrush(Qt::red);
+    painter.drawEllipse(pos, 6, 6);
+    painter.end();
+
+    // Afficher la carte dans ton QLabel
+    ui->Map->setPixmap(map);
+    ui->Map->setScaledContents(true);
+}
+

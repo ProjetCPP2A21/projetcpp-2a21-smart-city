@@ -17,13 +17,12 @@ Evenement::Evenement()
     ID = 0;
     Nom = "";
     Type = "";
-    Date = "";
     Heure = "";
     Lieu = "";
     Nbr_Participants = 0;
 }
 // constructeur paramétré
-Evenement::Evenement(int ID,int ID_Employe, QString Nom, QString Type, QString Date, QString Heure, QString Lieu, int Nbr_Participants)
+Evenement::Evenement(int ID,int ID_Employe, QString Nom, QString Type, QDate Date, QString Heure, QString Lieu, int Nbr_Participants)
 {
     this->ID = ID;
     this->ID_Employe = ID_Employe;
@@ -70,7 +69,10 @@ QSqlQueryModel *Evenement::afficher()
 {
 
     QSqlQueryModel *model = new QSqlQueryModel();
-   model->setQuery("SELECT * FROM Evenement");
+    model->setQuery("SELECT ID_EVENEMENT, ID_EMPLOYE, NOM, TYPE_EVENEMENT, "
+                    "DATE_EVENEMENT,"
+                    "HEURE, LIEU, NBR_PARTICIPANTS "
+                    "FROM EVENEMENT");
     model->setHeaderData(0,Qt::Horizontal, QObject::tr("ID_Evenement"));
     model->setHeaderData(2,Qt::Horizontal, QObject::tr("Nom"));
     model->setHeaderData(3,Qt::Horizontal, QObject::tr("Type_Evenement"));
@@ -222,4 +224,19 @@ ImpactResult Evenement::predireImpact(int id)
     g_ort->ReleaseEnv(env);
 
     return result;
+}
+
+QString Evenement::RecupererLieu(int id)
+{
+    QSqlQuery query;
+    query.prepare("SELECT lieu FROM evenement WHERE Id_Evenement = :id");
+    query.bindValue(":id", id);
+
+    if(query.exec()) {
+        if(query.next()) {
+            return query.value(0).toString();   // retourne le lieu
+        }
+    }
+
+    return ""; // Retourne vide si rien trouvé
 }
