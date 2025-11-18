@@ -860,7 +860,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap resource="../Users/ksoum/Downloads/test/test/img.qrc">:/cropped_circle_image.png</pixmap>
+        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1638,7 +1638,7 @@ QPushButton:pressed {
          <enum>Qt::TextFormat::MarkdownText</enum>
         </property>
         <property name="pixmap">
-         <pixmap resource="../Users/ksoum/Downloads/test/test/img.qrc">:/cropped_circle_image.png</pixmap>
+         <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -2518,7 +2518,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap resource="../Users/ksoum/Downloads/test/test/img.qrc">:/cropped_circle_image.png</pixmap>
+        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -2534,12 +2534,12 @@ QPushButton:pressed {
        </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="pushButton_30">
+     <widget class="QPushButton" name="btn_statistiques">
       <property name="geometry">
        <rect>
-        <x>690</x>
-        <y>611</y>
-        <width>101</width>
+        <x>680</x>
+        <y>610</y>
+        <width>111</width>
         <height>51</height>
        </rect>
       </property>
@@ -2566,7 +2566,7 @@ QPushButton:pressed {
 }</string>
       </property>
       <property name="text">
-       <string>Statistique</string>
+       <string>Statistiques</string>
       </property>
      </widget>
      <widget class="QFrame" name="Ajouter_3">
@@ -3225,17 +3225,49 @@ background-color : #e1e5ff;</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGraphicsView" name="graphicsView_2">
+     <widget class="QPushButton" name="pushButton_35">
       <property name="geometry">
        <rect>
-        <x>870</x>
-        <y>470</y>
-        <width>311</width>
-        <height>192</height>
+        <x>680</x>
+        <y>530</y>
+        <width>111</width>
+        <height>51</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">border-image: url(:/diagramme_circulaire3.png);</string>
+       <string notr="true">QPushButton {
+    background-color: #2D89EF;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
+      </property>
+      <property name="text">
+       <string>Export</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="widget_stats" native="true">
+      <property name="geometry">
+       <rect>
+        <x>900</x>
+        <y>450</y>
+        <width>431</width>
+        <height>261</height>
+       </rect>
       </property>
      </widget>
     </widget>
@@ -3253,6 +3285,8 @@ background-color : #e1e5ff;</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="img.qrc"/>
+ </resources>
  <connections/>
 </ui>

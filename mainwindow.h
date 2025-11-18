@@ -25,11 +25,16 @@ private slots:
     void on_btn_ajouter_clicked();
     void on_btn_supprimer_clicked();
     void on_btn_modifier_clicked();
+    void on_btn_statistiques_clicked();
+    void afficherStatistiques();
     void on_lineEdit_recherche_textChanged(const QString &arg1);
     void on_comboBox_tri_currentIndexChanged(int index);
+    void on_tableView_clicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
+    void clearFields();
+
 };
 
 #endif // MAINWINDOW_H

@@ -15,7 +15,4 @@ public:
     void closeconnect();    // pour fermer la connexion
 };
 
-#endif // CONNECTION_H
-
-
-
+#endif // CONNECTION_Hac
