@@ -3225,7 +3225,7 @@ background-color : #e1e5ff;</string>
        </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="pushButton_35">
+     <widget class="QPushButton" name="btnExportPDF">
       <property name="geometry">
        <rect>
         <x>680</x>

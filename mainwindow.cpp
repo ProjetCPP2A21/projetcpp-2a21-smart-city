@@ -251,3 +251,106 @@ void MainWindow::clearFields()
     ui->lineEdit_profession->clear();
     ui->lineEdit_situation->clear();
 }
+
+void MainWindow::on_btnExportPDF_clicked()
+{
+    QString filePath = QFileDialog::getSaveFileName(this, "Exporter PDF", "", "PDF (*.pdf)");
+    if (filePath.isEmpty()) return;
+
+    QPdfWriter pdf(filePath);
+    pdf.setPageSize(QPageSize(QPageSize::A4));
+    pdf.setResolution(300);
+
+    QPainter painter(&pdf);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // Couleurs
+    QColor blueLight("#2D89EF");
+    QColor blueDark("#1E5BB8");
+    QColor lineDark("#2C3E50");
+    QColor lineLight("#F2F2F2");
+    QColor white("#FFFFFF");
+
+    // Titre
+    painter.setFont(QFont("Arial", 20, QFont::Bold));
+    painter.setPen(blueDark);
+    painter.drawText(QRect(0, 200, pdf.width(), 100), Qt::AlignCenter, "Liste des Résidents");
+    painter.setPen(QPen(blueLight, 3));
+    painter.drawLine(200, 350, pdf.width() - 200, 350);
+
+    // Tableau
+    int x = 80, y = 500, h = 90;
+
+    // Largeur des colonnes
+    int w[] = {180, 180, 250, 250, 120, 150, 200, 300};
+
+    QStringList headers = {
+        "ID Résident", "ID Résidence", "Nom", "Prénom", "Âge", "Sexe", "Profession", "Situation"
+    };
+
+    // Récupérer le modèle du tableau
+    QAbstractItemModel *model = ui->tableView->model();
+    int rows = model->rowCount();
+    int cols = model->columnCount();
+
+    // En-tête
+    painter.setFont(QFont("Arial", 11, QFont::Bold));
+    painter.setBrush(blueLight);
+    painter.setPen(white);
+    painter.drawRect(x, y,
+                     w[0] + w[1] + w[2] + w[3] + w[4] + w[5] + w[6] + w[7],
+                     h
+                     );
+
+    int cx = x;
+    for (int i = 0; i < headers.size(); i++) {
+        painter.drawText(QRect(cx, y, w[i], h), Qt::AlignCenter, headers[i]);
+        cx += w[i];
+    }
+    y += h;
+
+    // Données
+    painter.setFont(QFont("Arial", 9));
+    for (int i = 0; i < rows; ++i) {
+
+        QColor bg = (i % 2 == 0 ? lineLight : lineDark);
+        QColor tx = (i % 2 == 0 ? Qt::black : white);
+
+        painter.fillRect(x, y,
+                         w[0] + w[1] + w[2] + w[3] + w[4] + w[5] + w[6] + w[7],
+                         h, bg
+                         );
+
+        painter.setPen(tx);
+
+        cx = x;
+        for (int j = 0; j < cols; ++j) {
+
+            QString val = model->data(model->index(i, j)).toString();
+
+            painter.drawText(QRect(cx + 5, y, w[j] - 10, h),
+                             Qt::AlignVCenter | Qt::AlignLeft,
+                             val);
+
+            cx += w[j];
+        }
+
+        y += h;
+
+        // Nouvelle page si nécessaire
+        if (y > pdf.height() - 400) {
+            pdf.newPage();
+            y = 200;
+        }
+    }
+
+    // Pied de page
+    painter.setFont(QFont("Arial", 10));
+    painter.setPen(blueDark);
+    painter.drawText(100, pdf.height() - 150,
+                     "Généré le : " + QDate::currentDate().toString("dd/MM/yyyy"));
+
+    painter.end();
+    QMessageBox::information(this, "PDF", "PDF Exporté avec succès !");
+}
+

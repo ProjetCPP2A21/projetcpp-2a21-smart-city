@@ -17,7 +17,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private slots:
     void page();
     void page_3();
@@ -27,6 +26,7 @@ private slots:
     void on_btn_modifier_clicked();
     void on_btn_statistiques_clicked();
     void afficherStatistiques();
+    void on_btnExportPDF_clicked();
     void on_lineEdit_recherche_textChanged(const QString &arg1);
     void on_comboBox_tri_currentIndexChanged(int index);
     void on_tableView_clicked(const QModelIndex &index);
