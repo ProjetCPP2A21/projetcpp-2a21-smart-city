@@ -14,6 +14,21 @@
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
+#include <QVariantList>
+#include <QtQuick/QQuickItem>
+#include <QGeoCodingManager>
+#include <QGeoCodeReply>
+#include <QGeoServiceProvider>
+#include <QGeoCoordinate>
+#include <QGeoLocation>
+#include <QGeoAddress>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+
 using namespace QXlsx;
 
 
@@ -25,6 +40,29 @@ GEvenement::GEvenement(QWidget *parent)
     ui->ID->setValidator(new QIntValidator(1, 999999, this));
     ui->NbrP->setValidator(new QIntValidator(1, 100000, this));
     ui->tableView->setModel(E.afficher());
+    QObject *rootObject = ui->MapWidget->rootObject();
+    QGeoServiceProvider provider("osm"); // Ou "here", "googlemaps", selon le plugin installé
+    geoCoder = provider.geocodingManager();
+    if (!geoCoder) {
+        QMessageBox::critical(this, "Erreur", "Le géocodeur n'a pas été initialisé !");
+        return;
+    }
+    ui->MapWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    ui->MapWidget->setFocusPolicy(Qt::StrongFocus);
+    ui->MapWidget->setSource(QUrl::fromLocalFile("C:/Users/ASUS/Desktop/Smart City/GEvenements/Map.qml"));
+    ui->MapWidget->setFocus();  // important pour que la souris et le clavier interagissent
+
+    // Initialiser dictionnaire lieu → lat/lon
+    lieuCoords = {
+        {"tunis", QPointF(36.8065, 10.1815)},
+        {"ariana", QPointF(36.8665, 10.1647)},
+        {"sousse", QPointF(35.8256, 10.6084)},
+        {"sfax", QPointF(34.7406, 10.7603)},
+        {"bizerte", QPointF(37.2746, 9.8739)},
+        {"gabes", QPointF(33.8815, 10.0994)},
+        {"azur city", QPointF(36.8, 10.2)},
+        {"geant", QPointF(36.81, 10.18)}
+    };
 }
 
 GEvenement::~GEvenement()
@@ -352,60 +390,55 @@ void GEvenement::on_Statistiques_2_clicked()
 
 void GEvenement::on_Localiser_clicked()
 {
-    QString idstr = ui->ID_localisation->text();
-
-    if(idstr.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Veuillez saisir un ID !");
-        return;
-    }
-
-    int id = idstr.toInt();
+    int id = ui->ID_localisation->text().toInt();
     QString lieu = E.RecupererLieu(id);
 
-    if(lieu.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Événement introuvable !");
+    if (lieu.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Événement non trouvé !");
         return;
     }
 
-    // Normaliser le texte
-    lieu = lieu.toLower().trimmed();
+    // Préparer la requête Nominatim
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
-    // Charger la carte
-    QPixmap map("C:/Users/ASUS/Desktop/Smart City/GEvenements/Map/tunisie-carte.jpg");
-    if (map.isNull()) {
-        QMessageBox::warning(this, "Erreur", "Impossible de charger la carte !");
-        return;
-    }
+    QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu;
+    QNetworkRequest request(url);
 
-    // Dictionnaire nom → position pixel (à ajuster selon la carte)
-    QMap<QString, QPoint> mapPositions = {
-        {"tunis", QPoint(250, 80)},
-        {"ariana", QPoint(245, 70)},
-        {"sousse", QPoint(300, 200)},
-        {"sfax", QPoint(320, 260)},
-        {"bizerte", QPoint(230, 40)},
-        {"gabes", QPoint(200, 300)},
-        {"azur city", QPoint(260, 100)},
-        {"geant", QPoint(250, 85)}
-    };
+    // Obligatoire : Nominatim exige un User-Agent
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QtApp");
 
-    if (!mapPositions.contains(lieu)) {
-        QMessageBox::warning(this, "Erreur", "Lieu non reconnu dans la carte !");
-        return;
-    }
+    connect(manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply) {
 
-    QPoint pos = mapPositions[lieu];
+        QByteArray data = reply->readAll();
+        QJsonDocument doc = QJsonDocument::fromJson(data);
+        QJsonArray arr = doc.array();
 
-    // Tracer un point rouge
-    QPainter painter(&map);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(Qt::red, 4));
-    painter.setBrush(Qt::red);
-    painter.drawEllipse(pos, 6, 6);
-    painter.end();
+        if (arr.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Lieu introuvable !");
+            return;
+        }
 
-    // Afficher la carte dans ton QLabel
-    ui->Map->setPixmap(map);
-    ui->Map->setScaledContents(true);
+        // Récupération des coordonnées GPS
+        QJsonObject obj = arr.first().toObject();
+        double lat = obj["lat"].toString().toDouble();
+        double lon = obj["lon"].toString().toDouble();
+
+        // Appel aux fonctions QML
+        QObject *rootObject = ui->MapWidget->rootObject();
+        if (!rootObject) {
+            QMessageBox::critical(this, "Erreur", "Map QML non chargée !");
+            return;
+        }
+
+        QMetaObject::invokeMethod(rootObject, "centerOn",
+                                  Q_ARG(QVariant, lat),
+                                  Q_ARG(QVariant, lon));
+
+        QMetaObject::invokeMethod(rootObject, "addMarker",
+                                  Q_ARG(QVariant, lat),
+                                  Q_ARG(QVariant, lon));
+    });
+
+    manager->get(request);
 }
 

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <onnxruntime_cxx_api.h>
 #include <QCoreApplication>
+#include <algorithm>
 
 
 
@@ -214,6 +215,9 @@ ImpactResult Evenement::predireImpact(int id)
     result.co2 = output_data[0];
     result.pollution = output_data[1];
     result.impact = output_data[2];
+
+    // On borne le score d'impact entre 0 et 1
+    result.impact = std::clamp(output_data[2], 0.0f, 1.0f);
 
     // 🔹 Étape 6 : libération des ressources
     g_ort->ReleaseValue(output_tensor);

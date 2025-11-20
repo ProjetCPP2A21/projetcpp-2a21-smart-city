@@ -3,6 +3,14 @@
 #include "connection.h"
 #include "evenement.h"
 #include <QMainWindow>
+#include <QWidget>
+#include <QQuickWidget>
+#include <QMap>
+#include <QPointF>
+#include <QQuickView>
+#include <QGeoCodingManager>
+#include <QGeoServiceProvider>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,5 +50,12 @@ private slots:
 private:
     Ui::GEvenement *ui;
     Evenement E;
+     QMap<QString, QPointF> lieuCoords;
+    QQuickView *mapView;
+    QGeoCodingManager *geoCoder;
+    QObject *rootMapObject;
+
+
+
 };
 #endif // GEVENEMENT_H

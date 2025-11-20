@@ -4,6 +4,8 @@
 #include <QApplication>
 #include <iostream>
 #include <QSqlDatabase>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
 
 
@@ -12,6 +14,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     Connection c;
     bool test=c.createconnect();
+    qDebug() << QSslSocket::supportsSsl();
     GEvenement w;
     w.show();
     if(test)
