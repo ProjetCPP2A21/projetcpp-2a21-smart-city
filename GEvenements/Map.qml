@@ -6,6 +6,23 @@ import QtLocation
     Map {
         id: map
         anchors.fill: parent
+        property var currentMarker: null
+
+        // Animation pour un déplacement smooth
+        Behavior on center.latitude {
+            NumberAnimation {
+                duration: 1200
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        Behavior on center.longitude {
+            NumberAnimation {
+                duration: 1200
+                easing.type: Easing.InOutQuad
+            }
+        }
+
 
         plugin: Plugin {
             name: "osm"
@@ -18,7 +35,7 @@ import QtLocation
 
             PluginParameter {
             name: "osm.tile.source"
-            value: "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=8336c76b07fc4c26b78c798a1deec14d"
+            value: "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey="
                 }
             }
 
@@ -33,13 +50,25 @@ import QtLocation
             }
 
         function addMarker(lat, lon) {
-                var marker = markerComponent.createObject(map, {
-                    coordinate: QtPositioning.coordinate(lat, lon)
-                })
-                if (marker !== null) {
-                    map.addMapItem(marker)
-                }
+
+            // Effacer ancien marqueur
+            if (currentMarker !== null) {
+                map.removeMapItem(currentMarker)
+                currentMarker.destroy()
+                currentMarker = null
             }
+
+            // Créer un nouveau
+            var marker = markerComponent.createObject(map, {
+                coordinate: QtPositioning.coordinate(lat, lon)
+            })
+
+            if (marker !== null) {
+                map.addMapItem(marker)
+                currentMarker = marker
+            }
+        }
+
         Component {
             id: markerComponent
             MapQuickItem {

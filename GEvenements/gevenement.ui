@@ -889,7 +889,7 @@ background-color : #e1e5ff;</string>
      <attribute name="title">
       <string>Fonctionnalités</string>
      </attribute>
-     <widget class="QFrame" name="frame_6">
+     <widget class="QFrame" name="frame_Prediction">
       <property name="geometry">
        <rect>
         <x>410</x>

@@ -28,6 +28,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QTimer>
 
 using namespace QXlsx;
 
@@ -228,6 +229,43 @@ void GEvenement::on_Prediction_clicked()
             .arg(impact.pollution, 0, 'f', 2)
             .arg(impact.impact, 0, 'f', 2)
         );
+    if (impact.impact > 0.80) {
+
+        // Le QFrame qui doit clignoter (mets le bon nom)
+        QFrame *box = ui->frame_Prediction;
+
+        // Sauvegarder la couleur originale
+        QString originalStyle = box->styleSheet();
+
+        // Timer pour clignoter
+        QTimer *blinkTimer = new QTimer(this);
+        int duration = 10000; // 10 secondes
+        int interval = 300;   // temps entre clignotements
+        int elapsed = 0;
+
+        // Alternance de couleur
+        connect(blinkTimer, &QTimer::timeout, this, [=]() mutable {
+            static bool red = false;
+
+            if (red)
+                box->setStyleSheet("background-color: rgb(255, 0, 0);");
+            else
+                box->setStyleSheet(originalStyle);
+
+            red = !red;
+            elapsed += interval;
+
+            // Fin du clignotement
+            if (elapsed >= duration) {
+                blinkTimer->stop();
+                box->setStyleSheet(originalStyle);
+                blinkTimer->deleteLater();
+            }
+        });
+
+        blinkTimer->start(interval);
+    }
+
 }
 
 
@@ -401,7 +439,7 @@ void GEvenement::on_Localiser_clicked()
     // Préparer la requête Nominatim
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 
-    QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu;
+    QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu+",Tunisie";
     QNetworkRequest request(url);
 
     // Obligatoire : Nominatim exige un User-Agent
