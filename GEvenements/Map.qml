@@ -7,7 +7,6 @@ import QtLocation
         id: map
         anchors.fill: parent
         property var currentMarker: null
-
         // Animation pour un déplacement smooth
         Behavior on center.latitude {
             NumberAnimation {
@@ -27,15 +26,15 @@ import QtLocation
         plugin: Plugin {
             name: "osm"
 
-            // Utiliser Thunderforest
             PluginParameter {
-            name: "osm.mapping.providers"
-            value: "tile"
-            }
+                    name: "osm.mapping.custom.host"
+                    value: "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+                }
 
-            PluginParameter {
-            name: "osm.tile.source"
-            value: "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey="
+                // Désactiver le fournisseur par défaut qui pose problème
+                PluginParameter {
+                    name: "osm.mapping.providersrepository.disabled"
+                    value: "true"
                 }
             }
 

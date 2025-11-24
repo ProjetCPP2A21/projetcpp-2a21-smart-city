@@ -29,6 +29,9 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QTimer>
+#include <QStyledItemDelegate>
+#include "datedelegate.h"
+#include <QVBoxLayout>
 
 using namespace QXlsx;
 
@@ -38,9 +41,20 @@ GEvenement::GEvenement(QWidget *parent)
     , ui(new Ui::GEvenement)
 {
     ui->setupUi(this);
+    // --- CORRECTION : PAS DE LAYOUT ---
+    // On crée juste le label pour le dessin, sans toucher au reste du design.
+    labelScore = new QLabel(ui->frame_Prediction);
+    labelScore->setAlignment(Qt::AlignCenter);
+    labelScore->setVisible(false); // Caché au début
+    // ----------------------------------
+
     ui->ID->setValidator(new QIntValidator(1, 999999, this));
     ui->NbrP->setValidator(new QIntValidator(1, 100000, this));
     ui->tableView->setModel(E.afficher());
+    ui->ID->setValidator(new QIntValidator(1, 999999, this));
+    ui->NbrP->setValidator(new QIntValidator(1, 100000, this));
+    ui->tableView->setModel(E.afficher());
+    ui->tableView->setItemDelegateForColumn(4, new DateDelegate(ui->tableView));
     QObject *rootObject = ui->MapWidget->rootObject();
     QGeoServiceProvider provider("osm"); // Ou "here", "googlemaps", selon le plugin installé
     geoCoder = provider.geocodingManager();
@@ -215,6 +229,7 @@ void GEvenement::on_Recherche_Line_textChanged(const QString &text)
 
 void GEvenement::on_Prediction_clicked()
 {
+    // 1. Récupération et calcul (inchangé)
     int id = ui->Id_Evenement->text().toInt();
     ImpactResult impact = E.predireImpact(id);
 
@@ -223,49 +238,110 @@ void GEvenement::on_Prediction_clicked()
         return;
     }
 
+    // 2. Mise à jour du texte existant (CO2 et Pollution)
+    // On garde le label ui->Dioxyde à sa place définie dans Qt Designer
     ui->Dioxyde->setText(
-        QString("🌫️ CO₂ : %1 kg\n🏭 Pollution : %2\n💥 Score d'impact : %3")
+        QString("<html><head/><body><p>"
+                "🌫️ CO₂ : <b>%1 kg</b><br/>"
+                "🏭 Pollution : <b>%2</b>"
+                "</p></body></html>")
             .arg(impact.co2, 0, 'f', 2)
             .arg(impact.pollution, 0, 'f', 2)
-            .arg(impact.impact, 0, 'f', 2)
         );
+
+    // 3. --- POSITIONNEMENT ET DESSIN DE LA JAUGE ---
+    labelScore->setVisible(true);
+
+    // A. On calcule la position manuellement pour le mettre EN BAS du frame
+    int frameW = ui->frame_Prediction->width();
+    int frameH = ui->frame_Prediction->height();
+    int gaugeHeight = 50;
+
+    // setGeometry(x, y, largeur, hauteur)
+    // On le place à 10px du bord gauche, et tout en bas (hauteur - 55px)
+    labelScore->setGeometry(10, frameH - gaugeHeight - 5, frameW - 20, gaugeHeight);
+
+    // B. Préparation du dessin
+    QPixmap pixmap(labelScore->width(), labelScore->height());
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    // C. Dessin de la barre dégradée
+    int barHeight = 10;
+    // On place la barre en bas du label
+    int barY = gaugeHeight - barHeight - 5;
+    QRect barRect(0, barY, labelScore->width(), barHeight); // On utilise toute la largeur du label
+
+    QLinearGradient gradient(barRect.topLeft(), barRect.topRight());
+    gradient.setColorAt(0.0, QColor("#3498db")); // Bleu
+    gradient.setColorAt(1.0, QColor("#8e44ad")); // Violet
+
+    painter.setBrush(gradient);
+    painter.setPen(Qt::NoPen);
+    painter.drawRoundedRect(barRect, 5, 5);
+
+    // D. Dessin du Curseur (Triangle)
+    double scoreSecure = (impact.impact < 0) ? 0 : (impact.impact > 1 ? 1 : impact.impact);
+    int usefulWidth = labelScore->width();
+    int cursorX = (int)(scoreSecure * usefulWidth);
+
+    // On empêche le curseur de sortir des bords
+    if (cursorX < 6) cursorX = 6;
+    if (cursorX > usefulWidth - 6) cursorX = usefulWidth - 6;
+
+    QPolygon triangle;
+    triangle << QPoint(cursorX, barY - 2)
+             << QPoint(cursorX - 6, barY - 10)
+             << QPoint(cursorX + 6, barY - 10);
+    painter.setBrush(Qt::white);
+    painter.drawPolygon(triangle);
+
+    // E. Dessin du Texte (Score)
+    QString textScore = QString::number(impact.impact, 'f', 2);
+    painter.setPen(Qt::white);
+    QFont font("Arial", 10, QFont::Bold);
+    painter.setFont(font);
+    int textWidth = painter.fontMetrics().horizontalAdvance(textScore);
+
+    // On dessine le texte au-dessus de la flèche
+    painter.drawText(cursorX - (textWidth / 2), barY - 12, textScore);
+
+    painter.end();
+    labelScore->setPixmap(pixmap);
+    labelScore->raise(); // S'assure que la jauge est au-dessus du fond
+    // ---------------------------------------------
+
+
+    // 4. Animation du cadre (Optionnel, inchangé)
     if (impact.impact > 0.80) {
+        QTimer *timer = new QTimer(this);
+        int *count = new int(0); // Compteur de clignotements
 
-        // Le QFrame qui doit clignoter (mets le bon nom)
-        QFrame *box = ui->frame_Prediction;
-
-        // Sauvegarder la couleur originale
-        QString originalStyle = box->styleSheet();
-
-        // Timer pour clignoter
-        QTimer *blinkTimer = new QTimer(this);
-        int duration = 10000; // 10 secondes
-        int interval = 300;   // temps entre clignotements
-        int elapsed = 0;
-
-        // Alternance de couleur
-        connect(blinkTimer, &QTimer::timeout, this, [=]() mutable {
-            static bool red = false;
-
-            if (red)
-                box->setStyleSheet("background-color: rgb(255, 0, 0);");
-            else
-                box->setStyleSheet(originalStyle);
-
-            red = !red;
-            elapsed += interval;
-
-            // Fin du clignotement
-            if (elapsed >= duration) {
-                blinkTimer->stop();
-                box->setStyleSheet(originalStyle);
-                blinkTimer->deleteLater();
+        connect(timer, &QTimer::timeout, this, [this, timer, count]() {
+            if (*count >= 6) { // Arrêter après 6 changements (3 clignotements)
+                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }"); // Retour couleur normale (Adaptez le code couleur si besoin)
+                timer->stop();
+                timer->deleteLater();
+                delete count;
+                return;
             }
+
+            // Alterner entre Rouge et la couleur de fond normale
+            if (*count % 2 == 0) {
+                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #c0392b; border-radius: 10px; }"); // ROUGE
+            } else {
+                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }"); // NORMAL (Gris foncé/Bleu nuit)
+            }
+            (*count)++;
         });
 
-        blinkTimer->start(interval);
+        timer->start(800); // Vitesse du clignotement (300ms)
+    } else {
+        // Si le score est bon, on s'assure que le fond est normal
+        ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }");
     }
-
 }
 
 
@@ -312,22 +388,25 @@ void GEvenement::on_tableView_clicked(const QModelIndex &index)
 void GEvenement::on_comboBox_currentIndexChanged(int index)
 {
     QString requete;
+    // On crée un nouveau modèle pour le tri
     QSqlQueryModel *model = new QSqlQueryModel();
 
     if (index == 1) { // Tri par date (puis heure)
         requete = "SELECT ID_EVENEMENT, ID_EMPLOYE, NOM, TYPE_EVENEMENT, "
-                  "TO_CHAR(DATE_EVENEMENT, 'DD/MM/YYYY') AS DATE_EVENEMENT, "
+                  "DATE_EVENEMENT, "
                   "HEURE, LIEU, NBR_PARTICIPANTS "
                   "FROM EVENEMENT ORDER BY Date_Evenement DESC, Heure DESC";
     }
     else if (index == 2) { // Tri par nombre de participants (décroissant)
         requete = "SELECT ID_EVENEMENT, ID_EMPLOYE, NOM, TYPE_EVENEMENT, "
-                  "TO_CHAR(DATE_EVENEMENT, 'DD/MM/YYYY') AS DATE_EVENEMENT, "
+                  "DATE_EVENEMENT, "
                   "HEURE, LIEU, NBR_PARTICIPANTS "
                   "FROM EVENEMENT ORDER BY Nbr_Participants DESC";
     }
     else {
+        // Retour à l'affichage par défaut
         ui->tableView->setModel(E.afficher());
+        // Le delegate reste actif car il est attaché à la "Vue" (TableView), pas au "Modèle"
         return;
     }
 
@@ -360,20 +439,34 @@ void GEvenement::on_Excel_clicked()
 
     QXlsx::Document xlsx;
 
-    // Écrire les en-têtes
+    // 1. Écrire les en-têtes
     for (int col = 0; col < model->columnCount(); ++col) {
         QString header = model->headerData(col, Qt::Horizontal).toString();
         xlsx.write(1, col + 1, header);
     }
 
-    // Écrire les lignes
+    // 2. Écrire les données ligne par ligne
     for (int row = 0; row < model->rowCount(); ++row) {
         for (int col = 0; col < model->columnCount(); ++col) {
             QVariant value = model->data(model->index(row, col));
-            xlsx.write(row + 2, col + 1, value);
+
+            if (col == 4) {
+                // On transforme la date en texte simple "dd/MM/yyyy"
+                // Cela évite les "######" et l'heure "00:00" dans Excel
+                if (value.type() == QVariant::Date || value.type() == QVariant::DateTime) {
+                    xlsx.write(row + 2, col + 1, value.toDate().toString("dd/MM/yyyy"));
+                } else {
+                    xlsx.write(row + 2, col + 1, value);
+                }
+            }
+            else {
+                // Pour toutes les autres colonnes, on écrit normalement
+                xlsx.write(row + 2, col + 1, value);
+            }
         }
     }
 
+    // 3. Sauvegarder le fichier
     if (xlsx.saveAs(fileName))
         QMessageBox::information(this, "Succès", "Exportation réussie !");
     else
@@ -384,46 +477,48 @@ void GEvenement::on_Excel_clicked()
 void GEvenement::on_Statistiques_2_clicked()
 {
     QSqlQuery query;
-    // On récupère toutes les lignes, on fera les regroupements en C++
+
+    // On sélectionne le Type et le Nbr_Participants
     if (!query.exec("SELECT Type_Evenement, Nbr_Participants FROM Evenement")) {
-        QMessageBox::warning(this, "Erreur SQL",
-                             "Impossible de récupérer les évènements :\n"
-                                 + query.lastError().text());
+        QMessageBox::critical(this, "Erreur", "Impossible de récupérer les statistiques.\n" + query.lastError().text());
         return;
     }
 
-    int nbMusique = 0;
-    int nbCinema  = 0;
-    int nbAutre   = 0;
+    int totalMusique = 0;
+    int totalCinema  = 0;
+    int totalAutre   = 0;
 
     while (query.next()) {
+        // On nettoie le texte (minuscule + sans espaces inutiles) pour éviter les erreurs
         QString type = query.value(0).toString().trimmed().toLower();
-        int nbr      = query.value(1).toInt();
 
-        // 💿 Musique
+        // RECUPERATION DE LA VALEUR A AJOUTER :
+        // Option A : Si vous voulez comparer le NOMBRE de participants (Popularité)
+        int valeur = query.value(1).toInt();
+
+        // Option B : Si vous voulez comparer le NOMBRE D'EVENEMENTS (Fréquence)
+        // int valeur = 1; // Décommentez cette ligne et commentez celle du dessus pour l'Option B
+
         if (type.contains("musique")) {
-            nbMusique += nbr;
+            totalMusique += valeur;
         }
-        // 🎬 Cinéma (on gère sans / avec accent)
         else if (type.contains("cinema") || type.contains("cinéma")) {
-            nbCinema += nbr;
+            totalCinema += valeur;
         }
-        // 🌈 Tous les autres types → "Autre"
         else {
-            nbAutre += nbr;
+            totalAutre += valeur;
         }
     }
 
-    int total = nbMusique + nbCinema + nbAutre;
-
-    if (total == 0) {
-        QMessageBox::information(this, "Statistiques",
-                                 "Aucun évènement trouvé dans la base.");
+    // On vérifie qu'il y a des données pour éviter un graphique vide
+    if ((totalMusique + totalCinema + totalAutre) == 0) {
+        QMessageBox::information(this, "Info", "Aucune donnée à afficher pour le moment.");
         return;
     }
 
-    // ⚠️ Remplace 'widgetStat' par l'objectName réel de ton widget promu
-    ui->StatisqueWidget->setData(nbMusique, nbCinema, nbAutre);
+    // On envoie les chiffres calculés à votre Widget personnalisé
+    // C'est lui qui va dessiner le beau graphique "Donut" qu'on a fait avant
+    ui->StatisqueWidget->setData(totalMusique, totalCinema, totalAutre);
 }
 
 void GEvenement::on_Localiser_clicked()

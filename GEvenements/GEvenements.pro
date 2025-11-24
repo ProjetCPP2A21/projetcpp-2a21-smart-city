@@ -2,7 +2,7 @@ QT       += core gui
 QT       += core gui sql
 QT += core gui widgets sql
 QT += network
-QT += quick positioning location quick quickwidgets
+QT += quick positioning location quick quickwidgets charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,19 +11,26 @@ CONFIG += c++17
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
+# On ajoute le dossier src aux chemins d'inclusion
+FASTTEXT_PATH = "$$PWD/FastText/fastText-main/src"
 SOURCES += \
+    classification.cpp \
+    datedelegate.cpp \
     evenement.cpp \
     main.cpp \
     gevenement.cpp \
     connection.cpp \
     statistique.cpp
 
+
 HEADERS += \
+    classification.h \
+    datedelegate.h \
     evenement.h \
     gevenement.h \
     connection.h \
     statistique.h
+
 
 FORMS += \
     gevenement.ui

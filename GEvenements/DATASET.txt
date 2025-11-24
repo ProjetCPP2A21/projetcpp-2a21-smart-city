@@ -1,0 +1,33 @@
+__label__0 cinema film salle obscure projection
+__label__0 restaurant diner repas gastronomie
+__label__0 bibliotheque livre lecture silence etagere
+__label__0 musee art galerie peinture exposition
+__label__0 conference reunion salle debat bureau
+__label__0 theatre scene rideau spectacle comedie
+__label__0 gymnase sport interieur basket dojo
+__label__0 piscine couverte nager eau
+__label__0 appartement salon soiree amis maison
+__label__0 opera musique classique fauteuil ballet
+__label__0 seminaire travail bureau meeting
+__label__0 cafe bistrot boisson table bar
+__label__0 bowling jeu piste interieur
+__label__0 salle de concert acoustique
+__label__0 universite cours amphitheatre
+__label__0 discotheque club danse nuit
+__label__0 hotel chambre reception
+__label__1 parc promenade nature arbre banc
+__label__1 stade football match gradins rugby supporters
+__label__1 manifestation rue foule cortege slogan
+__label__1 plage sable soleil mer baignade vagues
+__label__1 randonnee montagne sentier foret bois
+__label__1 marche place publique etal fruits legumes
+__label__1 festival musique plein air boue rock
+__label__1 jardin fleurs herbe banc exterieur
+__label__1 camping tente nature feu
+__label__1 foire brocante vide-grenier rue
+__label__1 marathon course route bitume
+__label__1 pique-nique pelouse dejeuner dehors
+__label__1 feu d'artifice ciel nuit exterieur
+__label__1 carnaval defile char ville
+__label__1 barbecue jardin grillade ete
+__label__1 rue pietonne balade magasin

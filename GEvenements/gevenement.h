@@ -10,6 +10,7 @@
 #include <QQuickView>
 #include <QGeoCodingManager>
 #include <QGeoServiceProvider>
+#include <QLabel>
 
 
 QT_BEGIN_NAMESPACE
@@ -54,6 +55,7 @@ private:
     QQuickView *mapView;
     QGeoCodingManager *geoCoder;
     QObject *rootMapObject;
+    QLabel *labelScore;
 
 
 
