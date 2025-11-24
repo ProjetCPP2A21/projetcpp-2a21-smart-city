@@ -11,6 +11,9 @@
 #include <QGeoCodingManager>
 #include <QGeoServiceProvider>
 #include <QLabel>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QProcess>
 
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +32,7 @@ public:
 
 private slots:
 
-
+    void onGpsProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void on_Ajouterbutton_clicked();
 
     void on_Supprimer_clicked();
@@ -48,6 +51,8 @@ private slots:
 
     void on_Localiser_clicked();
 
+    void on_btnItineraire_clicked();
+
 private:
     Ui::GEvenement *ui;
     Evenement E;
@@ -56,6 +61,9 @@ private:
     QGeoCodingManager *geoCoder;
     QObject *rootMapObject;
     QLabel *labelScore;
+    QProcess *gpsProcess;
+    double myLatitude;
+    double myLongitude;
 
 
 

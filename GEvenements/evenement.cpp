@@ -145,9 +145,7 @@ QSqlQueryModel *Evenement::rechercher(int id)
 
 ImpactResult Evenement::predireImpact(int id)
 {
-    // =========================================================
     // 🔹 ÉTAPE 1 : RÉCUPÉRATION DES DONNÉES (SQL)
-    // =========================================================
     QSqlQuery query;
     query.prepare("SELECT Type_Evenement, lieu, nbr_Participants FROM evenement WHERE id_evenement = :id");
     query.bindValue(":id", id);
@@ -162,7 +160,6 @@ ImpactResult Evenement::predireImpact(int id)
     int nbrParticipants = query.value(2).toInt();
     // 🔹 Étape 2 : déterminer le type (0 = intérieur, 1 = extérieur)
     // 🔹 Étape 2 : Déterminer le type avec notre IA (Bayes)
-    // ----------------------------------------------------
 
     // On déclare l'IA en "static" pour qu'elle ne s'initialise qu'une seule fois (performance)
     static Classification intelligenceArtificielle;
@@ -179,11 +176,8 @@ ImpactResult Evenement::predireImpact(int id)
         qDebug() << "🧠 IA : Analyse de '" << texteAAnalyser << "' -> Détecté comme INTÉRIEUR";
     }
 
-    // ----------------------------------------------------
 
-    // =========================================================
     // 🔹 ÉTAPE 4 : CALCUL D'IMPACT (ONNX)
-    // =========================================================
     const OrtApi* g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
     OrtEnv* env = nullptr;
     g_ort->CreateEnv(ORT_LOGGING_LEVEL_WARNING, "GEvenement", &env);

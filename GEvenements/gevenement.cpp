@@ -32,6 +32,8 @@
 #include <QStyledItemDelegate>
 #include "datedelegate.h"
 #include <QVBoxLayout>
+#include <QGeoPositionInfoSource>
+#include <QDebug>
 
 using namespace QXlsx;
 
@@ -41,6 +43,47 @@ GEvenement::GEvenement(QWidget *parent)
     , ui(new Ui::GEvenement)
 {
     ui->setupUi(this);
+    gpsProcess = new QProcess(this);
+    connect(gpsProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+            this, &GEvenement::onGpsProcessFinished);
+
+    // La commande PowerShell pour interroger le vrai GPS Windows
+    // Elle charge la DLL système, crée un watcher, attend 3 secondes la stabilisation et affiche Lat,Lon
+    QString script = "Add-Type -AssemblyName System.Device; "
+                     "$watcher = New-Object System.Device.Location.GeoCoordinateWatcher; "
+                     "$watcher.Start(); "
+                     "$count = 0; "
+                     "while (($watcher.Status -ne 'Ready') -and ($count -lt 5)) { Start-Sleep -Milliseconds 500; $count++ }; "
+                     "$coord = $watcher.Position.Location; "
+                     "if ($coord.IsUnknown -ne $true) { Write-Output \"$($coord.Latitude),$($coord.Longitude)\" } "
+                     "else { Write-Output \"Unknown\" }";
+
+    QStringList arguments;
+    arguments << "-NoProfile" << "-Command" << script;
+
+    qDebug() << "Lancement de la recherche GPS précise via Windows...";
+    gpsProcess->start("powershell", arguments);
+
+    // 2. Essayer de créer la source par défaut
+    QGeoPositionInfoSource *source = QGeoPositionInfoSource::createDefaultSource(this);
+    if (source) {
+        qDebug() << "Succès : Une source par défaut a été créée (" << source->sourceName() << ")";
+
+        // Connecter les erreurs pour voir pourquoi ça échoue plus tard
+        connect(source, &QGeoPositionInfoSource::errorOccurred, this, [](QGeoPositionInfoSource::Error error){
+            qDebug() << "ERREUR SIGNALÉE PAR LE GPS :" << error;
+            if (error == QGeoPositionInfoSource::AccessError)
+                qDebug() << " -> Accès refusé par l'OS (Paramètres de confidentialité Windows ?)";
+            if (error == QGeoPositionInfoSource::ClosedError)
+                qDebug() << " -> Le système de localisation est fermé ou indisponible.";
+        });
+
+        source->startUpdates(); // On tente de démarrer pour voir si ça crashe ou si ça erreur
+    } else {
+        qDebug() << "ERREUR : Impossible de créer la source par défaut, même si des plugins existent.";
+    }
+    qDebug() << "--- FIN DU TEST ---";
+    // --- DIAGNOSTIC GPS FIN ---
     // --- CORRECTION : PAS DE LAYOUT ---
     // On crée juste le label pour le dessin, sans toucher au reste du design.
     labelScore = new QLabel(ui->frame_Prediction);
@@ -66,18 +109,6 @@ GEvenement::GEvenement(QWidget *parent)
     ui->MapWidget->setFocusPolicy(Qt::StrongFocus);
     ui->MapWidget->setSource(QUrl::fromLocalFile("C:/Users/ASUS/Desktop/Smart City/GEvenements/Map.qml"));
     ui->MapWidget->setFocus();  // important pour que la souris et le clavier interagissent
-
-    // Initialiser dictionnaire lieu → lat/lon
-    lieuCoords = {
-        {"tunis", QPointF(36.8065, 10.1815)},
-        {"ariana", QPointF(36.8665, 10.1647)},
-        {"sousse", QPointF(35.8256, 10.6084)},
-        {"sfax", QPointF(34.7406, 10.7603)},
-        {"bizerte", QPointF(37.2746, 9.8739)},
-        {"gabes", QPointF(33.8815, 10.0994)},
-        {"azur city", QPointF(36.8, 10.2)},
-        {"geant", QPointF(36.81, 10.18)}
-    };
 }
 
 GEvenement::~GEvenement()
@@ -243,7 +274,7 @@ void GEvenement::on_Prediction_clicked()
     ui->Dioxyde->setText(
         QString("<html><head/><body><p>"
                 "🌫️ CO₂ : <b>%1 kg</b><br/>"
-                "🏭 Pollution : <b>%2</b>"
+                "🏭 Pollution : <b>%2</b> ug/m3"
                 "</p></body></html>")
             .arg(impact.co2, 0, 'f', 2)
             .arg(impact.pollution, 0, 'f', 2)
@@ -452,7 +483,6 @@ void GEvenement::on_Excel_clicked()
 
             if (col == 4) {
                 // On transforme la date en texte simple "dd/MM/yyyy"
-                // Cela évite les "######" et l'heure "00:00" dans Excel
                 if (value.type() == QVariant::Date || value.type() == QVariant::DateTime) {
                     xlsx.write(row + 2, col + 1, value.toDate().toString("dd/MM/yyyy"));
                 } else {
@@ -531,17 +561,13 @@ void GEvenement::on_Localiser_clicked()
         return;
     }
 
-    // Préparer la requête Nominatim
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu+",Tunisie";
+    QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu + ",Tunisie";
     QNetworkRequest request(url);
-
-    // Obligatoire : Nominatim exige un User-Agent
     request.setHeader(QNetworkRequest::UserAgentHeader, "QtApp");
 
     connect(manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply) {
-
+        // ... (votre code de parsing JSON reste identique) ...
         QByteArray data = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(data);
         QJsonArray arr = doc.array();
@@ -551,18 +577,19 @@ void GEvenement::on_Localiser_clicked()
             return;
         }
 
-        // Récupération des coordonnées GPS
         QJsonObject obj = arr.first().toObject();
         double lat = obj["lat"].toString().toDouble();
         double lon = obj["lon"].toString().toDouble();
 
-        // Appel aux fonctions QML
         QObject *rootObject = ui->MapWidget->rootObject();
-        if (!rootObject) {
-            QMessageBox::critical(this, "Erreur", "Map QML non chargée !");
-            return;
-        }
+        if (!rootObject) return;
 
+        // --- AJOUTS ICI ---
+
+        // 1. On efface tout ancien trajet (Ligne bleue + marqueur vert)
+        QMetaObject::invokeMethod(rootObject, "clearRoute");
+
+        // 2. On centre et on met le marqueur rouge (Destination)
         QMetaObject::invokeMethod(rootObject, "centerOn",
                                   Q_ARG(QVariant, lat),
                                   Q_ARG(QVariant, lon));
@@ -575,3 +602,113 @@ void GEvenement::on_Localiser_clicked()
     manager->get(request);
 }
 
+
+void GEvenement::on_btnItineraire_clicked()
+{
+    // 1. Récupérer l'ID et le lieu (comme pour Localiser)
+    int id = ui->ID_localisation->text().toInt();
+    QString lieu = E.RecupererLieu(id);
+
+    if (lieu.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez entrer un ID valide pour récupérer le lieu.");
+        return;
+    }
+
+    // 2. Requête Nominatim pour trouver les coordonnées de la destination
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu + ",Tunisie";
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::UserAgentHeader, "QtApp_Projet_NeoCity");
+
+    connect(manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply) {
+        if (reply->error() != QNetworkReply::NoError) {
+            QMessageBox::warning(this, "Erreur Réseau", reply->errorString());
+            reply->deleteLater();
+            return;
+        }
+
+        QByteArray data = reply->readAll();
+        QJsonDocument doc = QJsonDocument::fromJson(data);
+        QJsonArray arr = doc.array();
+
+        if (arr.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Lieu introuvable via GPS !");
+            reply->deleteLater();
+            return;
+        }
+
+        // 3. Extraction des coordonnées de destination
+        QJsonObject obj = arr.first().toObject();
+        double latDest = obj["lat"].toString().toDouble();
+        double lonDest = obj["lon"].toString().toDouble();
+
+        // 4. Appel de la fonction QML pour tracer la route
+        QObject *rootObject = ui->MapWidget->rootObject();
+        if (rootObject) {
+            // On centre d'abord sur la destination pour être sûr
+            // (Optionnel, vous pouvez commenter si vous voulez voir tout le trajet avec le zoom auto)
+            /*
+            QMetaObject::invokeMethod(rootObject, "centerOn",
+                                      Q_ARG(QVariant, latDest),
+                                      Q_ARG(QVariant, lonDest));
+            */
+
+            // --- CORRECTION ICI : On passe 4 ARGUMENTS (Départ + Arrivée) ---
+            // On utilise vos variables membres myLatitude/myLongitude (remplies par le GPS Windows)
+
+            // Sécurité : Si le GPS n'a rien trouvé, on met une valeur par défaut (ex: Tunis)
+            double departLat = (this->myLatitude != 0) ? this->myLatitude : 36.8065;
+            double departLon = (this->myLongitude != 0) ? this->myLongitude : 10.1815;
+
+            QMetaObject::invokeMethod(rootObject, "calculateRoute",
+                                      Q_ARG(QVariant, departLat),   // 1. Latitude Départ (Moi)
+                                      Q_ARG(QVariant, departLon),   // 2. Longitude Départ (Moi)
+                                      Q_ARG(QVariant, latDest),     // 3. Latitude Arrivée (Event)
+                                      Q_ARG(QVariant, lonDest));    // 4. Longitude Arrivée (Event)
+
+        } else {
+            QMessageBox::critical(this, "Erreur", "Impossible de communiquer avec la carte.");
+        }
+        reply->deleteLater();
+    });
+
+    manager->get(request);
+}
+
+void GEvenement::onGpsProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    if (exitStatus == QProcess::CrashExit || exitCode != 0) {
+        qDebug() << "Erreur : Le processus GPS a échoué.";
+        return;
+    }
+
+    QByteArray output = gpsProcess->readAllStandardOutput().trimmed();
+    QString result = QString::fromUtf8(output);
+
+    if (!result.isEmpty() && result != "Unknown") {
+        QStringList parts = result.split(',');
+        if (parts.size() == 2) {
+            bool latOk, lonOk;
+            double lat = parts[0].replace(',', '.').toDouble(&latOk);
+            double lon = parts[1].replace(',', '.').toDouble(&lonOk);
+
+            if (latOk && lonOk) {
+                this->myLatitude = lat;
+                this->myLongitude = lon;
+                qDebug() << "✅ GPS PRÉCIS TROUVÉ (VERT) :" << lat << lon;
+
+                // --- CORRECTION ICI ---
+                QObject *rootObject = ui->MapWidget->rootObject();
+                if (rootObject) {
+                    // On appelle EXPLICITEMENT "addGreenMarker" au lieu de "addMarker"
+                    QMetaObject::invokeMethod(rootObject, "addGreenMarker",
+                                              Q_ARG(QVariant, lat),
+                                              Q_ARG(QVariant, lon));
+                }
+                // ----------------------
+            }
+        }
+    } else {
+        qDebug() << "⚠️ GPS Windows n'a pas pu fixer la position.";
+    }
+}
