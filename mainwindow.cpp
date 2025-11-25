@@ -167,7 +167,21 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
     ui->lineEdit_sexe->setText(ui->tableView->model()->index(row, 5).data().toString());
     ui->lineEdit_profession->setText(ui->tableView->model()->index(row, 6).data().toString());
     ui->lineEdit_situation->setText(ui->tableView->model()->index(row, 7).data().toString());
+
+    // 🔹 Récupération des valeurs une seule fois
+    int age = ui->lineEdit_age->text().toInt();
+    QString profession = ui->lineEdit_profession->text();
+    QString situation = ui->lineEdit_situation->text();
+
+    // 🔵 Calcul stabilité
+    QString stab = calculerStabilite(age, profession, situation);
+    ui->label_stabilite->setText("Stabilité sociale : " + stab);
+
+    // 🟢 Calcul mobilité
+    QString mobilite = calculerMobilite(age, profession, situation);
+    ui->labelMobilite->setText("Mobilité : " + mobilite);
 }
+
 
 void MainWindow::on_btn_statistiques_clicked()
 {
@@ -354,3 +368,72 @@ void MainWindow::on_btnExportPDF_clicked()
     QMessageBox::information(this, "PDF", "PDF Exporté avec succès !");
 }
 
+QString MainWindow::calculerStabilite(int age, QString profession, QString situation)
+{
+    profession = profession.toLower();
+    situation = situation.toLower();
+
+    // Stabilité élevée
+    if ((profession.contains("cdi") ||
+         profession.contains("employ") ||
+         profession.contains("ingen") ||
+         profession.contains("medec") ||
+         profession.contains("medec") ||
+         profession.contains("enseign")))
+    {
+        if (situation.contains("mari") && (age >= 25 && age <= 55))
+            return "Élevée";
+    }
+
+    // Stabilité moyenne
+    if ((profession.contains("etud") ||
+         profession.contains("ouv") ||
+         profession.contains("indep")))
+    {
+        if (situation.contains("celib") && (age >= 20 && age <= 40))
+            return "Moyenne";
+    }
+
+    // Sinon stabilité faible
+    return "Faible";
+}
+
+QString MainWindow::calculerMobilite(int age, QString profession, QString situation)
+{
+    profession = profession.toLower();
+    situation = situation.toLower();
+
+    // 🔵 Mobilité élevée
+    if (age < 40 &&
+        (profession.contains("etudiant") ||
+         profession.contains("employe") ||
+         profession.contains("medecin") ||
+         profession.contains("ingenieur") ||
+         profession.contains("enseignant")) &&
+        (situation.contains("celibataire") ||
+         situation.contains("marier")))
+    {
+        return "Mobilité élevée – Peut participer aux activités extérieures";
+    }
+
+    // 🟡 Mobilité moyenne
+    if (age >= 40 && age <= 60 &&
+        (profession.contains("ouvrier") ||
+         profession.contains("independant")) &&
+        situation.contains("marier"))
+    {
+        return "Mobilité moyenne – Mobilité correcte";
+    }
+
+    // 🔴 Mobilité faible
+    if (age > 60 ||
+        profession.contains("sans emploi") ||
+        profession.contains("retraite") ||
+        situation.contains("veuf"))
+    {
+        return "Mobilité faible – Peut nécessiter assistance";
+    }
+
+    // Valeur par défaut
+    return "Mobilité non définie";
+}

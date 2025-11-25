@@ -34,6 +34,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void clearFields();
+    QString calculerStabilite(int age, QString profession, QString situation);
+    QString calculerMobilite(int age, QString profession, QString situation);
+
+
 
 };
 
