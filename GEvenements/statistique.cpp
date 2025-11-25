@@ -71,7 +71,7 @@ void Statistique::setData(int nbMusique, int nbCinema, int nbAutre)
     // 2. Création du graphique
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Répartition");
+    chart->setTitle("Répartition des types d'évènement");
     chart->setTitleFont(QFont("Arial", 10, QFont::Bold));
     chart->setAnimationOptions(QChart::AllAnimations);
     chart->legend()->hide();

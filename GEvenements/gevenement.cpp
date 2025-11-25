@@ -260,7 +260,7 @@ void GEvenement::on_Recherche_Line_textChanged(const QString &text)
 
 void GEvenement::on_Prediction_clicked()
 {
-    // 1. Récupération et calcul (inchangé)
+    // 1. Récupération et calcul
     int id = ui->Id_Evenement->text().toInt();
     ImpactResult impact = E.predireImpact(id);
 
@@ -269,59 +269,57 @@ void GEvenement::on_Prediction_clicked()
         return;
     }
 
-    // 2. Mise à jour du texte existant (CO2 et Pollution)
-    // On garde le label ui->Dioxyde à sa place définie dans Qt Designer
+    // 2. Mise à jour du texte
     ui->Dioxyde->setText(
         QString("<html><head/><body><p>"
                 "🌫️ CO₂ : <b>%1 kg</b><br/>"
-                "🏭 Pollution : <b>%2</b> ug/m3"
+                "🏭 Pollution : <b>%2</b> <span style='font-size:10pt;'>ug/m³</span>"
                 "</p></body></html>")
             .arg(impact.co2, 0, 'f', 2)
             .arg(impact.pollution, 0, 'f', 2)
         );
 
-    // 3. --- POSITIONNEMENT ET DESSIN DE LA JAUGE ---
+    // 3. --- DESSIN DE LA JAUGE ---
     labelScore->setVisible(true);
 
-    // A. On calcule la position manuellement pour le mettre EN BAS du frame
     int frameW = ui->frame_Prediction->width();
     int frameH = ui->frame_Prediction->height();
-    int gaugeHeight = 50;
+    int gaugeHeight = 60; // Hauteur suffisante pour tout contenir
 
-    // setGeometry(x, y, largeur, hauteur)
-    // On le place à 10px du bord gauche, et tout en bas (hauteur - 55px)
+    // Positionnement du label dans le cadre
     labelScore->setGeometry(10, frameH - gaugeHeight - 5, frameW - 20, gaugeHeight);
 
-    // B. Préparation du dessin
     QPixmap pixmap(labelScore->width(), labelScore->height());
     pixmap.fill(Qt::transparent);
 
     QPainter painter(&pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // C. Dessin de la barre dégradée
+    // Marge latérale
+    int margin = 30;
+    int usefulWidth = labelScore->width() - (2 * margin);
+
+    // Position verticale de la barre (vers le bas)
     int barHeight = 10;
-    // On place la barre en bas du label
-    int barY = gaugeHeight - barHeight - 5;
-    QRect barRect(0, barY, labelScore->width(), barHeight); // On utilise toute la largeur du label
+    int barY = gaugeHeight - barHeight - 10;
+
+    QRect barRect(margin, barY, usefulWidth, barHeight);
 
     QLinearGradient gradient(barRect.topLeft(), barRect.topRight());
-    gradient.setColorAt(0.0, QColor("#3498db")); // Bleu
-    gradient.setColorAt(1.0, QColor("#8e44ad")); // Violet
+    gradient.setColorAt(0.0, QColor("#3498db"));
+    gradient.setColorAt(0.35, QColor("#800080"));
+    gradient.setColorAt(0.7, QColor("#FF4500"));
+    gradient.setColorAt(1.0, QColor("#8B0000"));
 
     painter.setBrush(gradient);
     painter.setPen(Qt::NoPen);
     painter.drawRoundedRect(barRect, 5, 5);
 
-    // D. Dessin du Curseur (Triangle)
+    // Position X du curseur (pointe du triangle)
     double scoreSecure = (impact.impact < 0) ? 0 : (impact.impact > 1 ? 1 : impact.impact);
-    int usefulWidth = labelScore->width();
-    int cursorX = (int)(scoreSecure * usefulWidth);
+    int cursorX = margin + (int)(scoreSecure * usefulWidth);
 
-    // On empêche le curseur de sortir des bords
-    if (cursorX < 6) cursorX = 6;
-    if (cursorX > usefulWidth - 6) cursorX = usefulWidth - 6;
-
+    // Dessin du Triangle
     QPolygon triangle;
     triangle << QPoint(cursorX, barY - 2)
              << QPoint(cursorX - 6, barY - 10)
@@ -329,48 +327,56 @@ void GEvenement::on_Prediction_clicked()
     painter.setBrush(Qt::white);
     painter.drawPolygon(triangle);
 
-    // E. Dessin du Texte (Score)
+    // Dessin du Texte (Score) avec "CLAMPING"
     QString textScore = QString::number(impact.impact, 'f', 2);
     painter.setPen(Qt::white);
     QFont font("Arial", 10, QFont::Bold);
     painter.setFont(font);
+
+    // Calcul précis de la largeur du texte
     int textWidth = painter.fontMetrics().horizontalAdvance(textScore);
 
-    // On dessine le texte au-dessus de la flèche
-    painter.drawText(cursorX - (textWidth / 2), barY - 12, textScore);
+    // Position idéale (centrée sur le curseur)
+    int textX = cursorX - (textWidth / 2);
+
+    // --- PROTECTION BORDS (CLAMPING) ---
+    // Si le texte dépasse à gauche (< 0), on le bloque à 0
+    if (textX < 0) {
+        textX = 0;
+    }
+    // Si le texte dépasse à droite (> largeur totale), on le bloque contre le bord droit
+    else if (textX + textWidth > labelScore->width()) {
+        textX = labelScore->width() - textWidth;
+    }
+
+    // Dessin à la position corrigée textX
+    painter.drawText(textX, barY - 12, textScore);
 
     painter.end();
     labelScore->setPixmap(pixmap);
-    labelScore->raise(); // S'assure que la jauge est au-dessus du fond
-    // ---------------------------------------------
+    labelScore->raise();
 
-
-    // 4. Animation du cadre (Optionnel, inchangé)
+    // 4. Animation (Clignotement si score élevé)
     if (impact.impact > 0.80) {
         QTimer *timer = new QTimer(this);
-        int *count = new int(0); // Compteur de clignotements
-
+        int *count = new int(0);
         connect(timer, &QTimer::timeout, this, [this, timer, count]() {
-            if (*count >= 6) { // Arrêter après 6 changements (3 clignotements)
-                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }"); // Retour couleur normale (Adaptez le code couleur si besoin)
+            if (*count >= 18) {
+                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }");
                 timer->stop();
                 timer->deleteLater();
                 delete count;
                 return;
             }
-
-            // Alterner entre Rouge et la couleur de fond normale
             if (*count % 2 == 0) {
-                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #c0392b; border-radius: 10px; }"); // ROUGE
+                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #c0392b; border-radius: 10px; }");
             } else {
-                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }"); // NORMAL (Gris foncé/Bleu nuit)
+                ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }");
             }
             (*count)++;
         });
-
-        timer->start(800); // Vitesse du clignotement (300ms)
+        timer->start(500);
     } else {
-        // Si le score est bon, on s'assure que le fond est normal
         ui->frame_Prediction->setStyleSheet("QFrame { background-color: #2c3e50; border-radius: 10px; }");
     }
 }
