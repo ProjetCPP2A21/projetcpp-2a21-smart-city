@@ -234,7 +234,11 @@ public:
         label_16 = new QLabel(Ajouter);
         label_16->setObjectName("label_16");
         label_16->setGeometry(QRect(20, 330, 121, 16));
-        label_16->setFont(font1);
+        QFont font2;
+        font2.setFamilies({QString::fromUtf8("Rockwell")});
+        font2.setPointSize(12);
+        font2.setBold(false);
+        label_16->setFont(font2);
         label_16->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
         lineEdit_nbrUnit = new QLineEdit(Ajouter);
@@ -266,20 +270,20 @@ public:
         label_17 = new QLabel(Ajouter);
         label_17->setObjectName("label_17");
         label_17->setGeometry(QRect(30, 80, 81, 21));
-        QFont font2;
-        font2.setFamilies({QString::fromUtf8("Rockwell")});
-        font2.setPointSize(11);
-        font2.setBold(true);
-        label_17->setFont(font2);
+        QFont font3;
+        font3.setFamilies({QString::fromUtf8("Rockwell")});
+        font3.setPointSize(11);
+        font3.setBold(true);
+        label_17->setFont(font3);
         label_17->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
         pushButton_add = new QPushButton(Ajouter);
         pushButton_add->setObjectName("pushButton_add");
         pushButton_add->setGeometry(QRect(120, 530, 101, 41));
-        QFont font3;
-        font3.setFamilies({QString::fromUtf8("Bahnschrift")});
-        font3.setBold(true);
-        pushButton_add->setFont(font3);
+        QFont font4;
+        font4.setFamilies({QString::fromUtf8("Bahnschrift")});
+        font4.setBold(true);
+        pushButton_add->setFont(font4);
         pushButton_add->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -296,7 +300,7 @@ public:
         pushButton_update = new QPushButton(Ajouter);
         pushButton_update->setObjectName("pushButton_update");
         pushButton_update->setGeometry(QRect(10, 530, 101, 41));
-        pushButton_update->setFont(font3);
+        pushButton_update->setFont(font4);
         pushButton_update->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -313,7 +317,7 @@ public:
         pushButton_delete = new QPushButton(Ajouter);
         pushButton_delete->setObjectName("pushButton_delete");
         pushButton_delete->setGeometry(QRect(230, 530, 101, 41));
-        pushButton_delete->setFont(font3);
+        pushButton_delete->setFont(font4);
         pushButton_delete->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -368,7 +372,7 @@ public:
         trie = new QPushButton(page_3);
         trie->setObjectName("trie");
         trie->setGeometry(QRect(990, 60, 91, 31));
-        trie->setFont(font3);
+        trie->setFont(font4);
         trie->setStyleSheet(QString::fromUtf8(" QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -385,7 +389,7 @@ public:
         exporter = new QPushButton(page_3);
         exporter->setObjectName("exporter");
         exporter->setGeometry(QRect(1050, 420, 91, 31));
-        exporter->setFont(font3);
+        exporter->setFont(font4);
         exporter->setStyleSheet(QString::fromUtf8(" QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -411,16 +415,16 @@ public:
         label_23 = new QLabel(frame_2);
         label_23->setObjectName("label_23");
         label_23->setGeometry(QRect(80, 50, 121, 31));
-        QFont font4;
-        font4.setFamilies({QString::fromUtf8("Bahnschrift")});
-        font4.setPointSize(18);
-        font4.setBold(true);
-        label_23->setFont(font4);
+        QFont font5;
+        font5.setFamilies({QString::fromUtf8("Bahnschrift")});
+        font5.setPointSize(18);
+        font5.setBold(true);
+        label_23->setFont(font5);
         label_23->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
         RH = new QPushButton(frame_2);
         RH->setObjectName("RH");
         RH->setGeometry(QRect(0, 130, 131, 61));
-        RH->setFont(font3);
+        RH->setFont(font4);
         RH->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -437,7 +441,7 @@ public:
         residence = new QPushButton(frame_2);
         residence->setObjectName("residence");
         residence->setGeometry(QRect(10, 190, 171, 61));
-        residence->setFont(font3);
+        residence->setFont(font4);
         residence->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -454,7 +458,7 @@ public:
         pushButton_13 = new QPushButton(frame_2);
         pushButton_13->setObjectName("pushButton_13");
         pushButton_13->setGeometry(QRect(0, 250, 171, 61));
-        pushButton_13->setFont(font3);
+        pushButton_13->setFont(font4);
         pushButton_13->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -477,7 +481,7 @@ public:
         pushButton_14 = new QPushButton(frame_2);
         pushButton_14->setObjectName("pushButton_14");
         pushButton_14->setGeometry(QRect(0, 370, 181, 61));
-        pushButton_14->setFont(font3);
+        pushButton_14->setFont(font4);
         pushButton_14->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -494,7 +498,7 @@ public:
         pushButton_15 = new QPushButton(frame_2);
         pushButton_15->setObjectName("pushButton_15");
         pushButton_15->setGeometry(QRect(0, 310, 171, 61));
-        pushButton_15->setFont(font3);
+        pushButton_15->setFont(font4);
         pushButton_15->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -511,7 +515,7 @@ public:
         statistique = new QPushButton(page_3);
         statistique->setObjectName("statistique");
         statistique->setGeometry(QRect(1050, 480, 91, 31));
-        statistique->setFont(font3);
+        statistique->setFont(font4);
         statistique->setStyleSheet(QString::fromUtf8(" QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -547,11 +551,11 @@ public:
         affichage->setObjectName("affichage");
         affichage->setGeometry(QRect(600, 170, 711, 241));
         affichage->setStyleSheet(QString::fromUtf8("border-raduis : 20px;\n"
-"background-color : #e1e5ff;"));
+"background-color : #111111;"));
         recherche = new QPushButton(page_3);
         recherche->setObjectName("recherche");
         recherche->setGeometry(QRect(890, 60, 91, 31));
-        recherche->setFont(font3);
+        recherche->setFont(font4);
         recherche->setStyleSheet(QString::fromUtf8(" QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -588,7 +592,7 @@ public:
         pushButton_23 = new QPushButton(page_4);
         pushButton_23->setObjectName("pushButton_23");
         pushButton_23->setGeometry(QRect(1240, 400, 101, 51));
-        pushButton_23->setFont(font3);
+        pushButton_23->setFont(font4);
         pushButton_23->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -605,7 +609,7 @@ public:
         pushButton_21 = new QPushButton(page_4);
         pushButton_21->setObjectName("pushButton_21");
         pushButton_21->setGeometry(QRect(1040, 70, 101, 51));
-        pushButton_21->setFont(font3);
+        pushButton_21->setFont(font4);
         pushButton_21->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -645,12 +649,12 @@ public:
         label_20 = new QLabel(frame);
         label_20->setObjectName("label_20");
         label_20->setGeometry(QRect(80, 50, 121, 31));
-        label_20->setFont(font4);
+        label_20->setFont(font5);
         label_20->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
         pushButton = new QPushButton(frame);
         pushButton->setObjectName("pushButton");
         pushButton->setGeometry(QRect(20, 130, 131, 61));
-        pushButton->setFont(font3);
+        pushButton->setFont(font4);
         pushButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -667,7 +671,7 @@ public:
         pushButton_5 = new QPushButton(frame);
         pushButton_5->setObjectName("pushButton_5");
         pushButton_5->setGeometry(QRect(10, 190, 171, 61));
-        pushButton_5->setFont(font3);
+        pushButton_5->setFont(font4);
         pushButton_5->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -684,7 +688,7 @@ public:
         pushButton_7 = new QPushButton(frame);
         pushButton_7->setObjectName("pushButton_7");
         pushButton_7->setGeometry(QRect(0, 250, 171, 61));
-        pushButton_7->setFont(font3);
+        pushButton_7->setFont(font4);
         pushButton_7->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -707,7 +711,7 @@ public:
         pushButton_9 = new QPushButton(frame);
         pushButton_9->setObjectName("pushButton_9");
         pushButton_9->setGeometry(QRect(0, 370, 181, 61));
-        pushButton_9->setFont(font3);
+        pushButton_9->setFont(font4);
         pushButton_9->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -724,7 +728,7 @@ public:
         pushButton_10 = new QPushButton(frame);
         pushButton_10->setObjectName("pushButton_10");
         pushButton_10->setGeometry(QRect(0, 310, 171, 61));
-        pushButton_10->setFont(font3);
+        pushButton_10->setFont(font4);
         pushButton_10->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -750,12 +754,12 @@ public:
         label_22 = new QLabel(frame_3);
         label_22->setObjectName("label_22");
         label_22->setGeometry(QRect(70, 40, 121, 31));
-        label_22->setFont(font4);
+        label_22->setFont(font5);
         label_22->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
         pushButton_2 = new QPushButton(frame_3);
         pushButton_2->setObjectName("pushButton_2");
         pushButton_2->setGeometry(QRect(20, 130, 131, 61));
-        pushButton_2->setFont(font3);
+        pushButton_2->setFont(font4);
         pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -772,7 +776,7 @@ public:
         residence_2 = new QPushButton(frame_3);
         residence_2->setObjectName("residence_2");
         residence_2->setGeometry(QRect(10, 190, 171, 61));
-        residence_2->setFont(font3);
+        residence_2->setFont(font4);
         residence_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -789,7 +793,7 @@ public:
         pushButton_16 = new QPushButton(frame_3);
         pushButton_16->setObjectName("pushButton_16");
         pushButton_16->setGeometry(QRect(0, 250, 171, 61));
-        pushButton_16->setFont(font3);
+        pushButton_16->setFont(font4);
         pushButton_16->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -806,7 +810,7 @@ public:
         pushButton_17 = new QPushButton(frame_3);
         pushButton_17->setObjectName("pushButton_17");
         pushButton_17->setGeometry(QRect(0, 370, 181, 61));
-        pushButton_17->setFont(font3);
+        pushButton_17->setFont(font4);
         pushButton_17->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -823,7 +827,7 @@ public:
         pushButton_18 = new QPushButton(frame_3);
         pushButton_18->setObjectName("pushButton_18");
         pushButton_18->setGeometry(QRect(0, 310, 171, 61));
-        pushButton_18->setFont(font3);
+        pushButton_18->setFont(font4);
         pushButton_18->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2C3E50;\n"
 "    color: white;\n"
@@ -978,13 +982,13 @@ public:
         label_11 = new QLabel(Ajouter_2);
         label_11->setObjectName("label_11");
         label_11->setGeometry(QRect(10, 110, 131, 21));
-        label_11->setFont(font2);
+        label_11->setFont(font3);
         label_11->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);\n"
 "color: rgb(0, 0, 0);"));
         pushButton_6 = new QPushButton(Ajouter_2);
         pushButton_6->setObjectName("pushButton_6");
         pushButton_6->setGeometry(QRect(70, 540, 101, 51));
-        pushButton_6->setFont(font3);
+        pushButton_6->setFont(font4);
         pushButton_6->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -1020,7 +1024,7 @@ public:
         pushButton_20 = new QPushButton(Ajouter_2);
         pushButton_20->setObjectName("pushButton_20");
         pushButton_20->setGeometry(QRect(190, 540, 101, 51));
-        pushButton_20->setFont(font3);
+        pushButton_20->setFont(font4);
         pushButton_20->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -1043,7 +1047,7 @@ public:
         pushButton_22 = new QPushButton(page_4);
         pushButton_22->setObjectName("pushButton_22");
         pushButton_22->setGeometry(QRect(930, 70, 101, 51));
-        pushButton_22->setFont(font3);
+        pushButton_22->setFont(font4);
         pushButton_22->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
@@ -1060,7 +1064,7 @@ public:
         pushButton_19 = new QPushButton(page_4);
         pushButton_19->setObjectName("pushButton_19");
         pushButton_19->setGeometry(QRect(1180, 710, 101, 51));
-        pushButton_19->setFont(font3);
+        pushButton_19->setFont(font4);
         pushButton_19->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #2D89EF;\n"
 "    color: white;\n"
