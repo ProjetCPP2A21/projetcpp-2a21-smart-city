@@ -8,11 +8,25 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QTableWidgetItem>
-#include <QRegularExpression> // <-- AJOUTÉ POUR LA VALIDATION
+#include <QRegularExpression>
+#include <QCryptographicHash> // <-- AJOUTÉ POUR LA SÉCURITÉ
+#include <QByteArray>         // <-- AJOUTÉ POUR LA SÉCURITÉ
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
+#include <QVBoxLayout>
+#include "smtp.h"              // Pour reconnaitre la classe 'Smtp'
+#include <QRandomGenerator>
+#include <QFileDialog>  // Pour la fenêtre "Enregistrer sous"
+#include <QFile>        // Pour écrire dans un fichier
+#include <QTextStream>  // Pour formater le texte du fichier
+// ===============================================
+//using namespace QtCharts;
+#include <QSslSocket>// <-- AJOUTÉ POUR LA VALIDATION
 
 // Définition de la requête SELECT pour garantir l'ordre des colonnes
 // L'ordre doit correspondre à vos en-têtes : {"ID", "nom", "prenom", "telephone", "salaire", "Sexe", "Tâche"}
-const QString SELECT_QUERY = "SELECT ID_EMPLOYE, NOM, PRENOM, NUMTEL_EMPLOYE, SALAIRE, SEXE_EMPLOYE, RESPONSABILITE FROM EMPLOYER";
+const QString SELECT_QUERY = "SELECT ID_EMPLOYE, NOM, PRENOM, NUMTEL_EMPLOYE, SALAIRE, SEXE_EMPLOYE, RESPONSABILITE FROM EMPLOYER"  ;
 // ==================== TABLE ====================
 void MainWindow::afficherEmployes() // Modifié
 {
@@ -196,13 +210,13 @@ void MainWindow::on_tableWidgetEmployes_cellClicked(int row, int column)
     // Récupérer les 'items' de la ligne cliquée
     // Nous vérifions si l'item existe (n'est pas nullptr) avant de lire son texte
 
-    QTableWidgetItem *itemID = ui->tableWidgetEmployes->item(row, 0);
-    QTableWidgetItem *itemNom = ui->tableWidgetEmployes->item(row, 1);
-    QTableWidgetItem *itemPrenom = ui->tableWidgetEmployes->item(row, 2);
-    QTableWidgetItem *itemTel = ui->tableWidgetEmployes->item(row, 3);
-    QTableWidgetItem *itemSalaire = ui->tableWidgetEmployes->item(row, 4);
-    QTableWidgetItem *itemSexe = ui->tableWidgetEmployes->item(row, 5);
-    QTableWidgetItem *itemTache = ui->tableWidgetEmployes->item(row, 6);
+    QTableWidgetItem *itemID = ui->tableWidgetEmployes_2->item(row, 0);
+    QTableWidgetItem *itemNom = ui->tableWidgetEmployes_2->item(row, 1);
+    QTableWidgetItem *itemPrenom = ui->tableWidgetEmployes_2->item(row, 2);
+    QTableWidgetItem *itemTel = ui->tableWidgetEmployes_2->item(row, 3);
+    QTableWidgetItem *itemSalaire = ui->tableWidgetEmployes_2->item(row, 4);
+    QTableWidgetItem *itemSexe = ui->tableWidgetEmployes_2->item(row, 5);
+    QTableWidgetItem *itemTache = ui->tableWidgetEmployes_2->item(row, 6);
 
     // Remplir les champs (LineEdits) avec le texte des items
 
@@ -237,18 +251,14 @@ void MainWindow::on_Rechercher_Employe_2_clicked()
     if (critere.isEmpty()) {
         query.prepare(SELECT_QUERY);
     } else {
-        /*query.prepare(QString("%1 WHERE "
-                              "CAST(ID_EMPLOYE AS VARCHAR(10)) LIKE :critere OR "
-                              "LOWER(NOM) LIKE LOWER(:critere) OR "
-                              "LOWER(PRENOM) LIKE LOWER(:critere) OR "
-                              "LOWER(SEXE_EMPLOYE) LIKE LOWER(:critere) OR "
-                              "LOWER(RESPONSABILITE) LIKE LOWER(:critere)").arg(SELECT_QUERY));*/
+
         query.prepare(QString("%1 WHERE "
                               "TO_CHAR(ID_EMPLOYE) LIKE :critere OR "
                               "LOWER(NOM) LIKE LOWER(:critere) OR "
                               "LOWER(PRENOM) LIKE LOWER(:critere) OR "
                               "LOWER(SEXE_EMPLOYE) LIKE LOWER(:critere) OR "
-                              "LOWER(RESPONSABILITE) LIKE LOWER(:critere)"));
+                              "LOWER(RESPONSABILITE) LIKE LOWER(:critere)")
+                          .arg(SELECT_QUERY));
 
         query.bindValue(":critere", "%" + critere + "%");
     }
@@ -265,12 +275,12 @@ void MainWindow::on_Rechercher_Employe_2_clicked()
 
 void MainWindow::remplirTable(QSqlQuery &query) // Modifié
 {
-    ui->tableWidgetEmployes->setRowCount(0);
+    ui->tableWidgetEmployes_2->setRowCount(0);
     int row = 0;
     while (query.next()) {
-        ui->tableWidgetEmployes->insertRow(row);
+        ui->tableWidgetEmployes_2->insertRow(row);
         for (int col = 0; col < 7; col++) {
-            ui->tableWidgetEmployes->setItem(row, col, new QTableWidgetItem(query.value(col).toString()));
+            ui->tableWidgetEmployes_2->setItem(row, col, new QTableWidgetItem(query.value(col).toString()));
         }
         row++;
     }
@@ -288,6 +298,190 @@ void MainWindow::clearChamps() // Modifié
     ui->Telephone_Employe->clear();
     ui->Username->clear();
     ui->Motdepasse->clear();
+}
+QString MainWindow::hashPassword(const QString &password)
+{
+    QByteArray hash = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256);
+    return QString(hash.toHex());
+}
+
+// ==================== LOGIN (CORRIGÉ ET SÉCURISÉ) ====================
+void MainWindow::onLoginClicked()
+{
+    QString username = ui->Username->text();
+    QString password = ui->Motdepasse->text();
+
+    if (username.isEmpty() || password.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez remplir tous les champs !");
+        return;
+    }
+
+    QString inputHash = hashPassword(password);
+    QSqlQuery query;
+    query.prepare("SELECT PASSWORD_HASH FROM UTILISATEURS WHERE USERNAME = :username");
+    query.bindValue(":username", username);
+
+    if (!query.exec()) {
+        QMessageBox::critical(this, "Erreur", "Erreur lors de la connexion à la base !");
+        qDebug() << "Login Error:" << query.lastError().text();
+        return;
+    }
+
+    if (query.next()) {
+        QString storedHash = query.value(0).toString();
+        if (inputHash == storedHash) {
+            // SUCCÈS
+            QMessageBox::information(this, "Succès", "Connexion réussie !");
+            ui->Ajouter_Employe->setEnabled(true);
+            ui->Modifier_Employe->setEnabled(true);
+            ui->Supprimer_Employe->setEnabled(true);
+            ui->Rechercher_Employe_2->setEnabled(true);
+
+            goToPage(ui->page);
+            clearChamps();
+            afficherEmployes();
+        } else {
+            QMessageBox::warning(this, "Erreur", "Nom d'utilisateur ou mot de passe incorrect !");
+        }
+    } else {
+        QMessageBox::warning(this, "Erreur", "Nom d'utilisateur ou mot de passe incorrect !");
+    }
+}
+
+void MainWindow::on_Trier_2_clicked()
+{
+    // On trie le QTableWidget directement.
+    // 1 est l'index de votre colonne "nom" (0=ID, 1=nom, ...)
+    // Qt::AscendingOrder = Ordre alphabétique (A-Z)
+
+    ui->tableWidgetEmployes_2->sortByColumn(1, Qt::AscendingOrder);
+
+    QMessageBox::information(this, "Tri", "Le tableau a été trié par nom (A-Z).");
+}
+
+void MainWindow::on_Exporter_2_clicked()
+{
+    // 1. Choisir où enregistrer le fichier
+    QString filePath = QFileDialog::getSaveFileName(this, "Exporter les employés", "", "Fichiers CSV (*.csv)");
+
+    if (filePath.isEmpty()) {
+        return; // L'utilisateur a annulé
+    }
+
+    QFile file(filePath);
+
+    // 2. Tenter d'ouvrir le fichier en écriture
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir le fichier pour l'exportation !");
+        return;
+    }
+
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Utf8); // <-- LIGNE CORRIGÉE (pour Qt 6)
+    // 3. Écrire les en-têtes (Noms des colonnes)
+    QStringList headers;
+    for (int c = 0; c < ui->tableWidgetEmployes_2->columnCount(); ++c) {
+        headers << ui->tableWidgetEmployes_2->horizontalHeaderItem(c)->text();
+    }
+    // Nous utilisons ";" comme séparateur (standard Excel France)
+    out << headers.join(";") << "\n";
+
+    // 4. Écrire toutes les lignes de données
+    for (int r = 0; r < ui->tableWidgetEmployes_2->rowCount(); ++r) {
+        QStringList rowData;
+        for (int c = 0; c < ui->tableWidgetEmployes_2->columnCount(); ++c) {
+            QTableWidgetItem *item = ui->tableWidgetEmployes_2->item(r, c);
+            QString text = (item ? item->text() : "");
+            // Gérer les ";" dans le texte
+            if (text.contains(';')) {
+                rowData << "\"" + text + "\"";
+            } else {
+                rowData << text;
+            }
+        }
+        out << rowData.join(";") << "\n";
+    }
+
+    // 5. Fermer le fichier et notifier l'utilisateur
+    file.close();
+    QMessageBox::information(this, "Succès", "Exportation vers le fichier CSV réussie !");
+}
+void MainWindow::on_Statistiques_2_clicked()
+{
+
+    int h = 0, f = 0;
+    QSqlQuery q;
+    // --- DEBUG MESSAGE 1 ---
+    QMessageBox::information(this, "Debug", "Le bouton a été cliqué !");
+
+    // We check for errors in the query
+    if (!q.exec("SELECT COUNT(*) FROM EMPLOYER WHERE LOWER(sexe_employe)='homme'")) {
+        QMessageBox::critical(this, "Erreur SQL", q.lastError().text());
+    }
+    if (q.next()) h = q.value(0).toInt();
+
+    if (!q.exec("SELECT COUNT(*) FROM EMPLOYER WHERE LOWER(sexe_employe)='femme'")) {
+        QMessageBox::critical(this, "Erreur SQL", q.lastError().text());
+    }
+    if (q.next()) f = q.value(0).toInt();
+
+    // --- DEBUG MESSAGE 2 ---
+    // Show us the numbers found
+    QMessageBox::information(this, "Données", QString("Hommes: %1, Femmes: %2").arg(h).arg(f));
+
+    if (h == 0 && f == 0) {
+        QMessageBox::warning(this, "Attention", "Aucune donnée trouvée. Le graphique ne s'affichera pas.");
+        return;
+    }
+    q.exec("SELECT COUNT(*) FROM EMPLOYER WHERE LOWER(sexe_employe)='homme'");
+    if (q.next()) h = q.value(0).toInt();
+    q.exec("SELECT COUNT(*) FROM EMPLOYER WHERE LOWER(sexe_employe)='femme'");
+    if (q.next()) f = q.value(0).toInt();
+
+    if (h == 0 && f == 0) return;
+
+    // 2. PRÉPARER LE CAMEMBERT
+    // Notez qu'on n'écrit plus "QtCharts::QPieSeries", juste "QPieSeries"
+    QPieSeries *series = new QPieSeries();
+    series->append("Hommes", h);
+    series->append("Femmes", f);
+
+    // Couleurs et Labels
+    QPieSlice *sliceH = series->slices().at(0);
+    sliceH->setBrush(QColor("#3498db")); // Bleu
+    sliceH->setLabelVisible(true);
+    sliceH->setLabel(QString("Hommes: %1").arg(h));
+
+    QPieSlice *sliceF = series->slices().at(1);
+    sliceF->setBrush(QColor("#e74c3c")); // Rouge
+    sliceF->setLabelVisible(true);
+    sliceF->setLabel(QString("Femmes: %1").arg(f));
+
+    // 3. CRÉER LE GRAPHIQUE
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Statistiques Sexe");
+    chart->setAnimationOptions(QChart::AllAnimations);
+    chart->legend()->setAlignment(Qt::AlignRight);
+
+    // 4. METTRE LE GRAPHIQUE DANS LE WIDGET
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    // --- CORRECTION DE L'ERREUR "ui->widgetStats" ---
+    // Vérifiez bien que le widget existe, sinon le programme plantera ici.
+    if (ui->widgetStats->layout() != nullptr) {
+        QLayoutItem* item;
+        while ((item = ui->widgetStats->layout()->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
+        delete ui->widgetStats->layout();
+    }
+
+    QVBoxLayout *layout = new QVBoxLayout(ui->widgetStats);
+    layout->addWidget(chartView);
+    ui->widgetStats->setLayout(layout);
 }
 
 

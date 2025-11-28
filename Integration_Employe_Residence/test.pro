@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql printsupport charts network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,7 +15,8 @@ SOURCES += \
     employer.cpp \
     gemployer.cpp \
     residence.cpp \
-    CrudResidence.cpp
+    CrudResidence.cpp \
+    smtp.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -23,7 +24,8 @@ HEADERS += \
     employer.h \
     gemployer.h \
     residence.h \
-    CrudResidence.h
+    CrudResidence.h \
+    smtp.h
 
 FORMS += \
     mainwindow.ui

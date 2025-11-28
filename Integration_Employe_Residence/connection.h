@@ -11,6 +11,8 @@ class Connection
 public:
     static Connection& instance();
     bool createConnection();
+    QSqlDatabase getDatabase() const { return db; }
+
 
 private:
     QSqlDatabase db;

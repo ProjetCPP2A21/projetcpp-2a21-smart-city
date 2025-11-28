@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page_3">
      <widget class="QFrame" name="Ajouter">
@@ -555,7 +555,7 @@ QLineEdit:focus {
        </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="ajouter_3">
+     <widget class="QPushButton" name="trie">
       <property name="geometry">
        <rect>
         <x>990</x>
@@ -590,7 +590,7 @@ QPushButton:pressed {
        <string>Trie</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="supprimer_2">
+     <widget class="QPushButton" name="exporter">
       <property name="geometry">
        <rect>
         <x>1050</x>
@@ -860,7 +860,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap>:/cropped_circle_image.png</pixmap>
+        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -876,7 +876,7 @@ QPushButton:pressed {
        </property>
       </widget>
      </widget>
-     <widget class="QPushButton" name="supprimer_3">
+     <widget class="QPushButton" name="statistique">
       <property name="geometry">
        <rect>
         <x>1050</x>
@@ -972,7 +972,7 @@ background-color : #111111;</string>
        </property>
       </column>
      </widget>
-     <widget class="QPushButton" name="ajouter_2">
+     <widget class="QPushButton" name="recherche">
       <property name="geometry">
        <rect>
         <x>890</x>
@@ -1007,7 +1007,7 @@ QPushButton:pressed {
        <string>Recherche</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="Nom_3">
+     <widget class="QLineEdit" name="search">
       <property name="geometry">
        <rect>
         <x>590</x>
@@ -1052,18 +1052,29 @@ QLineEdit:focus {
        <string/>
       </property>
      </widget>
+     <widget class="QWidget" name="chart" native="true">
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>430</y>
+        <width>371</width>
+        <height>291</height>
+       </rect>
+      </property>
+     </widget>
      <zorder>label_38</zorder>
      <zorder>Ajouter</zorder>
-     <zorder>ajouter_3</zorder>
-     <zorder>supprimer_2</zorder>
+     <zorder>trie</zorder>
+     <zorder>exporter</zorder>
      <zorder>frame_2</zorder>
-     <zorder>supprimer_3</zorder>
+     <zorder>statistique</zorder>
      <zorder>affichage</zorder>
-     <zorder>ajouter_2</zorder>
-     <zorder>Nom_3</zorder>
+     <zorder>recherche</zorder>
+     <zorder>search</zorder>
+     <zorder>chart</zorder>
     </widget>
     <widget class="QWidget" name="page_4">
-     <widget class="QPushButton" name="pushButton_23">
+     <widget class="QPushButton" name="Exporter_2">
       <property name="geometry">
        <rect>
         <x>1210</x>
@@ -1098,7 +1109,7 @@ QPushButton:pressed {
        <string>export</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_21">
+     <widget class="QPushButton" name="Trier_2">
       <property name="geometry">
        <rect>
         <x>1040</x>
@@ -1638,7 +1649,7 @@ QPushButton:pressed {
          <enum>Qt::TextFormat::MarkdownText</enum>
         </property>
         <property name="pixmap">
-         <pixmap>:/cropped_circle_image.png</pixmap>
+         <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -2196,11 +2207,11 @@ QPushButton:pressed {
        <string>rechercher</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_19">
+     <widget class="QPushButton" name="Statistiques_2">
       <property name="geometry">
        <rect>
-        <x>1180</x>
-        <y>650</y>
+        <x>1210</x>
+        <y>540</y>
         <width>101</width>
         <height>51</height>
        </rect>
@@ -2231,13 +2242,39 @@ QPushButton:pressed {
        <string>statistique</string>
       </property>
      </widget>
-     <widget class="QTableWidget" name="tableWidgetEmployes">
+     <widget class="QLabel" name="label_39">
       <property name="geometry">
        <rect>
-        <x>600</x>
-        <y>140</y>
-        <width>711</width>
+        <x>560</x>
+        <y>30</y>
+        <width>791</width>
+        <height>771</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="widgetStats" native="true">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>390</y>
+        <width>501</width>
         <height>241</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="tableWidgetEmployes_2">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>140</y>
+        <width>751</width>
+        <height>251</height>
        </rect>
       </property>
       <column>
@@ -2276,46 +2313,17 @@ QPushButton:pressed {
        </property>
       </column>
      </widget>
-     <widget class="QGraphicsView" name="graphicsView">
-      <property name="geometry">
-       <rect>
-        <x>630</x>
-        <y>390</y>
-        <width>521</width>
-        <height>321</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-image: url(:/statisque.png);</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_39">
-      <property name="geometry">
-       <rect>
-        <x>560</x>
-        <y>30</y>
-        <width>791</width>
-        <height>771</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
      <zorder>label_39</zorder>
-     <zorder>pushButton_23</zorder>
-     <zorder>pushButton_21</zorder>
+     <zorder>Exporter_2</zorder>
+     <zorder>Trier_2</zorder>
      <zorder>Rechercher_Employe</zorder>
      <zorder>frame</zorder>
      <zorder>Ajouter_2</zorder>
      <zorder>label_27</zorder>
      <zorder>Rechercher_Employe_2</zorder>
-     <zorder>pushButton_19</zorder>
-     <zorder>tableWidgetEmployes</zorder>
-     <zorder>graphicsView</zorder>
+     <zorder>Statistiques_2</zorder>
+     <zorder>widgetStats</zorder>
+     <zorder>tableWidgetEmployes_2</zorder>
     </widget>
     <widget class="QWidget" name="page_6">
      <widget class="QFrame" name="frame_9">
@@ -2553,7 +2561,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap>:/cropped_circle_image.png</pixmap>
+        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -3503,7 +3511,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap>:/cropped_circle_image.png</pixmap>
+        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -5446,7 +5454,7 @@ QPushButton:pressed {
         <enum>Qt::TextFormat::MarkdownText</enum>
        </property>
        <property name="pixmap">
-        <pixmap>:/cropped_circle_image.png</pixmap>
+        <pixmap resource="img.qrc">:/cropped_circle_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -6172,6 +6180,8 @@ background-color : #e1e5ff;</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="img.qrc"/>
+ </resources>
  <connections/>
 </ui>

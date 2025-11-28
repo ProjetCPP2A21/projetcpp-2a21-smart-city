@@ -1,13 +1,29 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "connection.h"
+#include <QTimer>
+#include <QTime>
+#include <QRandomGenerator>
+#include <cstdlib>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    /*GEmployer* gEmp = new GEmployer(ui->page_employer, this);*/
     afficherTableResidence();
+
+    timerPopup = new QTimer(this);
+    connect(timerPopup, &QTimer::timeout, this, &MainWindow::handlePopupTimer);
+    connect(timerPopup, &QTimer::timeout, this, [this]() {
+        QString message = getMessageForCurrentTime();
+        if (!message.isEmpty()) {
+            QMessageBox::information(this, "Recommandation NEOCITY", message);
+        }
+    });
+    timerPopup->start(30000);
 
     // 🟢 Show the login page first
     ui->stackedWidget->setCurrentWidget(ui->Connection);
@@ -79,6 +95,9 @@ void MainWindow::goToPage(QWidget *page)
     if (page && ui->stackedWidget->indexOf(page) != -1)
         ui->stackedWidget->setCurrentWidget(page);
 }
+
+
+
 
 
 

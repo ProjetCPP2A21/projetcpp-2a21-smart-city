@@ -2,7 +2,26 @@
 
 Connection::Connection()
 {
+    // Create the connection ONCE, give it a name
     db = QSqlDatabase::addDatabase("QODBC");
+}
+
+bool Connection::createConnection()
+{
+    if (db.isOpen())
+        return true;
+
+    db.setDatabaseName("Source2A");
+    db.setUserName("ALEE");
+    db.setPassword("esprit25");
+
+    if (!db.open()) {
+        qDebug() << "Database error:" << db.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Database connected successfully.";
+    return true;
 }
 
 Connection::~Connection()
@@ -15,19 +34,4 @@ Connection& Connection::instance()
 {
     static Connection instance;
     return instance;
-}
-
-bool Connection::createConnection()
-{
-    db.setDatabaseName("Source2A");
-    db.setUserName("ALEE");
-    db.setPassword("esprit25");
-
-    if (db.open()) {
-        qDebug() << "Connexion établie ✅";
-        return true;
-    } else {
-        qDebug() << "Échec de la connexion ❌:" << db.lastError().text();
-        return false;
-    }
 }
