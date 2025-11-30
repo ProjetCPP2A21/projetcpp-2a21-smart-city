@@ -1,0 +1,49 @@
+QT       += core gui sql printsupport charts network
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG += c++17
+
+# You can make your code fail to compile if it uses deprecated APIs.
+# In order to do so, uncomment the following line.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+SOURCES += \
+    main.cpp \
+    mainwindow.cpp \
+    connection.cpp \
+    employer.cpp \
+    gemployer.cpp \
+    residence.cpp \
+    CrudResidence.cpp \
+    smtp.cpp \
+    residents.cpp \
+    gresidents.cpp \
+    service.cpp \
+    widget_Service.cpp \
+    email_Service.cpp
+
+HEADERS += \
+    mainwindow.h \
+    connection.h \
+    employer.h \
+    gemployer.h \
+    residence.h \
+    CrudResidence.h \
+    smtp.h \
+    residents.h \
+    gresidents.h \
+    service.h \
+    widget_Service.h \
+    email_Service.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    img.qrc
