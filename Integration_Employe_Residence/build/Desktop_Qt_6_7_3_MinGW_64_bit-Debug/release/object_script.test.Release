@@ -1,0 +1,11 @@
+release/main.o
+release/mainwindow.o
+release/connection.o
+release/employer.o
+release/gemployer.o
+release/residence.o
+release/CrudResidence.o
+release/qrc_img.o
+release/moc_mainwindow.o
+release/moc_gemployer.o
+release/moc_residence.o
