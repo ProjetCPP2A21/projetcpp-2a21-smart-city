@@ -132,12 +132,15 @@ void MainWindow::on_btn_modifier_clicked()
 
 void MainWindow::on_lineEdit_recherche_textChanged(const QString &arg1)
 {
+
     Resident R;
+    //Mise à jour du tableau
     ui->tableView->setModel(R.rechercher(arg1));
 }
 
 void MainWindow::on_comboBox_tri_currentIndexChanged(int index)
 {
+
     Resident R;
     QString critere;
 
@@ -168,16 +171,16 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
     ui->lineEdit_profession->setText(ui->tableView->model()->index(row, 6).data().toString());
     ui->lineEdit_situation->setText(ui->tableView->model()->index(row, 7).data().toString());
 
-    // 🔹 Récupération des valeurs une seule fois
+    //  Récupération des valeurs une seule fois
     int age = ui->lineEdit_age->text().toInt();
     QString profession = ui->lineEdit_profession->text();
     QString situation = ui->lineEdit_situation->text();
 
-    // 🔵 Calcul stabilité
+    //  Calcul stabilité
     QString stab = calculerStabilite(age, profession, situation);
     ui->label_stabilite->setText("Stabilité sociale : " + stab);
 
-    // 🟢 Calcul mobilité
+    //  Calcul mobilité
     QString mobilite = calculerMobilite(age, profession, situation);
     ui->labelMobilite->setText("Mobilité : " + mobilite);
 }
@@ -193,6 +196,7 @@ void MainWindow::afficherStatistiques()
     QSqlQuery query;
     int nbHomme = 0, nbFemme = 0;
 
+    //Récupération des sexes depuis la base
     query.exec("SELECT SEXE FROM RESIDENT");
     while (query.next()) {
         QString sexe = query.value(0).toString().toLower();
@@ -204,11 +208,11 @@ void MainWindow::afficherStatistiques()
 
     int total = nbHomme + nbFemme;
 
-    // 🔥 Calcul des pourcentages (éviter /0)
+    //  Calcul des pourcentages
     double pourH = (total == 0) ? 0 : (nbHomme * 100.0 / total);
     double pourF = (total == 0) ? 0 : (nbFemme * 100.0 / total);
 
-    // 🔥 Pie chart
+    //  Création du camembert
     QPieSeries *series = new QPieSeries();
 
     // Slices avec labels contenant les pourcentages
@@ -222,18 +226,20 @@ void MainWindow::afficherStatistiques()
         nbFemme
         );
 
-    // On sépare un peu visuellement les parts (optionnel)
+    // On sépare un peu visuellement les parts
     sliceH->setExploded(false);
     sliceF->setExploded(false);
 
     // Activer l’affichage des labels sur le graphique
     series->setLabelsVisible(true);
 
+    //Création du graphique
     QChart *chart = new QChart();
     chart->addSeries(series);
     chart->setTitle("Répartition par sexe");
     chart->legend()->setAlignment(Qt::AlignBottom);
 
+    //Vue du graphique
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
 
@@ -247,7 +253,7 @@ void MainWindow::afficherStatistiques()
         delete oldLayout;
     }
 
-    // Placer le graphe dans l'espace rouge
+    // Ajouter le nouveau graphique
     QVBoxLayout *layout = new QVBoxLayout(ui->widget_stats);
     layout->addWidget(chartView);
     ui->widget_stats->setLayout(layout);
@@ -268,13 +274,16 @@ void MainWindow::clearFields()
 
 void MainWindow::on_btnExportPDF_clicked()
 {
+    //Choix de l’emplacement du PDF
     QString filePath = QFileDialog::getSaveFileName(this, "Exporter PDF", "", "PDF (*.pdf)");
     if (filePath.isEmpty()) return;
 
+    //Création du document PDF
     QPdfWriter pdf(filePath);
     pdf.setPageSize(QPageSize(QPageSize::A4));
     pdf.setResolution(300);
 
+    //Création du “stylo” pour dessiner sur le PDF
     QPainter painter(&pdf);
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -298,6 +307,8 @@ void MainWindow::on_btnExportPDF_clicked()
     // Largeur des colonnes
     int w[] = {180, 180, 250, 250, 120, 150, 200, 300};
 
+
+    //Titres des colonnes
     QStringList headers = {
         "ID Résident", "ID Résidence", "Nom", "Prénom", "Âge", "Sexe", "Profession", "Situation"
     };
@@ -317,6 +328,8 @@ void MainWindow::on_btnExportPDF_clicked()
                      );
 
     int cx = x;
+
+    //Puis affichage de chaque titre
     for (int i = 0; i < headers.size(); i++) {
         painter.drawText(QRect(cx, y, w[i], h), Qt::AlignCenter, headers[i]);
         cx += w[i];
@@ -338,6 +351,8 @@ void MainWindow::on_btnExportPDF_clicked()
         painter.setPen(tx);
 
         cx = x;
+
+        //Affichage des colonnes
         for (int j = 0; j < cols; ++j) {
 
             QString val = model->data(model->index(i, j)).toString();
@@ -375,22 +390,21 @@ QString MainWindow::calculerStabilite(int age, QString profession, QString situa
 
     // Stabilité élevée
     if ((profession.contains("cdi") ||
-         profession.contains("employ") ||
-         profession.contains("ingen") ||
-         profession.contains("medec") ||
-         profession.contains("medec") ||
-         profession.contains("enseign")))
+         profession.contains("employer") ||
+         profession.contains("ingenieur") ||
+         profession.contains("medecin") ||
+         profession.contains("enseignant")))
     {
-        if (situation.contains("mari") && (age >= 25 && age <= 55))
+        if (situation.contains("marier") && (age >= 25 && age <= 55))
             return "Élevée";
     }
 
     // Stabilité moyenne
-    if ((profession.contains("etud") ||
-         profession.contains("ouv") ||
-         profession.contains("indep")))
+    if ((profession.contains("etudiant") ||
+         profession.contains("ouvrier") ||
+         profession.contains("independant")))
     {
-        if (situation.contains("celib") && (age >= 20 && age <= 40))
+        if (situation.contains("celibataire") && (age >= 20 && age <= 60))
             return "Moyenne";
     }
 
@@ -403,7 +417,7 @@ QString MainWindow::calculerMobilite(int age, QString profession, QString situat
     profession = profession.toLower();
     situation = situation.toLower();
 
-    // 🔵 Mobilité élevée
+    //  Mobilité élevée
     if (age < 40 &&
         (profession.contains("etudiant") ||
          profession.contains("employe") ||
@@ -416,7 +430,7 @@ QString MainWindow::calculerMobilite(int age, QString profession, QString situat
         return "Mobilité élevée – Peut participer aux activités extérieures";
     }
 
-    // 🟡 Mobilité moyenne
+    //  Mobilité moyenne
     if (age >= 40 && age <= 60 &&
         (profession.contains("ouvrier") ||
          profession.contains("independant")) &&
@@ -425,7 +439,7 @@ QString MainWindow::calculerMobilite(int age, QString profession, QString situat
         return "Mobilité moyenne – Mobilité correcte";
     }
 
-    // 🔴 Mobilité faible
+    //  Mobilité faible
     if (age > 60 ||
         profession.contains("sans emploi") ||
         profession.contains("retraite") ||
