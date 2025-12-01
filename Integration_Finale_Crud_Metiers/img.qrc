@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>cropped_circle_image.png</file>
+        <file>statisque.png</file>
+        <file>diagramme_circulaire3.png</file>
+        <file>Map.qml</file>
+        <file>Artboa.png</file>
+        <file>Artboard 1.png</file>
+        <file>Mesa de trabajo 1.png</file>
+        <file>Artboard .png</file>
+    </qresource>
+</RCC>
