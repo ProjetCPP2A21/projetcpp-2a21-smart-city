@@ -552,7 +552,7 @@ void GEvenement::on_Statistiques_2_clicked()
         return;
     }
 
-    // On envoie les chiffres calculés à votre Widget personnalisé
+    // On envoie les chiffres calculés à Widget personnalisé
     // C'est lui qui va dessiner le beau graphique "Donut" qu'on a fait avant
     ui->StatisqueWidget->setData(totalMusique, totalCinema, totalAutre);
 }
@@ -569,11 +569,11 @@ void GEvenement::on_Localiser_clicked()
 
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
     QString url = "https://nominatim.openstreetmap.org/search?format=json&q=" + lieu + ",Tunisie";
+    //on prépare la requete
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::UserAgentHeader, "QtApp");
 
     connect(manager, &QNetworkAccessManager::finished, this, [this](QNetworkReply *reply) {
-        // ... (votre code de parsing JSON reste identique) ...
         QByteArray data = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(data);
         QJsonArray arr = doc.array();
