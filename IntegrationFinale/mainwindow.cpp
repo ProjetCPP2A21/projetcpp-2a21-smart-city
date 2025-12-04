@@ -9,7 +9,7 @@
 #include <QRandomGenerator>
 #include <cstdlib>
 #include <QMessageBox>
-
+#include <QMovie>
 #include "gevenement.h"
 #include "evenement.h"
 #include "statistique.h"
@@ -50,11 +50,36 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QMovie *movie = new QMovie("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/xK.gif");
+
+    // 2. Vérifiez si le GIF s'est bien chargé (optionnel mais recommandé)
+    if (!movie->isValid()) {
+        qDebug() << "Erreur : Impossible de charger le GIF d'arrière-plan.";
+    } else {
+        // 3. Attachez le GIF au label
+        ui->BackgroundGif->setMovie(movie);
+
+        // 4. Lancez l'animation
+        movie->start();
+    }
+    connect(ui->btn_logout_2, &QPushButton::clicked, this, [this]() {
+        // 1. Revenir à la page de connexion
+        ui->stackedWidget->setCurrentWidget(ui->Connection);
+
+        // 2. Vider les champs pour la sécurité (optionnel mais recommandé)
+        ui->lineEditLoginUsername->clear();
+        ui->lineEditLoginPassword->clear();
+
+        // 3. Masquer le menu latéral (si ce n'est pas déjà géré automatiquement)
+
+
+        QMessageBox::information(this, "Déconnexion", "Vous avez été déconnecté avec succès.");
+    });
     // Connecter la gestion automatique de visibilité de la sidebar
     connect(ui->stackedWidget, &QStackedWidget::currentChanged, this, [this](int idx){
         QWidget *w = ui->stackedWidget->widget(idx);
         qDebug() << "stackedWidget changed to index" << idx << "widgetName =" << w->objectName();
-        if (w == ui->Connection || w == ui->page_7) {
+        if (w == ui->Connection || w == ui->page_7 || w == ui->page_13) {
             ui->leftmenu->hide();
         } else {
             ui->leftmenu->show();
@@ -233,43 +258,43 @@ MainWindow::MainWindow(QWidget *parent)
     //
     // --- DASHBOARD (page_4) ---
     //
-    connect(ui->RH, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
-    connect(ui->resident_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
+    connect(ui->RH_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
+    connect(ui->resident_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
     connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
-    connect(ui->Evenements_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
-    connect(ui->service_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
+    connect(ui->Evenements_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
+    connect(ui->service_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
     //
     // --- RÉSIDENT PAGE (page) ---
     //
-    connect(ui->RH_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
+    connect(ui->RH_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
     connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
-    connect(ui->Evenements_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
-    connect(ui->service, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
+    connect(ui->Evenements_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
+    connect(ui->service_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
     //
     // --- RÉSIDENCE PAGE (page_3) ---
     //
-    connect(ui->RH_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
-    connect(ui->resident_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
-    connect(ui->Evenements_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
-    connect(ui->service_2, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
+    connect(ui->RH_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
+    connect(ui->resident_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
+    connect(ui->Evenements_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
+    connect(ui->service_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
     //
     // --- ÉVÈNEMENTS PAGE (page_2) ---
     //
-    connect(ui->RH_3, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
-    connect(ui->residence_5, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
-    connect(ui->resident_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
-    connect(ui->service_4, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
+    connect(ui->RH_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
+    connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); });
+    connect(ui->resident_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
+    connect(ui->service_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_6); });
 
     //
     // --- SERVICE PAGE (page_6) ---
     //
-    connect(ui->RH_6, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
+    connect(ui->RH_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_4); });
     connect(ui->residence, &QPushButton::clicked, this, [this]() { goToPage(ui->page_3); }); // ✅ FIXED
-    connect(ui->resident_8, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
-    connect(ui->Evenements_8, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
+    connect(ui->resident_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page); });
+    connect(ui->Evenements_Page, &QPushButton::clicked, this, [this]() { goToPage(ui->page_2); });
 }
 
 MainWindow::~MainWindow()
