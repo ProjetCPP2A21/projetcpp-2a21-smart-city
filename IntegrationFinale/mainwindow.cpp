@@ -44,6 +44,7 @@
 #include <QDebug>
 #include <QAction>
 #include <QIcon>
+
 using namespace QXlsx;
 const QString SELECT_QUERY = "SELECT id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite FROM EMPLOYER";
 
