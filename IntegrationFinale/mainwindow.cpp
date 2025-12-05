@@ -42,6 +42,8 @@
 #include <QVBoxLayout>
 #include <QGeoPositionInfoSource>
 #include <QDebug>
+#include <QAction>
+#include <QIcon>
 using namespace QXlsx;
 const QString SELECT_QUERY = "SELECT id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite FROM EMPLOYER";
 
@@ -50,7 +52,34 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QMovie *movie = new QMovie("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/xK.gif");
+    // 1. Définir le mode mot de passe par défaut (si ce n'est pas fait dans le Designer)
+    ui->lineEditLoginPassword->setEchoMode(QLineEdit::Password);
+
+    // 2. Créer l'action (le bouton œil)
+    QAction *togglePasswordAction = new QAction(this);
+
+    // Mettez ici le chemin vers votre icône dans les ressources (ex: ":/icons/eye_open.png")
+    // Si vous n'avez pas d'icône, vous pouvez mettre du texte : togglePasswordAction->setText("Voir");
+    togglePasswordAction->setIcon(QIcon("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/eye_open.jpg"));
+
+    // 3. Ajouter l'action DANS le champ de texte (à droite)
+    ui->lineEditLoginPassword->addAction(togglePasswordAction, QLineEdit::TrailingPosition);
+
+    // 4. Connecter le clic sur l'icône à la logique
+    connect(togglePasswordAction, &QAction::triggered, this, [=]() {
+        if (ui->lineEditLoginPassword->echoMode() == QLineEdit::Password) {
+            // Si c'est caché, on montre le texte
+            ui->lineEditLoginPassword->setEchoMode(QLineEdit::Normal);
+            // On change l'icône pour "œil barré"
+            togglePasswordAction->setIcon(QIcon("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/eye_closed.jpg"));
+        } else {
+            // Si c'est visible, on cache le texte
+            ui->lineEditLoginPassword->setEchoMode(QLineEdit::Password);
+            // On remet l'icône "œil ouvert"
+            togglePasswordAction->setIcon(QIcon("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/eye_open.jpg"));
+        }
+    });
+    QMovie *movie = new QMovie("C:/Users/ASUS/Downloads/upscaled-video.mp4");
 
     // 2. Vérifiez si le GIF s'est bien chargé (optionnel mais recommandé)
     if (!movie->isValid()) {

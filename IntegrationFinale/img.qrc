@@ -10,5 +10,7 @@
         <file>Artboard .png</file>
         <file>Backgroundapp.gif</file>
         <file>xK.gif</file>
+        <file>eye_closed.jpg</file>
+        <file>eye_open.jpg</file>
     </qresource>
 </RCC>

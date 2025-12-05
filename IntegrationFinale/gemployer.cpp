@@ -660,64 +660,59 @@ void MainWindow::on_quitter_clicked()
 }
 void MainWindow::configurerAccesSelonRole(QString role)
 {
-    // 1. Normaliser le texte (minuscules et sans espaces inutiles)
+    // 1. Normalisation
     role = role.toLower().trimmed();
+    qDebug() << "Rôle détecté :" << role; // Pour vérifier dans la console
 
-    // 2. Par défaut, on désactive TOUT (Sécurité d'abord)
-    // Désactivez ici vos boutons de navigation du menu principal
-    /* Exemple :
-    ui->btnMenuRH->setEnabled(false);
-    ui->btnMenuService->setEnabled(false);
-    ui->btnMenuEvent->setEnabled(false);
-    ui->btnMenuResidence->setEnabled(false);
-    */
+    // 2. DÉVERROUILLAGE PRINCIPAL (Très important)
+    ui->leftmenu->setEnabled(true);
 
-    // Les boutons CRUD employés (Ajouter/Modifier/Supprimer)
+    // 3. Désactiver les boutons de navigation (État par défaut)
+    // Assurez-vous que ces noms correspondent EXACTEMENT à ceux dans Qt Designer !
+    ui->RH_Page->setEnabled(false);
+    ui->residence->setEnabled(false);
+    ui->resident_Page->setEnabled(false);
+    ui->service_Page->setEnabled(false);
+    ui->Evenements_Page->setEnabled(false);
+
+    // 4. Activer le bouton de déconnexion (TOUJOURS)
+    ui->btn_logout_2->setEnabled(true);
+
+    // 5. Désactiver les boutons CRUD (Employés)
     ui->Ajouter_Employe->setEnabled(false);
     ui->Modifier_Employe->setEnabled(false);
     ui->Supprimer_Employe->setEnabled(false);
     ui->Rechercher_Employe->setEnabled(false);
 
-    // 3. Logique par Rôle
+    // 6. Logique par Rôle
     if (role == "rh") {
-        // --- Rôle RH ---
-        // Accès complet à la gestion des employés
+        ui->RH_Page->setEnabled(true);
         ui->Ajouter_Employe->setEnabled(true);
         ui->Modifier_Employe->setEnabled(true);
         ui->Supprimer_Employe->setEnabled(true);
         ui->Rechercher_Employe->setEnabled(true);
 
-        // Redirection vers la page des employés (votre page actuelle ui->page)
         ui->stackedWidget->setCurrentWidget(ui->page_4);
-        afficherEmployes(); // On charge les données
-
+        afficherEmployes();
     }
     else if (role == "service") {
-        // --- Rôle SERVICE ---
-        // Activez le bouton ou le menu Service ici si vous en avez un
-        // ui->btnMenuService->setEnabled(true);
-
-        // Redirection (Remplacez page_Service par le vrai nom de votre page Service)
+        ui->service_Page->setEnabled(true); // Vérifiez le nom ici aussi
         ui->stackedWidget->setCurrentWidget(ui->page_6);
-        QMessageBox::information(this, "Accès", "Interface Service chargée.");
     }
     else if (role == "evenement") {
-        // --- Rôle EVENEMENT ---
+        ui->Evenements_Page->setEnabled(false); // C'est ici que ça bloquait si le nom était faux
         ui->stackedWidget->setCurrentWidget(ui->page_2);
-        QMessageBox::information(this, "Accès", "Interface Événement chargée.");
+        QMessageBox::information(this, "Accès", "Bienvenue Service Événement");
     }
     else if (role == "residence") {
-        // --- Rôle RESIDENCE ---
+        ui->residence->setEnabled(true);
         ui->stackedWidget->setCurrentWidget(ui->page_3);
-        QMessageBox::information(this, "Accès", "Interface Résidence chargée.");
     }
     else if (role == "resident") {
-        // --- Rôle RESIDENT ---
-         ui->stackedWidget->setCurrentWidget(ui->page);
-        QMessageBox::information(this, "Accès", "Interface Résident chargée.");
+        ui->resident_Page->setEnabled(true);
+        ui->stackedWidget->setCurrentWidget(ui->page);
     }
-    else {
-        // Rôle inconnu ou "admin"
-        QMessageBox::warning(this, "Attention", "Rôle non reconnu : " + role);
-    }
+
+    // FORCER LA MISE À JOUR VISUELLE
+    ui->leftmenu->repaint();
 }
