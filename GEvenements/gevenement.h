@@ -14,6 +14,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QProcess>
+#include "arduino.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -52,6 +53,7 @@ private slots:
     void on_Localiser_clicked();
 
     void on_btnItineraire_clicked();
+    void update_rfid(); // SLOT pour lire le RFID
 
 private:
     Ui::GEvenement *ui;
@@ -64,6 +66,8 @@ private:
     QProcess *gpsProcess;
     double myLatitude;
     double myLongitude;
+    Arduino A; // L'objet Arduino
+    QByteArray data;
 
 
 

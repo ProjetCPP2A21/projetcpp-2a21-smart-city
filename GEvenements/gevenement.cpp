@@ -34,6 +34,10 @@
 #include <QVBoxLayout>
 #include <QGeoPositionInfoSource>
 #include <QDebug>
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
+#include <QByteArray>
+
 
 using namespace QXlsx;
 
@@ -43,9 +47,27 @@ GEvenement::GEvenement(QWidget *parent)
     , ui(new Ui::GEvenement)
 {
     ui->setupUi(this);
+    qDebug() << "Recherche des ports...";
+    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+        qDebug() << "Port :" << info.portName();
+        qDebug() << "   - Vendor ID :" << info.vendorIdentifier();
+        qDebug() << "   - Product ID :" << info.productIdentifier();
+    }
     gpsProcess = new QProcess(this);
     connect(gpsProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this, &GEvenement::onGpsProcessFinished);
+
+    int ret = A.connect_arduino(); // Connexion à l'Arduino
+    switch(ret){
+    case(0): qDebug() << "Arduino connecté avec succès : " << A.getarduino_port_name(); break;
+    case(1): qDebug() << "Erreur d'ouverture du port série"; break;
+    case(-1): qDebug() << "Arduino non trouvé"; break;
+    }
+
+    // Connexion du signal "readyRead" (quand des données arrivent) au slot "update_rfid"
+    // Note: A.getserial() doit retourner le pointeur vers l'objet QSerialPort
+    QObject::connect(A.getserial(), SIGNAL(readyRead()), this, SLOT(update_rfid()));
+
 
     // La commande PowerShell pour interroger le vrai GPS Windows
     // Elle charge la DLL système, crée un watcher, attend 3 secondes la stabilisation et affiche Lat,Lon
@@ -716,5 +738,51 @@ void GEvenement::onGpsProcessFinished(int exitCode, QProcess::ExitStatus exitSta
         }
     } else {
         qDebug() << "⚠️ GPS Windows n'a pas pu fixer la position.";
+    }
+}
+
+void GEvenement::update_rfid()
+{
+    // On accède directement au pointeur série pour vérifier si une ligne complète est arrivée
+    QSerialPort *serial = A.getserial();
+
+    // TANT QUE nous avons moins d'une ligne complète, on ne fait rien (on attend la suite)
+    if (!serial->canReadLine()) {
+        return;
+    }
+
+    // On lit la ligne entière (jusqu'au \n envoyé par Arduino)
+    QByteArray data = serial->readLine();
+
+    // On nettoie le code (suppression des espaces et retours à la ligne)
+    QString uid = QString::fromStdString(data.toStdString()).trimmed().replace(" ", "");
+
+    // Un UID RFID standard fait au moins 8 caractères (ex: E3A1B2C4)
+    if(uid.isEmpty() || uid.length() < 8) {
+        qDebug() << "Lecture incomplète ou bruit : " << uid;
+        return;
+    }
+
+    qDebug() << "✅ VRAI CODE DÉTECTÉ :" << uid;
+
+    // --- Vérification BDD ---
+    QSqlQuery query;
+    query.prepare("SELECT NOM, PRENOM, RESPONSABILITE FROM EMPLOYER WHERE REPLACE(RFID_UID, ' ', '') = :uid");
+    query.bindValue(":uid", uid);
+
+    if(query.exec())
+    {
+        if(query.next())
+        {
+            QString nom = query.value("NOM").toString();
+            QString prenom = query.value("PRENOM").toString();
+            QMessageBox::information(this, "Accès Autorisé", "Bienvenue " + prenom + " " + nom);
+        }
+        else
+        {
+            QMessageBox::warning(this, "Accès Refusé", "Carte inconnue : " + uid);
+            // C'est ICI que vous verrez le vrai code à copier dans votre BDD
+            qDebug() << "Code à copier dans Oracle :" << uid;
+        }
     }
 }

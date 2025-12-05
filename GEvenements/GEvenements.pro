@@ -2,7 +2,7 @@ QT       += core gui
 QT       += core gui sql
 QT += core gui widgets sql
 QT += network
-QT += quick positioning location quick quickwidgets charts
+QT += quick positioning location quick quickwidgets charts serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +14,7 @@ CONFIG += c++17
 # On ajoute le dossier src aux chemins d'inclusion
 FASTTEXT_PATH = "$$PWD/FastText/fastText-main/src"
 SOURCES += \
+    arduino.cpp \
     classification.cpp \
     datedelegate.cpp \
     evenement.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 
 HEADERS += \
+    arduino.h \
     classification.h \
     datedelegate.h \
     evenement.h \
