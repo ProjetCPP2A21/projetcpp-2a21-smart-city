@@ -26,7 +26,8 @@ SOURCES += \
     statistique.cpp \
     evenement.cpp \
     datedelegate.cpp \
-    classification.cpp
+    classification.cpp \
+    arduino.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     statistique.h \
     evenement.h \
     datedelegate.h \
-    classification.h
+    classification.h \
+    arduino.h
 
 
 FORMS += \

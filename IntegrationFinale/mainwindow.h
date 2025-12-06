@@ -77,6 +77,11 @@ private:
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QProcess>
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
+#include <QByteArray>
+#include "arduino.h"
+
 
 
 QT_BEGIN_NAMESPACE
@@ -200,6 +205,8 @@ private slots:
 
     void on_Modifier_Residence_2_clicked();
 
+        // Arduino
+    void update_rfid(); // Youssef
 private:
     Ui::MainWindow *ui;
     CRUD crud;
@@ -228,6 +235,8 @@ private:
     QProcess *gpsProcess;
     double myLatitude;
     double myLongitude;
+    Arduino A; // L'objet Arduino
+    QByteArray data;
 };
 
 #endif // MAINWINDOW_H

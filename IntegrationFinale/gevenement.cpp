@@ -35,6 +35,9 @@
 #include <QVBoxLayout>
 #include <QGeoPositionInfoSource>
 #include <QDebug>
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
+#include <QByteArray>
 
 using namespace QXlsx;
 
@@ -635,5 +638,78 @@ void MainWindow::onGpsProcessFinished(int exitCode, QProcess::ExitStatus exitSta
         }
     } else {
         qDebug() << "⚠️ GPS Windows n'a pas pu fixer la position.";
+    }
+}
+
+void MainWindow::update_rfid()
+{
+    // --- 1. Lecture des données du port série ---
+    QSerialPort *serial = A.getserial();
+
+    // On vérifie qu'on a bien une ligne complète pour éviter les lectures partielles
+    if (!serial->canReadLine()) return;
+
+    QByteArray data = serial->readLine();
+
+    // Nettoyage de l'UID (suppression des espaces et des retours à la ligne)
+    // Ex: "E2 45 ..." devient "E245..."
+    QString uid = QString::fromStdString(data.toStdString()).trimmed().replace(" ", "");
+
+    // Ignorer les données trop courtes (parasites)
+    if(uid.length() < 4) return;
+
+    qDebug() << "Carte détectée (Nettoyée) :" << uid;
+
+    // --- 2. Vérification dans la Base de Données ---
+    QSqlQuery query;
+
+    // IMPORTANT : On ajoute 'RESPONSABILITE' dans le SELECT pour savoir où rediriger l'utilisateur
+    query.prepare("SELECT NOM, PRENOM, RESPONSABILITE FROM EMPLOYER WHERE REPLACE(RFID_UID, ' ', '') = :uid");
+    query.bindValue(":uid", uid);
+
+    if(query.exec())
+    {
+        if(query.next())
+        {
+            // === CAS : ACCÈS AUTORISÉ ===
+            QString nom = query.value("NOM").toString();
+            QString prenom = query.value("PRENOM").toString();
+            QString role = query.value("RESPONSABILITE").toString(); // <--- On récupère le rôle (rh, service, etc.)
+
+            qDebug() << "Connexion RFID réussie pour :" << prenom << "Role:" << role;
+
+            // 1. Action Physique : Envoyer '1' à l'Arduino pour ouvrir la porte/servo
+            A.write_to_arduino("1");
+
+            // 2. Action Logicielle : Configurer l'interface selon le rôle
+            // C'est la même fonction que celle utilisée pour le Login par mot de passe
+            configurerAccesSelonRole(role);
+
+            // 3. Feedback Utilisateur
+            // On peut afficher un petit message temporaire ou une notification
+            // (Optionnel : si vous trouvez que le popup bloque trop, vous pouvez le retirer)
+            QMessageBox::information(this, "Identification RFID",
+                                     "Bonjour " + prenom + " !\nAccès autorisé (" + role + ").");
+
+        }
+        else
+        {
+            // === CAS : ACCÈS REFUSÉ ===
+            qDebug() << "Accès refusé. UID inconnu :" << uid;
+            QMessageBox::information(this, "Identification RFID",
+                                     "Bonjour " " !\nAccès Refusé.");
+
+            // 1. Action Physique : Envoyer '0' à l'Arduino (Message rouge + bip)
+            A.write_to_arduino("0");
+
+
+            // 2. Feedback Utilisateur sur le PC (Optionnel)
+            // Vous pouvez afficher un message d'erreur si vous voulez,
+            // mais attention à ne pas bloquer l'interface si l'utilisateur scanne 10 fois de suite.
+        }
+    }
+    else
+    {
+        qDebug() << "Erreur SQL RFID :" << query.lastError().text();
     }
 }

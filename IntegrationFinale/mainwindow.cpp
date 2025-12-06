@@ -53,6 +53,23 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    qDebug() << "Recherche des ports...";
+    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+        qDebug() << "Port :" << info.portName();
+        qDebug() << "   - Vendor ID :" << info.vendorIdentifier();
+        qDebug() << "   - Product ID :" << info.productIdentifier();
+    }
+
+    int ret = A.connect_arduino(); // Connexion à l'Arduino
+    switch(ret){
+    case(0): qDebug() << "Arduino connecté avec succès : " << A.getarduino_port_name(); break;
+    case(1): qDebug() << "Erreur d'ouverture du port série"; break;
+    case(-1): qDebug() << "Arduino non trouvé"; break;
+    }
+
+    // Connexion du signal "readyRead" (quand des données arrivent) au slot "update_rfid"
+    // Note: A.getserial() doit retourner le pointeur vers l'objet QSerialPort
+    QObject::connect(A.getserial(), SIGNAL(readyRead()), this, SLOT(update_rfid()));
     // 1. Définir le mode mot de passe par défaut (si ce n'est pas fait dans le Designer)
     ui->lineEditLoginPassword->setEchoMode(QLineEdit::Password);
 
