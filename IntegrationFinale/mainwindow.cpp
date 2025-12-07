@@ -44,6 +44,9 @@
 #include <QDebug>
 #include <QAction>
 #include <QIcon>
+#include <QStackedLayout>
+#include <QVBoxLayout>
+#include <QWidget>
 
 using namespace QXlsx;
 const QString SELECT_QUERY = "SELECT id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite FROM EMPLOYER";
@@ -97,18 +100,58 @@ MainWindow::MainWindow(QWidget *parent)
             togglePasswordAction->setIcon(QIcon("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/eye_open.jpg"));
         }
     });
-    QMovie *movie = new QMovie("C:/Users/ASUS/Downloads/upscaled-video.mp4");
+    // --- CONFIGURATION VIDÉO ET INTERFACE (MÉTHODE LABEL) ---
 
-    // 2. Vérifiez si le GIF s'est bien chargé (optionnel mais recommandé)
-    if (!movie->isValid()) {
-        qDebug() << "Erreur : Impossible de charger le GIF d'arrière-plan.";
-    } else {
-        // 3. Attachez le GIF au label
-        ui->BackgroundGif->setMovie(movie);
+    // 1. Préparation du Layout principal de la page Connection
+    QVBoxLayout *mainLayout = new QVBoxLayout(ui->Connection);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
 
-        // 4. Lancez l'animation
-        movie->start();
+    // 2. Création du conteneur global et du StackLayout
+    QWidget *globalContainer = new QWidget();
+    mainLayout->addWidget(globalContainer);
+
+    QStackedLayout *stackLayout = new QStackedLayout(globalContainer);
+    stackLayout->setStackingMode(QStackedLayout::StackAll);
+
+    // 3. COUCHE 1 (FOND) : Le Label Vidéo (Remplace QVideoWidget)
+    videoLabel = new QLabel();
+    videoLabel->setScaledContents(true); // Important pour adapter la vidéo à l'écran
+    videoLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
+    // 4. Configurer le player avec QVideoSink
+    player = new QMediaPlayer(this);
+    audioOutput = new QAudioOutput(this);
+    videoSink = new QVideoSink(this); // Le collecteur d'images
+
+    player->setAudioOutput(audioOutput);
+    player->setVideoOutput(videoSink); // On envoie la vidéo vers le Sink, pas le Widget
+
+    // --- MAGIE ICI : On transforme chaque frame ---
+    connect(videoSink, &QVideoSink::videoFrameChanged, this, [this](const QVideoFrame &frame) {
+        if(frame.isValid()) {
+            // Conversion directe sans redimensionnement (car la vidéo est déjà à la bonne taille)
+            QImage image = frame.toImage();
+
+            // On affiche directement. Laissez le Label gérer l'étirement final si besoin (c'est moins lourd)
+            videoLabel->setPixmap(QPixmap::fromImage(image));
+        }
+    });
+
+
+    // Lancement de la vidéo
+    player->setSource(QUrl("qrc:/Background_Loop.mp4"));
+    player->setLoops(QMediaPlayer::Infinite);
+    audioOutput->setVolume(0);
+    player->play();
+
+    // 5. COUCHE 2 (DEVANT) : Votre Interface
+    if(ui->Background) {
+        ui->Background->setAttribute(Qt::WA_TranslucentBackground);
+        stackLayout->addWidget(ui->Background);
     }
+    videoLabel->setFixedSize(1366, 768);
+    // On insère le Label Vidéo tout au fond (index 0)
+    stackLayout->insertWidget(0, videoLabel);
     connect(ui->btn_logout_2, &QPushButton::clicked, this, [this]() {
         // 1. Revenir à la page de connexion
         ui->stackedWidget->setCurrentWidget(ui->Connection);

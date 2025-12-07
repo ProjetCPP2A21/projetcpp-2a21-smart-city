@@ -81,7 +81,13 @@ private:
 #include <QtSerialPort/QSerialPortInfo>
 #include <QByteArray>
 #include "arduino.h"
-
+#include <QMediaPlayer>
+#include <QVideoWidget>
+#include <QAudioOutput>
+#include <QUrl>
+#include <QVideoSink>  // <--- AJOUTER CECI
+#include <QVideoFrame> // <--- AJOUTER CECI
+#include <QLabel>      // <--- AJOUTER CECI
 
 
 QT_BEGIN_NAMESPACE
@@ -237,6 +243,12 @@ private:
     double myLongitude;
     Arduino A; // L'objet Arduino
     QByteArray data;
+
+    QMediaPlayer *player;
+    QLabel *videoLabel;       // Le nouveau conteneur
+    QVideoSink *videoSink;    // L'objet qui capture les images
+    QAudioOutput *audioOutput;
+
 };
 
 #endif // MAINWINDOW_H

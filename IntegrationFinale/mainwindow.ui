@@ -20,9 +20,9 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>-10</x>
+      <x>-2</x>
       <y>-30</y>
-      <width>1381</width>
+      <width>1366</width>
       <height>768</height>
      </rect>
     </property>
@@ -2485,7 +2485,7 @@ QPushButton:pressed {
      <widget class="QFrame" name="Ajouter_4">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>190</x>
         <y>20</y>
         <width>351</width>
         <height>751</height>
@@ -2995,7 +2995,7 @@ QPushButton:pressed {
      <widget class="QTabWidget" name="tabWidget">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>540</x>
         <y>30</y>
         <width>831</width>
         <height>741</height>
@@ -4285,8 +4285,8 @@ QPushButton:pressed {
        <rect>
         <x>-190</x>
         <y>29</y>
-        <width>711</width>
-        <height>731</height>
+        <width>1571</width>
+        <height>768</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -4298,8 +4298,8 @@ QPushButton:pressed {
       <widget class="QFrame" name="logincard">
        <property name="geometry">
         <rect>
-         <x>170</x>
-         <y>110</y>
+         <x>10</x>
+         <y>170</y>
          <width>491</width>
          <height>621</height>
         </rect>
@@ -4557,14 +4557,118 @@ QLineEdit:focus {
         </property>
        </widget>
       </widget>
+      <widget class="QPushButton" name="Aide">
+       <property name="geometry">
+        <rect>
+         <x>1150</x>
+         <y>700</y>
+         <width>111</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 17px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Aide</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="About_Us">
+       <property name="geometry">
+        <rect>
+         <x>1060</x>
+         <y>700</y>
+         <width>111</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 17px;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>About Us</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_128">
+       <property name="geometry">
+        <rect>
+         <x>1220</x>
+         <y>50</y>
+         <width>131</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>NEOCITY</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_130">
+       <property name="geometry">
+        <rect>
+         <x>1130</x>
+         <y>40</y>
+         <width>81</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">image: url(:/cropped_circle_image.png);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>:/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
      <widget class="QLabel" name="BackgroundGif">
       <property name="geometry">
        <rect>
         <x>-190</x>
         <y>20</y>
-        <width>1571</width>
-        <height>741</height>
+        <width>1000</width>
+        <height>300</height>
        </rect>
       </property>
       <property name="text">
@@ -4577,122 +4681,8 @@ QLineEdit:focus {
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="label_128">
-      <property name="geometry">
-       <rect>
-        <x>1250</x>
-        <y>44</y>
-        <width>241</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bahnschrift</family>
-        <pointsize>22</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>NEOCITY</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_130">
-      <property name="geometry">
-       <rect>
-        <x>1170</x>
-        <y>38</y>
-        <width>81</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">image: url(:/cropped_circle_image.png);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>:/551544292_1166092592062473_5497828692904860049_n-removebg-preview.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="About_Us">
-      <property name="geometry">
-       <rect>
-        <x>1050</x>
-        <y>700</y>
-        <width>111</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bahnschrift</family>
-        <pointsize>-1</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    background-color: transparent;
-    color: white;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 17px;
-}
-
-QPushButton:pressed {
-    background-color: #FFFFFF;
-}</string>
-      </property>
-      <property name="text">
-       <string>About Us</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="Aide">
-      <property name="geometry">
-       <rect>
-        <x>1130</x>
-        <y>700</y>
-        <width>111</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bahnschrift</family>
-        <pointsize>-1</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-    background-color: transparent;
-    color: white;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 17px;
-}
-QPushButton:pressed {
-    background-color: #FFFFFF;
-}</string>
-      </property>
-      <property name="text">
-       <string>Aide</string>
-      </property>
-     </widget>
      <zorder>BackgroundGif</zorder>
      <zorder>Background</zorder>
-     <zorder>label_128</zorder>
-     <zorder>label_130</zorder>
-     <zorder>About_Us</zorder>
-     <zorder>Aide</zorder>
     </widget>
     <widget class="QWidget" name="page">
      <widget class="QPushButton" name="pushButton_149">
@@ -5747,24 +5737,39 @@ QPushButton:pressed {
       <set>Qt::TextInteractionFlag::NoTextInteraction</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_logout_2">
+    <widget class="QFrame" name="frame">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>650</y>
-       <width>151</width>
-       <height>61</height>
+       <x>20</x>
+       <y>630</y>
+       <width>161</width>
+       <height>80</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <family>Bahnschrift</family>
-       <pointsize>-1</pointsize>
-       <bold>true</bold>
-      </font>
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="btn_logout_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>151</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
     background-color: transparent;
     color: #ff5555; /* Rouge clair */
     border: 1px solid #ff5555;
@@ -5777,14 +5782,13 @@ QPushButton:hover {
     background-color: #ff5555;
     color: white;
 }</string>
-     </property>
-     <property name="text">
-      <string>Se déconnecter</string>
-     </property>
+      </property>
+      <property name="text">
+       <string>Se déconnecter</string>
+      </property>
+     </widget>
     </widget>
    </widget>
-   <zorder>leftmenu</zorder>
-   <zorder>stackedWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

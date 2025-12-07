@@ -1,4 +1,4 @@
-QT       += core gui sql printsupport charts network widgets quickwidgets qml quick positioning location serialport
+QT       += core gui sql printsupport charts network widgets quickwidgets qml quick positioning location serialport multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
