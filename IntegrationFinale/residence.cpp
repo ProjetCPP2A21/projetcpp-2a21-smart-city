@@ -65,8 +65,8 @@ void MainWindow::on_Modifier_Residence_2_clicked()
 void MainWindow::afficherTableResidence()
 {
     // récupère DATE_CONST comme number
-    QSqlQuery query("SELECT ID_RESIDENCE, NOM, ADRESSE, Type_Residence_2, "
-                    "NBR_UNITE, Nbr_Habitants_2, Etat_2, DATE_CONST FROM RESIDENCE");
+    QSqlQuery query("SELECT ID_RESIDENCE, NOM, ADRESSE, TYPE_RESIDENCE, "
+                    "NBR_UNITE, NBR_HABITANTS, ETAT, DATE_CONST FROM RESIDENCE");
 
     ui->affichage->clear();
     ui->affichage->setRowCount(0);
@@ -268,11 +268,11 @@ void MainWindow::on_exporter_clicked()
 
     QSqlQuery query(db);
     QString sql = R"(
-        SELECT ID_RESIDENCE, NOM, ADRESSE, Type_Residence_2,
-               NBR_UNITE, Nbr_Habitants_2, Etat_2,
+        SELECT ID_RESIDENCE, NOM, ADRESSE, TYPE_RESIDENCE,
+               NBR_UNITE, NBR_HABITANTS, ETAT,
              DATE_CONST
         FROM RESIDENCE
-        ORDER BY Nbr_Habitants_2 ASC
+        ORDER BY NBR_HABITANTS ASC
     )";
 
     if (!query.exec(sql)) {
