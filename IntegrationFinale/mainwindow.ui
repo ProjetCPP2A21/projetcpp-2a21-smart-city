@@ -4298,7 +4298,7 @@ QPushButton:pressed {
       <widget class="QFrame" name="logincard">
        <property name="geometry">
         <rect>
-         <x>30</x>
+         <x>-20</x>
          <y>170</y>
          <width>491</width>
          <height>621</height>
