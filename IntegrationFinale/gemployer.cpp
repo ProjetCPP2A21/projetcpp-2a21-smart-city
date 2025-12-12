@@ -571,35 +571,93 @@ void MainWindow::onStatistiquesClicked()
 
 void MainWindow::on_pushButtonSuivant_clicked()
 {
+    // 1. Récupérer TOUS les champs (pas seulement l'email)
+    QString idSaisi = ui->lineEditMdpId->text();
+    QString nomSaisi = ui->lineEditMdpUsername->text();
     QString emailSaisi = ui->lineEditMdpEmail->text();
 
-    if(emailSaisi.isEmpty()){
-        QMessageBox::warning(this, "Erreur", "Veuillez entrer votre adresse email.");
+    // 2. Vérifier qu'aucun champ n'est vide
+    if(idSaisi.isEmpty() || nomSaisi.isEmpty() || emailSaisi.isEmpty()){
+        QMessageBox::warning(this, "Erreur", "Veuillez remplir l'ID, le Nom et l'Email pour vérifier votre identité.");
         return;
     }
 
     QSqlQuery query;
-    // CORRECTION : Table EMPLOYER, colonne ID_EMPLOYE
-    query.prepare("SELECT ID_EMPLOYE FROM EMPLOYER WHERE EMAIL = :email");
+
+    // 3. CORRECTION MAJEURE : On vérifie la COMBINAISON des 3 champs
+    // Assurez-vous que le nom de la colonne dans votre base est bien "NOM" (ou "USERNAME" ?)
+    query.prepare("SELECT ID_EMPLOYE FROM EMPLOYER WHERE ID_EMPLOYE = :id AND NOM = :nom AND EMAIL = :email");
+
+    query.bindValue(":id", idSaisi.toInt()); // Convertir l'ID en int pour être sûr
+    query.bindValue(":nom", nomSaisi);
     query.bindValue(":email", emailSaisi);
 
     if(query.exec() && query.next()){
-        // L'email existe, on récupère l'ID
+        // C'est bon ! L'utilisateur a donné les 3 bonnes infos qui correspondent au même compte.
         this->idUtilisateurEnCours = query.value(0).toString();
 
         // Génération du code
         int code = QRandomGenerator::global()->bounded(1000, 9999);
         this->codeVerificationGenere = QString::number(code);
 
-        // Envoi Email (reste inchangé)
-        Smtp *smtp = new Smtp("mo7it.re@gmail.com", "zfuj tzox yrss fpvj", "smtp.gmail.com", 465);
-        smtp->sendMail("mo7it.re@gmail.com", emailSaisi, "Code de réinitialisation", "Code : " + this->codeVerificationGenere);
+        // ============================================================
+        // DESIGN EMAIL PROFESSIONNEL (HTML + CSS)
+        // ============================================================
 
-        QMessageBox::information(this, "Succès", "Code envoyé à " + emailSaisi);
+        // Note: Pour le logo, les clients mail (Gmail, Outlook) bloquent les images locales (C:/...).
+        // Il faut héberger votre logo (sur Imgur ou ImgBB) et mettre le lien "https://..." dans src=""
+        // Ici, j'ai mis un titre stylisé "NEOCITY" à la place.
+
+        QString emailHtml = R"(
+            <html>
+            <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+                <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+                    <div style="background-color: #2c3e50; padding: 20px; text-align: center;">
+                        <img src="https://i.ibb.co/FLBzBm8s/cropped-circle-image.png" alt="Logo NeoCity" width="70" height="auto" style="display:block; margin:auto;">
+                    </div>
+
+                    <div style="padding: 30px; text-align: center;">
+                        <h2 style="color: #333333; margin-top: 0; font-size: 20px;">Réinitialisation de mot de passe</h2>
+                        <p style="color: #666666; font-size: 14px; line-height: 1.6;">
+                            Bonjour <strong>%1</strong>,<br>
+                            Nous avons reçu une demande pour accéder à votre compte Employé. Voici votre code de vérification sécurisé :
+                        </p>
+
+                        <div style="margin: 25px 0;">
+                            <span style="display: inline-block; background-color: #f0f3f4; color: #2c3e50; font-size: 32px; font-weight: bold; padding: 10px 30px; border-radius: 5px; letter-spacing: 5px; border: 2px dashed #bdc3c7;">
+                                %2
+                            </span>
+                        </div>
+
+                        <p style="color: #999999; font-size: 12px; margin-top: 20px;">
+                            Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet email. Votre compte reste sécurisé.
+                        </p>
+                    </div>
+
+                    <div style="background-color: #ecf0f1; padding: 15px; text-align: center; color: #95a5a6; font-size: 11px;">
+                        &copy; 2025 NEOCITY - Smart City Management<br>
+                        Tunis, Tunisie
+                    </div>
+                </div>
+            </body>
+            </html>
+        )";
+
+        // On remplace les %1 et %2 par le Nom et le Code
+        emailHtml = emailHtml.arg(nomSaisi, this->codeVerificationGenere);
+
+        // ============================================================
+
+        // Envoi Email avec le contenu HTML
+        Smtp *smtp = new Smtp("mo7it.re@gmail.com", "zfuj tzox yrss fpvj", "smtp.gmail.com", 465);
+        smtp->sendMail("mo7it.re@gmail.com", emailSaisi, "NEOCITY : Code de vérification", emailHtml);
+
+        QMessageBox::information(this, "Succès", "Identité vérifiée. Code envoyé à " + emailSaisi);
         ui->stackedWidget->setCurrentWidget(ui->page_13);
 
     } else {
-        QMessageBox::warning(this, "Erreur", "Email introuvable dans la liste des employés.");
+        QMessageBox::warning(this, "Erreur", "Informations incorrectes ! Cet email ne correspond pas à cet ID et ce Nom.");
     }
 }
 // MainWindow.cpp
@@ -691,6 +749,13 @@ void MainWindow::configurerAccesSelonRole(QString role)
         ui->Modifier_Employe->setEnabled(true);
         ui->Supprimer_Employe->setEnabled(true);
         ui->Rechercher_Employe->setEnabled(true);
+
+        //les pages ouverts
+        ui->RH_Page->setEnabled(true);
+        ui->residence->setEnabled(true);
+        ui->resident_Page->setEnabled(true);
+        ui->service_Page->setEnabled(true);
+        ui->Evenements_Page->setEnabled(true);
 
         ui->stackedWidget->setCurrentWidget(ui->page_4);
         afficherEmployes();

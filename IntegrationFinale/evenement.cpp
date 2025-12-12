@@ -6,7 +6,6 @@
 #include <QSqlQueryModel>
 #include <QSqlDatabase>
 #include <iostream>
-#include <onnxruntime_cxx_api.h>
 #include <QCoreApplication>
 #include <algorithm>
 #include <vector>

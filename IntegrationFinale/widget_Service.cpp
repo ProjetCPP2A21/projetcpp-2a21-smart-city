@@ -39,14 +39,30 @@ void MainWindow::afficherServices()
                                    new QTableWidgetItem(query.value(2).toString()));
         ui->tableServices->setItem(row, 2,
                                    new QTableWidgetItem(query.value(3).toString()));
-        ui->tableServices->setItem(row, 3,
-                                   new QTableWidgetItem(query.value(4).toString()));
+        QVariant val = query.value(4);
+        double budgetVal = 0.0;
+
+        // On essaie de convertir en string, on remplace la virgule par un point, puis on convertit
+        QString strVal = val.toString();
+        strVal.replace(",", "."); // Gère le cas "1,5" -> "1.5"
+        budgetVal = strVal.toDouble();
+
+        QString budgetStr = QString("$ %1").arg(budgetVal, 0, 'f', 2);
+        ui->tableServices->setItem(row, 3, new QTableWidgetItem(budgetStr));
         ui->tableServices->setItem(row, 4,
                                    new QTableWidgetItem(query.value(5).toString()));
         ui->tableServices->setItem(row, 5,
                                    new QTableWidgetItem(query.value(6).toString()));
         ui->tableServices->setItem(row, 6,
                                    new QTableWidgetItem(query.value(0).toString()));
+
+        QString dateBrute = query.value(7).toString();
+        if (dateBrute.length() == 8) {
+            // Transforme "20251211" en "2025-12-11"
+            dateBrute.insert(4, "-");
+            dateBrute.insert(7, "-");
+        }
+        ui->tableServices->setItem(row, 7, new QTableWidgetItem(dateBrute));
 
         row++;
     }
@@ -93,10 +109,17 @@ void MainWindow::ajouterService()
 
     qDebug() << "Prochain ID calculé automatiquement:" << newId;
 
+    // 1. Récupérer la date
+    QDate dateSelectionnee = ui->dateEdit_date->date();
+
+    // 2. CONVERSION IMPORTANTE : Date -> Nombre (YYYYMMDD) pour Oracle
+    int dateInt = dateSelectionnee.toString("yyyyMMdd").toInt();
+
     QSqlQuery query;
+    // 3. Ajouter DATE_CR dans la requête
     query.prepare("INSERT INTO SERVICE (ID_SERVICE, NOM, TYPE_SERVICE, RESPONSABLE, "
-                  "BUDGET_P, NIVEAU_PR, ETAT) "
-                  "VALUES (:id, :nom, :type, :responsable, :budget, :priorite, :etat)");
+                  "BUDGET_P, NIVEAU_PR, ETAT, DATE_CR) " // <-- Ajout colonne
+                  "VALUES (:id, :nom, :type, :responsable, :budget, :priorite, :etat, :date)"); // <-- Ajout bind
 
     query.bindValue(":id", newId);
     query.bindValue(":nom", nom);
@@ -105,6 +128,9 @@ void MainWindow::ajouterService()
     query.bindValue(":budget", budget);
     query.bindValue(":priorite", priorite);
     query.bindValue(":etat", etat);
+
+    // 4. On envoie le NOMBRE calculé
+    query.bindValue(":date", dateInt);
 
     if (query.exec()) {
         QMessageBox::information(this, "Succès",
@@ -439,13 +465,14 @@ void MainWindow::on_btnExportPDF_Services_clicked()
     painter.drawLine(200, 350, pdf.width() - 200, 350);
 
     int x = 80, y = 500, h = 90;
-    int w[] = {300, 300, 350, 250, 250, 250, 200};
-    QStringList headers = {"Nom", "Type", "Responsable", "Budget", "Priorité", "État", "ID"};
+    int w[] = {300, 300, 350, 250, 250, 250, 200, 250};
+    QStringList headers = {"Nom", "Type", "Responsable", "Budget", "Priorité", "État", "ID", "Date"};
 
     painter.setFont(QFont("Arial", 11, QFont::Bold));
     painter.setBrush(blueLight);
     painter.setPen(white);
-    painter.drawRect(x, y, w[0]+w[1]+w[2]+w[3]+w[4]+w[5]+w[6], h);
+    int cols = 8;
+    painter.drawRect(x, y, w[0]+w[1]+w[2]+w[3]+w[4]+w[5]+w[6]+w[7], h);
     int cx = x;
     for (int i = 0; i < headers.size(); i++) {
         painter.drawText(QRect(cx, y, w[i], h), Qt::AlignCenter, headers[i]);
@@ -457,14 +484,13 @@ void MainWindow::on_btnExportPDF_Services_clicked()
     int rows = ui->tableServices->rowCount();
 
     // CORRECTION : On force la limite à 7 colonnes car w[] a une taille de 7
-    int cols = 7;
 
     for (int i = 0; i < rows; ++i) {
         QColor bg = (i % 2 == 0 ? lineLight : lineDark);
         QColor tx = (i % 2 == 0 ? Qt::black : white);
 
         // Dessiner le fond de la ligne
-        painter.fillRect(x, y, w[0]+w[1]+w[2]+w[3]+w[4]+w[5]+w[6], h, bg);
+        painter.fillRect(x, y, w[0]+w[1]+w[2]+w[3]+w[4]+w[5]+w[6]+w[7], h, bg);
 
         painter.setPen(tx);
         cx = x;

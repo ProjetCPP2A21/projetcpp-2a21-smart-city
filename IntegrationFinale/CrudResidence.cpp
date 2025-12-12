@@ -84,19 +84,31 @@ bool CRUD::modifier(int id, QString nom, QString adresse, QString type,
     return query.exec();
 }
 
+// DANS CrudResidence.cpp
+
 bool CRUD::supprimer(int id) {
     QSqlQuery query;
     query.prepare("DELETE FROM RESIDENCE WHERE ID_RESIDENCE=:id");
     query.bindValue(":id", id);
-    return query.exec();
+
+    // On exécute la requête
+    bool succes = query.exec();
+
+    // CORRECTION : On vérifie si une ligne a VRAIMENT été touchée
+    // numRowsAffected() renvoie le nombre de lignes supprimées.
+    if (succes && query.numRowsAffected() > 0) {
+        return true; // Supprimé pour de vrai
+    }
+
+    return false; // Requête passée, mais rien n'a été supprimé (ID introuvable)
 }
 
 QSqlQuery CRUD::rechercherParID(int id)
 {
     QSqlQuery query;
+    // CORRECTION : On enlève TO_CHAR/TO_DATE et on prend juste DATE_CONST brut
     query.prepare("SELECT ID_RESIDENCE, NOM, ADRESSE, TYPE_RESIDENCE, "
-                  "NBR_UNITE, NBR_HABITANTS, ETAT, "
-                  "TO_CHAR(TO_DATE(DATE_CONST, 'YYYYMMDD'), 'YYYY-MM-DD') "
+                  "NBR_UNITE, NBR_HABITANTS, ETAT, DATE_CONST "
                   "FROM RESIDENCE WHERE ID_RESIDENCE = :id");
 
     query.bindValue(":id", id);
@@ -105,7 +117,7 @@ QSqlQuery CRUD::rechercherParID(int id)
         qDebug() << "Erreur recherche:" << query.lastError().text();
     }
 
-    return query; // Caller can iterate over results
+    return query;
 }
 
 

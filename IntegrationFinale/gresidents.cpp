@@ -19,7 +19,7 @@
 void MainWindow::on_btn_ajouter_clicked()
 {
     int id_resident = ui->lineEdit_idresident->text().toInt();
-    int id_residence = 250;
+    int id_residence = ui->lineEdit_idresidence->text().toInt();
     QString nom = ui->lineEdit_nom->text();
     QString prenom = ui->lineEdit_prenom->text();
     int age = ui->lineEdit_age->text().toInt();
@@ -55,7 +55,7 @@ void MainWindow::on_btn_supprimer_clicked()
 void MainWindow::on_btn_modifier_clicked()
 {
     int id_resident = ui->lineEdit_idresident->text().toInt();
-    int id_residence = 250;
+    int id_residence = ui->lineEdit_idresidence->text().toInt();
     QString nom = ui->lineEdit_nom->text();
     QString prenom = ui->lineEdit_prenom->text();
     int age = ui->lineEdit_age->text().toInt();
@@ -321,72 +321,96 @@ void MainWindow::on_btnExportPDF_clicked()
     painter.end();
     QMessageBox::information(this, "PDF", "PDF Exporté avec succès !");
 }
+// Fonction utilitaire pour obtenir le niveau de stabilité d'un métier (0 à 3)
+int MainWindow::obtenirNiveauMetier(QString profession) {
+    profession = profession.toLower().trimmed();
 
+    // Catégorie 1 : Haute stabilité / Cadres (Score 3)
+    QStringList motsClesHaut = {
+        "ingenieur", "medecin", "directeur", "responsable", "chef",
+        "avocat", "cadre", "enseignant", "professeur", "fonctionnaire",
+        "architecte", "pharmacien", "juge", "expert", "cdi"
+    };
+
+    // Catégorie 2 : Stabilité Moyenne / Employés / Ouvriers (Score 2)
+    QStringList motsClesMoyen = {
+        "technicien", "infirmier", "comptable", "secretaire", "assistant",
+        "agent", "ouvrier", "chauffeur", "mecanicien", "electricien",
+        "plombier", "maçon", "cuisinier", "boulanger", "vendeur",
+        "commercial", "coiffeur", "agriculteur"
+    };
+
+    // Catégorie 3 : Indépendants / Etudiants / Précaires (Score 1)
+    QStringList motsClesBas = {
+        "etudiant", "stagiaire", "interim", "freelance", "independant",
+        "artiste", "journaliste", "saisonnier", "apprenti"
+    };
+
+    // Catégorie 4 : Sans emploi / Retraité (Score 0)
+    QStringList motsClesInactif = {
+        "chomeur", "sans emploi", "retraite", "au foyer"
+    };
+
+    // Vérification
+    for (const QString &mot : motsClesHaut) if (profession.contains(mot)) return 3;
+    for (const QString &mot : motsClesMoyen) if (profession.contains(mot)) return 2;
+    for (const QString &mot : motsClesBas) if (profession.contains(mot)) return 1;
+    for (const QString &mot : motsClesInactif) if (profession.contains(mot)) return 0;
+
+    // Par défaut, si on ne reconnait pas le métier, on le considère comme "Moyen" (2)
+    return 2;
+}
 QString MainWindow::calculerStabilite(int age, QString profession, QString situation)
 {
-    profession = profession.toLower();
+    int scoreMetier = obtenirNiveauMetier(profession); // 0, 1, 2 ou 3
     situation = situation.toLower();
 
-    // Stabilité élevée
-    if ((profession.contains("cdi") ||
-         profession.contains("employer") ||
-         profession.contains("ingenieur") ||
-         profession.contains("medecin") ||
-         profession.contains("enseignant")))
-    {
-        if (situation.contains("marier") && (age >= 25 && age <= 55))
-            return "Élevée";
+    // LOGIQUE DE STABILITÉ
+    // Règle 1 : Si le métier est très stable (3) ET marié
+    if (scoreMetier >= 3 && situation.contains("marier")) {
+        return "Élevée";
     }
 
-    // Stabilité moyenne
-    if ((profession.contains("etudiant") ||
-         profession.contains("ouvrier") ||
-         profession.contains("independant")))
-    {
-        if (situation.contains("celibataire") && (age >= 20 && age <= 60))
-            return "Moyenne";
+    // Règle 2 : Si métier correct (2 ou 3) et âge adulte "mûr"
+    if (scoreMetier >= 2 && age > 30 && age < 60) {
+        return "Bonne";
     }
 
-    // Sinon stabilité faible
-    return "Faible";
+    // Règle 3 : Etudiant ou début de carrière
+    if (scoreMetier == 1 || (age < 25 && scoreMetier == 2)) {
+        return "Moyenne (En construction)";
+    }
+
+    // Règle 4 : Inactif ou très âgé
+    if (scoreMetier == 0 || age > 70) {
+        return "Faible (Dépendance probable)";
+    }
+
+    return "Moyenne"; // Valeur par défaut
 }
-
 QString MainWindow::calculerMobilite(int age, QString profession, QString situation)
 {
-    profession = profession.toLower();
-    situation = situation.toLower();
+    int scoreMetier = obtenirNiveauMetier(profession);
 
-    //  Mobilité élevée
-    if (age < 40 &&
-        (profession.contains("etudiant") ||
-         profession.contains("employe") ||
-         profession.contains("medecin") ||
-         profession.contains("ingenieur") ||
-         profession.contains("enseignant")) &&
-        (situation.contains("celibataire") ||
-         situation.contains("marier")))
-    {
-        return "Mobilité élevée – Peut participer aux activités extérieures";
+    // 1. Jeunes actifs et étudiants (Haute mobilité)
+    if (age < 35 && (scoreMetier == 1 || scoreMetier == 2 || scoreMetier == 3)) {
+        return "Mobilité Élevée – Participe aux activités";
     }
 
-    //  Mobilité moyenne
-    if (age >= 40 && age <= 60 &&
-        (profession.contains("ouvrier") ||
-         profession.contains("independant")) &&
-        situation.contains("marier"))
-    {
-        return "Mobilité moyenne – Mobilité correcte";
+    // 2. Actifs installés (Moyenne mobilité car souvent occupés)
+    if (age >= 35 && age < 60 && scoreMetier >= 2) {
+        return "Mobilité Moyenne – Disponible soirs/week-ends";
     }
 
-    //  Mobilité faible
-    if (age > 60 ||
-        profession.contains("sans emploi") ||
-        profession.contains("retraite") ||
-        situation.contains("veuf"))
-    {
-        return "Mobilité faible – Peut nécessiter assistance";
+    // 3. Retraités dynamiques (souvent très mobiles pour les loisirs)
+    if (age >= 60 && age < 75 && profession.toLower().contains("retraite")) {
+        return "Mobilité Active – Disponible en journée";
     }
 
-    // Valeur par défaut
-    return "Mobilité non définie";
+    // 4. Personnes âgées ou sans emploi (Mobilité réduite)
+    if (age >= 75 || scoreMetier == 0) {
+        return "Mobilité Faible – Peut nécessiter assistance";
+    }
+
+    return "Mobilité Standard";
 }

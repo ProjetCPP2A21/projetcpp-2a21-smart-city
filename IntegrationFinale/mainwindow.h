@@ -149,6 +149,7 @@ private slots:
     void on_exporter_clicked();
     void handlePopupTimer();
     void  goToPage(QWidget *page);
+    void afficherNotification(const QString &message);
     //residents
     void on_btn_ajouter_clicked();
     void on_btn_modifier_clicked();
@@ -162,6 +163,7 @@ private slots:
     void clearFields();
     QString calculerStabilite(int age, QString profession, QString situation);
     QString calculerMobilite(int age, QString profession, QString situation);
+    int obtenirNiveauMetier(QString profession);
 
     // Services
     // Opérations CRUD
@@ -213,6 +215,7 @@ private slots:
 
         // Arduino
     void update_rfid(); // Youssef
+
 private:
     Ui::MainWindow *ui;
     CRUD crud;

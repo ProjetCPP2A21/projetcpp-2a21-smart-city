@@ -109,12 +109,33 @@ QSqlQueryModel* Resident::rechercher(QString texte)
 {
     QSqlQueryModel* model = new QSqlQueryModel();
 
-    model->setQuery(
-        "SELECT * FROM RESIDENT WHERE "
-        "NOM LIKE '%" + texte + "%' OR "
-                  "PRENOM LIKE '%" + texte + "%' OR "
-                  "SEXE LIKE '%" + texte + "%'"
-        );
+    // 1. On reprend EXACTEMENT les mêmes colonnes que dans afficher()
+    // pour ne pas casser l'ordre dans le tableau et le clic.
+    QString queryStr = "SELECT "
+                       "ID_RESIDENT, "
+                       "ID_RESIDENCE, "
+                       "NOM, "
+                       "PRENOM, "
+                       "AGE, "
+                       "SEXE, "
+                       "PROFESSION, "
+                       "SITUATION_FAMILIALE "
+                       "FROM RESIDENT "
+                       "WHERE ";
+
+    // 2. On utilise UPPER() pour ignorer la casse (majuscule/minuscule)
+    // Exemple : UPPER(NOM) LIKE UPPER('%texte%')
+    queryStr += "UPPER(NOM) LIKE UPPER('%" + texte + "%') OR "
+                                                     "UPPER(PRENOM) LIKE UPPER('%" + texte + "%') OR "
+                          "UPPER(SEXE) LIKE UPPER('%" + texte + "%') OR "
+                          "UPPER(PROFESSION) LIKE UPPER('%" + texte + "%')";
+
+    model->setQuery(queryStr);
+
+    // Petit debug pour voir si la requête échoue dans la console
+    if (model->lastError().isValid()) {
+        qDebug() << "Erreur recherche :" << model->lastError().text();
+    }
 
     return model;
 }

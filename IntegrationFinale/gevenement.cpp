@@ -8,10 +8,6 @@
 #include <QMessageBox>
 #include <QTableView>
 #include <QSqlDatabase>
-#include <onnxruntime_cxx_api.h>
-#include "Excel/QXlsx/QXlsx/header/xlsxdocument.h"
-#include "Excel/QXlsx/QXlsx/header/xlsxformat.h"
-#include "Excel/QXlsx/QXlsx/header/xlsxcellrange.h"
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
@@ -38,6 +34,8 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QByteArray>
+#include "classification.h"
+#include "Bibliotheque.h"
 
 using namespace QXlsx;
 
@@ -50,7 +48,7 @@ void MainWindow::on_Ajouterbutton_clicked()
         QMessageBox::warning(this, "Erreur", "ID invalide !");
         return;
     }
-    int ID_Employe = 1;
+    int ID_Employe = ui->ID_Employe_Evenement->text().toInt();
     QString Nom = ui->Nom->text().trimmed();
     QString Type = ui->Type->text().trimmed();
     QString Lieu = ui->Lieu->text().trimmed();

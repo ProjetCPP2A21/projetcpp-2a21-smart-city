@@ -19,6 +19,8 @@
 #include <QTime>
 #include <QRandomGenerator>
 #include <cstdlib>
+#include "toastnotification.h"
+
 
 
 
@@ -100,50 +102,76 @@ void MainWindow::afficherTableResidence()
     }
 }
 
-
-
+// DANS residence.cpp
 
 void MainWindow::on_Supprimer_Residence_clicked()
 {
-    int id = ui->Nom_Residence_2->text().toInt();
+    // 1. Vérification : Le champ est-il vide ?
+    if (ui->Id_Residence_2->text().isEmpty()) {
+        QMessageBox::warning(this, "Attention", "Veuillez écrire un ID à supprimer !");
+        return; // On arrête tout ici
+    }
 
+    // 2. On récupère l'ID (Assurez-vous d'utiliser Id_Residence_2 et pas Nom_Residence_2)
+    int id = ui->Id_Residence_2->text().toInt();
+
+    // 3. Appel au CRUD
     if (crud.supprimer(id)) {
-        QMessageBox::information(this, "Succès","Résidence supprimer !");
+        QMessageBox::information(this, "Succès", "Résidence supprimée avec succès !");
         afficherTableResidence();
-
-
+        ui->Id_Residence_2->clear(); // On vide le champ après
     } else {
-        QMessageBox::critical(this, "Erreur", "La suppression a échoué !");
+        QMessageBox::critical(this, "Erreur", "Aucune résidence trouvée avec cet ID (ou erreur SQL).");
     }
 }
 void MainWindow::on_recherche_clicked()
 {
-    int id = ui->search->text().toInt();
+    QString texteRecherche = ui->search->text();
 
-    QSqlQuery query = crud.rechercherParID(id);
-
-    ui->affichage->clear();
-    ui->affichage->setRowCount(0);
-    ui->affichage->setColumnCount(8);
-
-    QStringList headers;
-    headers << "ID" << "Nom" << "Adresse" << "Type" << "Nbr Unités"
-            << "Nbr Habitants" << "État" << "Date Création";
-    ui->affichage->setHorizontalHeaderLabels(headers);
-
-    int row = 0;
-    while (query.next()) {
-        ui->affichage->insertRow(row);
-        for (int col = 0; col < 8; ++col) {
-            ui->affichage->setItem(row, col, new QTableWidgetItem(query.value(col).toString()));
+    // 1. Si le champ est vide, on réinitialise l'affichage (on affiche tout)
+    if (texteRecherche.isEmpty()) {
+        afficherTableResidence();
+        return;
         }
-        row++;
-    }
 
-    if (row == 0) {
-        QMessageBox::information(this, "Résultat", "Aucune résidence trouvée avec cet ID.");
-    }
+    // 2. Vérifier si c'est bien un nombre
+    bool estUnNombre;
+    int id = texteRecherche.toInt(&estUnNombre);
+
+    if (!estUnNombre) {
+    QMessageBox::warning(this, "Erreur de saisie", "La recherche fonctionne uniquement par ID (chiffres).");
+    return;
+        }
+
+        // 3. Lancer la recherche SQL
+        QSqlQuery query = crud.rechercherParID(id);
+
+        ui->affichage->clear();
+        ui->affichage->setRowCount(0);
+        // On doit remettre le nombre de colonnes correct (8 colonnes dans votre affichage)
+        ui->affichage->setColumnCount(8);
+
+        QStringList headers;
+        headers << "ID" << "Nom" << "Adresse" << "Type" << "Nbr Unités"
+                << "Nbr Habitants" << "État" << "Date Création";
+        ui->affichage->setHorizontalHeaderLabels(headers);
+
+        int row = 0;
+        while (query.next()) {
+            ui->affichage->insertRow(row);
+            for (int col = 0; col < 8; ++col) {
+                ui->affichage->setItem(row, col, new QTableWidgetItem(query.value(col).toString()));
+            }
+            row++;
+        }
+
+        if (row == 0) {
+            QMessageBox::information(this, "Résultat", "Aucune résidence trouvée avec cet ID.");
+            // Optionnel : Réafficher tout si rien n'est trouvé
+            // afficherTableResidence();
+        }
 }
+
 
 
 
@@ -309,8 +337,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
         while (query.next())
         {
-            int Etat_2 = query.value("Etat_2").toInt();
-            int nbrHab = query.value("Nbr_Habitants_2").toInt();
+            int Etat_2 = query.value("ETAT").toInt();
+            int nbrHab = query.value("NBR_HABITANTS").toInt();
             int nbrUnite = query.value("nbr_unite").toInt();
             int dateConst = query.value("date_const").toInt();
             QString nom = query.value("nom").toString();
@@ -336,7 +364,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         text->setText(message);
         text->setReadOnly(true);
         text->setFont(QFont("Rockwell", 11));
-
         layout->addWidget(text);
 
         dialog.exec();
@@ -405,26 +432,75 @@ QString MainWindow::getMessageForCurrentTime()
 
     return "";
 }
+
+void MainWindow::afficherNotification(const QString &message)
+{
+    // 1. Création du widget ENFANT de la fenêtre principale (this)
+    // C'est ce "this" qui change tout : il colle la notif à l'application.
+    QWidget *popup = new QWidget(this);
+
+    // 2. Flags : On garde juste "Frameless" pour enlever la barre de titre moche.
+    // On enlève "WindowStaysOnTopHint" pour qu'elle ne flotte pas sur Chrome.
+    popup->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
+
+    // Important : Supprime le widget de la mémoire quand il se ferme
+    popup->setAttribute(Qt::WA_DeleteOnClose);
+
+    // 3. LE DESIGN MODERNE (CSS)
+    // On force le style ici pour être sûr qu'il s'applique
+    popup->setStyleSheet(
+        "QWidget {"
+        "   background-color: #2c3e50;"     /* Fond Bleu Nuit (Thème NeoCity) */
+        "   color: white;"                  /* Texte Blanc */
+        "   border: 2px solid #1abc9c;"     /* Bordure Cyan fluo */
+        "   border-radius: 10px;"           /* Coins arrondis */
+        "}"
+        "QLabel {"
+        "   color: white;"
+        "   background-color: transparent;" /* Fond transparent pour le texte */
+        "   border: none;"
+        "   font-size: 14px;"               /* Texte plus grand */
+        "   font-weight: bold;"
+        "   padding: 10px;"
+        "}"
+        );
+
+    // 4. Mise en page du contenu
+    QVBoxLayout *layout = new QVBoxLayout(popup);
+    QLabel *lbl = new QLabel(message, popup);
+    lbl->setAlignment(Qt::AlignCenter);
+    lbl->setWordWrap(true); // Permet d'écrire sur plusieurs lignes
+    layout->addWidget(lbl);
+
+    // 5. TAILLE ET POSITION (Dans l'application)
+    popup->resize(350, 100); // Une taille fixe assez large
+
+    // Calcul pour mettre en bas à droite DE L'APPLICATION
+    // this->width() est la largeur de votre fenêtre NeoCity
+    int x = this->width() - popup->width() - 20;
+    int y = this->height() - popup->height() - 20;
+
+    popup->move(x, y);
+
+    // 6. Afficher
+    popup->show();
+    popup->raise(); // Important : Force la notif à se mettre DEVANT les autres widgets de l'appli
+
+    // Fermeture automatique après 5 secondes
+    QTimer::singleShot(5000, popup, &QWidget::close);
+}
+
+
 void MainWindow::handlePopupTimer()
 {
-    // --- À MODIFIER : Définissez l'index de la page de votre travail ---
-    // Si votre page est le premier onglet/page, utilisez 0.
-    // Si c'est le deuxième, utilisez 1, etc.
-    const int page_3 = 0; // Ex: page d'accueil = 0, votre page = 1
+        // 1. Vérification sécurisée : On vérifie directement le widget, pas le numéro.
+        // Si la page affichée est "page_3" (Résidence), alors on affiche le message.
+        if (ui->stackedWidget->currentWidget() == ui->page_3) {
 
-    // Vérifiez que le widget existe et que l'interface est prête.
-    if (!ui->stackedWidget) {
-        qDebug() << "Erreur: ui->stackedWidget non trouvé.";
-        return;
-    }
+            QString message = getMessageForCurrentTime();
 
-    // VERIFICATION: N'afficher la pop-up que si nous sommes sur la bonne page.
-    if (ui->stackedWidget->currentIndex() == page_3) {
-        QString message = getMessageForCurrentTime();
-        if (!message.isEmpty()) {
-            QMessageBox::information(this, "Recommandation NEOCITY", message);
+            if (!message.isEmpty()) {
+                afficherNotification(message);
+            }
         }
-    } else {
-        qDebug() << "Pop-up Timer: Ignoré (pas sur la bonne page - Index actuel:" << ui->stackedWidget->currentIndex() << ")";
     }
-}

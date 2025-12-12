@@ -16,10 +16,6 @@
 #include <QString>
 #include <QTableView>
 #include <QSqlDatabase>
-#include <onnxruntime_cxx_api.h>
-#include "Excel/QXlsx/QXlsx/header/xlsxdocument.h"
-#include "Excel/QXlsx/QXlsx/header/xlsxformat.h"
-#include "Excel/QXlsx/QXlsx/header/xlsxcellrange.h"
 #include <QFileDialog>
 #include <QPainter>
 #include <QPixmap>
@@ -47,6 +43,8 @@
 #include <QStackedLayout>
 #include <QVBoxLayout>
 #include <QWidget>
+#include "classification.h"
+#include <QStackedLayout>
 
 using namespace QXlsx;
 const QString SELECT_QUERY = "SELECT id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite FROM EMPLOYER";
@@ -100,58 +98,49 @@ MainWindow::MainWindow(QWidget *parent)
             togglePasswordAction->setIcon(QIcon("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/eye_open.jpg"));
         }
     });
-    // --- CONFIGURATION VIDÉO ET INTERFACE (MÉTHODE LABEL) ---
-
-    // 1. Préparation du Layout principal de la page Connection
-    QVBoxLayout *mainLayout = new QVBoxLayout(ui->Connection);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-
-    // 2. Création du conteneur global et du StackLayout
-    QWidget *globalContainer = new QWidget();
-    mainLayout->addWidget(globalContainer);
-
-    QStackedLayout *stackLayout = new QStackedLayout(globalContainer);
-    stackLayout->setStackingMode(QStackedLayout::StackAll);
-
-    // 3. COUCHE 1 (FOND) : Le Label Vidéo (Remplace QVideoWidget)
-    videoLabel = new QLabel();
-    videoLabel->setScaledContents(true); // Important pour adapter la vidéo à l'écran
-    videoLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    // 4. Configurer le player avec QVideoSink
+    // --- LECTEUR ---
     player = new QMediaPlayer(this);
     audioOutput = new QAudioOutput(this);
-    videoSink = new QVideoSink(this); // Le collecteur d'images
-
     player->setAudioOutput(audioOutput);
-    player->setVideoOutput(videoSink); // On envoie la vidéo vers le Sink, pas le Widget
-
-    // --- MAGIE ICI : On transforme chaque frame ---
-    connect(videoSink, &QVideoSink::videoFrameChanged, this, [this](const QVideoFrame &frame) {
-        if(frame.isValid()) {
-            // Conversion directe sans redimensionnement (car la vidéo est déjà à la bonne taille)
-            QImage image = frame.toImage();
-
-            // On affiche directement. Laissez le Label gérer l'étirement final si besoin (c'est moins lourd)
-            videoLabel->setPixmap(QPixmap::fromImage(image));
-        }
-    });
-
-
-    // Lancement de la vidéo
-    player->setSource(QUrl("qrc:/Background_Loop.mp4"));
-    player->setLoops(QMediaPlayer::Infinite);
     audioOutput->setVolume(0);
-    player->play();
 
-    // 5. COUCHE 2 (DEVANT) : Votre Interface
-    if(ui->Background) {
-        ui->Background->setAttribute(Qt::WA_TranslucentBackground);
-        stackLayout->addWidget(ui->Background);
+    // --- SINK VIDÉO (au lieu de QVideoWidget) ---
+    QVideoSink *videoSink = new QVideoSink(this);
+    player->setVideoSink(videoSink);
+
+    // --- AFFICHAGE DANS QLabel ---
+    ui->videoLabel->setScaledContents(true);
+
+    connect(videoSink, &QVideoSink::videoFrameChanged, this,
+            [=](const QVideoFrame &frame)
+            {
+                if (!frame.isValid()) return;
+
+                QImage img = frame.toImage();
+                ui->videoLabel->setPixmap(QPixmap::fromImage(img));
+            });
+
+    // --- CHARGEMENT VIDÉO ---
+    QString videoPath = QCoreApplication::applicationDirPath()
+                        + "/Animation/Background_Loop.mp4";
+
+    if (QFile::exists(videoPath)) {
+        player->setPlaybackRate(1.0);
+        player->setProperty("hwdec", true);
+        QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
+        player->setSource(QUrl::fromLocalFile(videoPath));
+        player->setLoops(QMediaPlayer::Infinite);
+        player->play();
     }
-    videoLabel->setFixedSize(1366, 768);
-    // On insère le Label Vidéo tout au fond (index 0)
-    stackLayout->insertWidget(0, videoLabel);
+    QStackedLayout *stack = new QStackedLayout(ui->Connection);
+    stack->setContentsMargins(0, 0, 0, 0); // Gauche, Haut, Droite, Bas à 0
+    stack->setStackingMode(QStackedLayout::StackAll);
+
+
+
+
+    // videoLabel->setFixedSize(1366, 768);  <-- A SUPPRIMER
+    // stackLayout->insertWidget(0, videoLabel); <-- A SUPPRIMER
     connect(ui->btn_logout_2, &QPushButton::clicked, this, [this]() {
         // 1. Revenir à la page de connexion
         ui->stackedWidget->setCurrentWidget(ui->Connection);
@@ -230,17 +219,19 @@ MainWindow::MainWindow(QWidget *parent)
     /*MainWindow* gEmp = new MainWindow(ui->page_employer, this);*/
     afficherTableResidence();
 
-    timerPopup = new QTimer(this);
-    connect(timerPopup, &QTimer::timeout, this, &MainWindow::handlePopupTimer);
-    timerPopup->start(30000);
+    // 1. Créer le timer
+    QTimer *timerNotification = new QTimer(this);
+
+    // 2. Connecter le timer à votre fonction
+    connect(timerNotification, &QTimer::timeout, this, &MainWindow::handlePopupTimer);
+
+    // 3. Démarrer le timer (par exemple toutes les 30 secondes = 30000 ms)
+    // Vous pouvez mettre 5000 (5 secondes) pour tester rapidement.
+    timerNotification->start(5000);
 
     // Charger table Residents
     Resident Rtmp;
     ui->tableView->setModel(Rtmp.afficher());
-    // ComboBox de tri
-    ui->comboBox_tri->addItem("Nom");
-    ui->comboBox_tri->addItem("Age");
-    ui->comboBox_tri->addItem("Sexe");
 
     // charger table Services
     afficherServices();

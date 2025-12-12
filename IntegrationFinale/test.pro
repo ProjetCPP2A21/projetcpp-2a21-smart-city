@@ -3,6 +3,8 @@ QT       += core gui sql printsupport charts network widgets quickwidgets qml qu
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+PRECOMPILED_HEADER = Bibliotheque.h
+CONFIG += precompile_header
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -30,6 +32,7 @@ SOURCES += \
     arduino.cpp
 
 HEADERS += \
+    Bibliotheque.h \
     mainwindow.h \
     connection.h \
     employer.h \
@@ -72,3 +75,22 @@ RESOURCES += \
 
 DISTFILES += \
     eye_open.jpg
+
+
+# --- Début de l'automatisation de la copie ---
+
+# 1. Définir quel dossier copier (Source) et où le mettre (Destination)
+SOURCE_DIR = $$PWD/Animation
+DEST_DIR = $$OUT_PWD/debug/Animation  # En mode debug
+CONFIG(release, debug|release): DEST_DIR = $$OUT_PWD/release/Animation # Si on passe en release
+
+# 2. Adapter les chemins pour Windows (remplacer / par \)
+# Version corrigée pour gérer les espaces dans "Smart City"
+win32 {
+    SOURCE_DIR_WIN = $$replace(SOURCE_DIR, /, \\)
+    DEST_DIR_WIN = $$replace(DEST_DIR, /, \\)
+    # Les guillemets \" sont obligatoires ici
+    QMAKE_POST_LINK += xcopy /E /I /Y \"$$SOURCE_DIR_WIN\" \"$$DEST_DIR_WIN\"
+}
+
+# --- Fin de l'automatisation ---
