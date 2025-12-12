@@ -33,10 +33,10 @@ int Arduino::connectArduino() {
 
         if (serial->open(QIODevice::ReadWrite)) {
             qDebug() << "Arduino connected on" << arduino_portname;
-            return 0; // success
+            return 0;
         } else {
             qDebug() << "Failed to open serial port";
-            return 1; // error opening port
+            return 1;
         }
     }
 
@@ -56,19 +56,19 @@ int Arduino::closeArduino() {
 bool Arduino::writeToArduino(const QByteArray &data) {
     if (serial->isWritable()) {
         qint64 bytesWritten = serial->write(data);
-        // On force l'envoi immédiat du buffer pour s'assurer que le port COM l'envoie.
+
         serial->flush();
 
         if (bytesWritten > 0) {
-            qDebug() << "✅ OK: Command sent:" << data;
+            qDebug() << " OK: Command sent:" << data;
             return true;
         } else {
-            // Un code d'erreur si la commande n'a pas pu être envoyée.
-            qDebug() << "❌ ERREUR D'ÉCRITURE: " << serial->errorString();
+
+            qDebug() << " ERREUR D'ÉCRITURE: " << serial->errorString();
             return false;
         }
     }
-    qDebug() << "❌ ERREUR: Serial port is NOT writable (closed or disconnected).";
+    qDebug() << " ERREUR: Serial port is NOT writable (closed or disconnected).";
     return false;
 }
 

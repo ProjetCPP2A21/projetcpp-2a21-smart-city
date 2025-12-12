@@ -1030,6 +1030,34 @@ QLineEdit:focus {
        </rect>
       </property>
      </widget>
+     <widget class="QPushButton" name="btnTemp">
+      <property name="geometry">
+       <rect>
+        <x>1190</x>
+        <y>550</y>
+        <width>90</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QPushButton {
+    background-color: #2D89EF;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
+      </property>
+      <property name="text">
+       <string>temp</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_4">
      <widget class="QPushButton" name="pushButton_23">

@@ -29,6 +29,10 @@ private:
     CRUD crud;
     Arduino A;
     QTimer *timerPopup;
+    QTimer *fanTimer;
+    int dernierIDResidence = 1;
+    QSerialPort *serial;
+
     bool ventilateurON = false;
 
     void ajouterTable();
@@ -48,9 +52,12 @@ private slots:
     void on_statistique_clicked();
     void on_trie_clicked();
     void on_exporter_clicked();
+    void onSerialDataReceived();
 
-    void checkTemperature();
+    //void checkTemperature();
     int getTemperatureFromDB();
+    void on_btnTemp_clicked();
+    void lireTemperatureArduino();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
