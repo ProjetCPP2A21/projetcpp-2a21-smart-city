@@ -41,10 +41,11 @@
 #include <QAction>
 #include <QIcon>
 #include <QStackedLayout>
-#include <QVBoxLayout>
 #include <QWidget>
 #include "classification.h"
-#include <QStackedLayout>
+#include <QDesktopServices>
+#include <QFile>
+#include <QTextStream>
 
 using namespace QXlsx;
 const QString SELECT_QUERY = "SELECT id_employe, nom, prenom, num_tel, salaire, sexe, responsabilite FROM EMPLOYER";
@@ -70,10 +71,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connexion du signal "readyRead" (quand des données arrivent) au slot "update_rfid"
     // Note: A.getserial() doit retourner le pointeur vers l'objet QSerialPort
-    QObject::connect(A.getserial(), SIGNAL(readyRead()), this, SLOT(update_rfid()));
+   QObject::connect(A.getserial(), &QSerialPort::readyRead, this, &MainWindow::read_serial_data);
     // 1. Définir le mode mot de passe par défaut (si ce n'est pas fait dans le Designer)
     ui->lineEditLoginPassword->setEchoMode(QLineEdit::Password);
+   monitoring_actif = false;
+   id_residence_surveillance = -1;
 
+   // Connexion du bouton de démarrage
+   connect(ui->btn_StartMonitoring, &QPushButton::clicked, this, &MainWindow::on_btn_StartMonitoring_clicked);
     // 2. Créer l'action (le bouton œil)
     QAction *togglePasswordAction = new QAction(this);
 
@@ -195,6 +200,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Login
     connect(ui->connecter, &QPushButton::clicked, this, &MainWindow::onLoginClicked);
+
+    //Page Instagram
+    connect(ui->About_Us, &QPushButton::clicked, this, [](){
+        QDesktopServices::openUrl(QUrl("https://www.instagram.com/solyv.ia/"));
+    });
 
     // CRUD
     connect(ui->Ajouter_Employe, &QPushButton::clicked, this, &MainWindow::on_Ajouter_Employe_Clicked);
@@ -399,35 +409,151 @@ void MainWindow::goToPage(QWidget *page)
         ui->leftmenu->setVisible(true);
     }
 }
+void MainWindow::on_Aide_clicked()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile("C:/Users/ASUS/Desktop/Smart City/IntegrationFinale/Help/aide.txt"));
+}
 
+// ==========================================
+// 1. LE DISPATCHER (LIT ET TRIE LES DONNÉES)
+// ==========================================
+void MainWindow::read_serial_data()
+{
+    QSerialPort *serial = A.getserial();
 
+    // On lit tout ce qui arrive ligne par ligne
+    while (serial->canReadLine()) {
+        QByteArray data = serial->readLine();
+        QString message = QString::fromStdString(data.toStdString()).trimmed();
 
+        // Si c'est vide, on ignore
+        if (message.isEmpty()) return;
 
+        // AIGUILLAGE
+        if (message.startsWith("TEMP:")) {
+            // C'est pour le ventilateur
+            traiter_temperature(message);
+        }
+        else {
+            // C'est (probablement) un badge RFID
+            // On nettoie un peu plus pour le RFID (supprimer espaces internes)
+            QString uidClean = message.replace(" ", "");
+            traiter_rfid(uidClean);
+        }
+    }
+}
 
+// ==========================================
+// 2. FONCTION TEMPÉRATURE (Ventilateur & Base de données)
+// ==========================================
+void MainWindow::traiter_temperature(QString message)
+{
+    // message = "TEMP:31.50"
+    if(!message.contains(":")) return; // Sécurité anti-crash
 
+    QString tempStr = message.split(":")[1];
+    double temperature = tempStr.toDouble();
 
+    // Mise à jour de l'affichage graphique (Label simple)
+    if(ui->label_Temperature) {
+        ui->label_Temperature->setText(tempStr + " °C");
+    }
 
+    // --- LOGIQUE DE STOCKAGE ET CONTRÔLE ---
+    if (monitoring_actif) {
 
+        // 1. MISE À JOUR DE LA BASE DE DONNÉES
+        QSqlQuery query;
+        // ATTENTION : L'ID doit déjà exister dans la table pour que UPDATE fonctionne !
+        query.prepare("UPDATE RESIDENCE SET TEMPERATURE = :t WHERE ID = :id");
+        query.bindValue(":t", temperature);
+        query.bindValue(":id", id_residence_surveillance);
 
+        if(query.exec()) {
+            qDebug() << "Température" << temperature << "sauvegardée pour Residence ID" << id_residence_surveillance;
+        } else {
+            qDebug() << "Erreur SQL Update Temp:" << query.lastError().text();
+        }
 
+        // 2. VÉRIFICATION DE LA CONDITION (LE PC DÉCIDE)
+        if (temperature > 30.0) {
+            // Condition remplie : On envoie l'ordre 'H' (High) à l'Arduino
+            // L'Arduino allumera le ventilo et fera les 3 bips
+            A.write_to_arduino("H");
 
+            if(ui->label_Etat_Ventilateur) ui->label_Etat_Ventilateur->setText("Ventilateur: ON");
+            if(ui->label_Temperature) ui->label_Temperature->setStyleSheet("color: red; font-weight: bold;");
+        }
+        else {
+            // Condition normale : On envoie l'ordre 'N' (Normal)
+            A.write_to_arduino("N");
 
+            if(ui->label_Etat_Ventilateur) ui->label_Etat_Ventilateur->setText("Ventilateur: OFF");
+            if(ui->label_Temperature) ui->label_Temperature->setStyleSheet("color: green;");
+        }
+    }
+}
 
+// ==========================================
+// 3. FONCTION RFID (Accès & Base de données)
+// ==========================================
+void MainWindow::traiter_rfid(QString uid)
+{
+    // Ignorer les données trop courtes (parasites)
+    if(uid.length() < 4) return;
 
+    qDebug() << "Traitement RFID pour l'UID :" << uid;
 
+    QSqlQuery query;
+    query.prepare("SELECT NOM, PRENOM, RESPONSABILITE FROM EMPLOYER WHERE REPLACE(RFID_UID, ' ', '') = :uid");
+    query.bindValue(":uid", uid);
 
+    if(query.exec())
+    {
+        if(query.next())
+        {
+            // === CAS : ACCÈS AUTORISÉ ===
+            QString nom = query.value("NOM").toString();
+            QString prenom = query.value("PRENOM").toString();
+            QString role = query.value("RESPONSABILITE").toString();
 
+            qDebug() << "Connexion RFID réussie pour :" << prenom << "Role:" << role;
 
+            A.write_to_arduino("1"); // Ouvrir porte
 
+            // Remarque: Assurez-vous que configurerAccesSelonRole existe bien
+            // configurerAccesSelonRole(role);
 
+            QMessageBox::information(this, "Identification RFID",
+                                     "Bonjour " + prenom + " !\nAccès autorisé (" + role + ").");
+        }
+        else
+        {
+            // === CAS : ACCÈS REFUSÉ ===
+            qDebug() << "Accès refusé. UID inconnu :" << uid;
+            A.write_to_arduino("0"); // Refuser (Buzzer rouge)
+            QMessageBox::warning(this, "Identification RFID", "Carte inconnue !\nAccès Refusé.");
+        }
+    }
+    else
+    {
+        qDebug() << "Erreur SQL RFID :" << query.lastError().text();
+    }
+}
 
+// ==========================================
+// 4. BOUTON DÉMARRAGE SURVEILLANCE
+// ==========================================
+void MainWindow::on_btn_StartMonitoring_clicked()
+{
+    QString idText = ui->lineEdit_IdResidence->text();
+    if(idText.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez saisir un ID de résidence valide.");
+        return;
+    }
 
+    id_residence_surveillance = idText.toInt();
+    monitoring_actif = true;
 
-
-
-
-
-
-
-
-
+    QMessageBox::information(this, "Succès", "Surveillance activée et connectée à la Résidence ID: " + idText);
+}

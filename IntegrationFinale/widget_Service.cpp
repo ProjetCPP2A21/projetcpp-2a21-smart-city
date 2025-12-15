@@ -347,42 +347,64 @@ void MainWindow::rechercherService()
 }
 
 // ========== SÉLECTIONNER UN SERVICE ==========
+// ========== SÉLECTIONNER UN SERVICE (CORRIGÉ) ==========
 void MainWindow::selectionnerService(int row, int column)
 {
     Q_UNUSED(column);
 
+    // Vérification de sécurité
     if (row < 0 || row >= ui->tableServices->rowCount()) {
-        qDebug() << "✗ Ligne invalide:" << row;
         return;
     }
 
-    QTableWidgetItem* idItem = ui->tableServices->item(row, 6);
-    if (!idItem) {
-        qDebug() << "✗ ID introuvable à la ligne" << row;
-        return;
-    }
+    // Récupération des items
+    QTableWidgetItem* idItem = ui->tableServices->item(row, 6); // Colonne ID cachée ou visible
+    if (!idItem) return;
 
+    // --- 1. Récupération des Textes ---
     QString id = idItem->text();
     QString nom = ui->tableServices->item(row, 0)->text();
     QString type = ui->tableServices->item(row, 1)->text();
     QString responsable = ui->tableServices->item(row, 2)->text();
-    QString budget = ui->tableServices->item(row, 3)->text();
+    QString budgetStr = ui->tableServices->item(row, 3)->text(); // Ex: "$ 102.50"
     QString priorite = ui->tableServices->item(row, 4)->text();
     QString etat = ui->tableServices->item(row, 5)->text();
 
-    qDebug() << "========== SERVICE SÉLECTIONNÉ ==========";
-    qDebug() << "ID:" << id;
-    qDebug() << "Nom:" << nom;
+    // Récupération de la date (Colonne 7, que vous remplissez dans afficherServices)
+    QString dateStr = "";
+    if (ui->tableServices->item(row, 7)) {
+        dateStr = ui->tableServices->item(row, 7)->text();
+    }
 
+    // --- 2. Remplissage de l'interface ---
     ui->lineEdit_id->setText(id);
     ui->lineEdit_Nom->setText(nom);
     ui->combo_type->setCurrentText(type);
     ui->lineEdit_responsable->setText(responsable);
-    ui->spin_budget->setValue(budget.toDouble());
+
+    // --- 3. CORRECTION BUDGET ---
+    // On enlève le '$' et les espaces pour avoir un nombre propre
+    budgetStr.remove("$");
+    budgetStr.remove(" ");
+    // Si votre système utilise des virgules, on remplace par un point pour la conversion
+    budgetStr.replace(",", ".");
+    ui->spin_budget->setValue(budgetStr.toDouble());
+
+    // --- 4. CORRECTION DATE ---
+    // Dans afficherServices, vous formatez la date comme "yyyy-MM-dd" (ex: 2025-12-11)
+    if (!dateStr.isEmpty()) {
+        QDate dateVal = QDate::fromString(dateStr, "yyyy-MM-dd");
+        ui->dateEdit_date->setDate(dateVal);
+    } else {
+        // Si pas de date, on met la date du jour par défaut
+        ui->dateEdit_date->setDate(QDate::currentDate());
+    }
+
     ui->combo_priority->setCurrentText(priorite);
     ui->combo_state->setCurrentText(etat);
-}
 
+    qDebug() << "Service chargé : " << nom << " | Budget :" << budgetStr << " | Date :" << dateStr;
+}
 // ========== TRIER LES SERVICES ==========
 void MainWindow::trierServices(int index)
 {

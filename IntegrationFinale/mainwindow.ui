@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>7</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page_3">
      <widget class="QPushButton" name="trie">
@@ -109,8 +109,8 @@ QPushButton:pressed {
      <widget class="QPushButton" name="statistique">
       <property name="geometry">
        <rect>
-        <x>1110</x>
-        <y>480</y>
+        <x>1230</x>
+        <y>420</y>
         <width>91</width>
         <height>31</height>
        </rect>
@@ -713,6 +713,13 @@ QLineEdit:focus {
          <height>41</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
     background-color: #2D89EF;
@@ -741,6 +748,13 @@ QPushButton:pressed {
          <height>41</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
     background-color: #2D89EF;
@@ -768,6 +782,13 @@ QPushButton:pressed {
          <width>101</width>
          <height>41</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -799,6 +820,120 @@ QPushButton:pressed {
        </rect>
       </property>
      </widget>
+     <widget class="QPushButton" name="btn_StartMonitoring">
+      <property name="geometry">
+       <rect>
+        <x>1230</x>
+        <y>578</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> QPushButton {
+    background-color: #2D89EF;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #1E5BB8;
+}
+QPushButton:pressed {
+    background-color: #FFFFFF;
+}</string>
+      </property>
+      <property name="text">
+       <string>Surveillance</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_IdResidence">
+      <property name="geometry">
+       <rect>
+        <x>1180</x>
+        <y>528</y>
+        <width>151</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLineEdit {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 12px;
+}
+QLineEdit:focus {
+    border: 1px solid #2D89EF;
+    background-color: #FFFFFF;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>1140</x>
+        <y>540</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>ID :</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Temperature">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>468</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Temperature :</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_Etat_Ventilateur">
+      <property name="geometry">
+       <rect>
+        <x>1110</x>
+        <y>498</y>
+        <width>161</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Ventilateur :</string>
+      </property>
+     </widget>
      <zorder>label_38</zorder>
      <zorder>trie</zorder>
      <zorder>exporter</zorder>
@@ -808,6 +943,11 @@ QPushButton:pressed {
      <zorder>search</zorder>
      <zorder>Ajouter</zorder>
      <zorder>chart</zorder>
+     <zorder>btn_StartMonitoring</zorder>
+     <zorder>lineEdit_IdResidence</zorder>
+     <zorder>label</zorder>
+     <zorder>label_Temperature</zorder>
+     <zorder>label_Etat_Ventilateur</zorder>
     </widget>
     <widget class="QWidget" name="page_4">
      <widget class="QPushButton" name="Exporter_2">
@@ -1624,6 +1764,13 @@ background-color : #e1e5ff;</string>
          <height>39</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
     background-color: #2D89EF;
@@ -1880,6 +2027,13 @@ QPushButton:pressed {
          <height>39</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
     background-color: #2D89EF;
@@ -1985,6 +2139,13 @@ QLineEdit:focus {
          <width>119</width>
          <height>39</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -2173,6 +2334,13 @@ QLineEdit:focus {
          <height>41</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
     background-color: rgb(255, 105, 180); /* rose vif */
@@ -2184,7 +2352,7 @@ QLineEdit:focus {
 </string>
        </property>
        <property name="text">
-        <string>Lancer IA</string>
+        <string>Priorité</string>
        </property>
       </widget>
       <widget class="QTableWidget" name="tableServices">
@@ -2423,9 +2591,16 @@ QLineEdit:focus {
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>171</width>
+          <width>161</width>
           <height>61</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Bahnschrift</family>
+          <pointsize>-1</pointsize>
+          <bold>true</bold>
+         </font>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
@@ -2443,7 +2618,7 @@ QPushButton:pressed {
 }</string>
         </property>
         <property name="text">
-         <string>Afficher Statistiques  🌸</string>
+         <string>Statistiques  🌸</string>
         </property>
        </widget>
       </widget>
@@ -4586,7 +4761,7 @@ QLineEdit:focus {
         <property name="geometry">
          <rect>
           <x>1120</x>
-          <y>520</y>
+          <y>500</y>
           <width>111</width>
           <height>41</height>
          </rect>
@@ -4615,7 +4790,7 @@ QLineEdit:focus {
         <property name="geometry">
          <rect>
           <x>1020</x>
-          <y>520</y>
+          <y>500</y>
           <width>111</width>
           <height>41</height>
          </rect>
@@ -4644,10 +4819,10 @@ QLineEdit:focus {
        <widget class="QLabel" name="Copyright">
         <property name="geometry">
          <rect>
-          <x>1260</x>
-          <y>520</y>
-          <width>101</width>
-          <height>41</height>
+          <x>1300</x>
+          <y>500</y>
+          <width>71</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="font">
@@ -4661,7 +4836,7 @@ QLineEdit:focus {
          <string notr="true">color: white;
 border-radius: 8px;
 padding: 10px;
-font-size: 17px;</string>
+font-size: 10px;</string>
         </property>
         <property name="text">
          <string>NeoCity ©</string>

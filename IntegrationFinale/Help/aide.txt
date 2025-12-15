@@ -1,0 +1,154 @@
+================================================================
+                    MANUEL D'AIDE - NEOCITY
+================================================================
+
+Bienvenue dans l'application de gestion NEOCITY. Ce guide vous 
+aidera à naviguer dans les différents modules et à gérer votre 
+Smart City (Employés, Résidences, Résidents, Services, Événements).
+
+SOMMAIRE :
+1. Connexion et Accueil
+2. Gestion des Employés (RH)
+3. Gestion des Résidences & Résidents
+4. Gestion des Services
+5. Gestion des Événements
+6. Questions Fréquentes (FAQ)
+
+================================================================
+1. CONNEXION ET ACCUEIL
+================================================================
+Pour accéder à l'application, veuillez saisir votre Identifiant 
+et votre Mot de Passe sur l'écran d'accueil.
+
+- Bouton "Se connecter" : Valide vos identifiants pour entrer.
+- Bouton "Quitter" : Ferme l'application.
+- Lien "Mot de Passe oublié ?" : Utilisez cette option si vous 
+  ne parvenez pas à vous connecter.
+
+Une fois connecté, le menu latéral gauche vous permet de naviguer 
+entre les différents modules seulement si vous êtes connectés en tant que responsable Employés. 
+Utilisez le bouton "Se déconnecter" 
+en bas à gauche pour fermer votre session en toute sécurité.
+
+================================================================
+2. GESTION DES EMPLOYES (Page RH)
+================================================================
+Ce module permet de gérer les employés de la ville.
+
+CHAMPS DISPONIBLES :
+- Informations : ID, Nom, Prénom, Sexe, Téléphone.
+- Détails pro : Salaire, Responsabilité (Tâche).
+
+ACTIONS :
+- Ajouter : Remplissez tous les champs à gauche et cliquez sur "Ajouter".
+- Modifier : Sélectionnez un employé dans le tableau, modifiez les 
+  informations dans les champs, puis cliquez sur "Modifier".
+- Supprimer : Sélectionnez un employé dans le tableau et cliquez 
+  sur "Supprimer".
+- Rechercher : Saisissez un nom ou un ID dans la barre de recherche 
+  en haut pour filtrer la liste.
+- Statistiques / Export : Utilisez les boutons à droite pour voir 
+  la répartition des employés ou exporter la liste.
+
+================================================================
+3. GESTION DES RÉSIDENCES (Page Résidence)
+================================================================
+Ce module sert au suivi du parc immobilier de la ville.
+
+CHAMPS DISPONIBLES :
+- ID, Nom de la résidence, Adresse.
+- Type (Maison, Logement, etc.).
+- Capacité : Nombre d'unités, Nombre d'habitants.
+- État et Date.
+
+FONCTIONNALITÉS SPÉCIFIQUES :
+- Le tableau central affiche l'état actuel des résidences.
+- Utilisez le bouton "Trie" pour ordonner les résidences selon le nombre d'habitants.
+- Le bouton "Exporter" permet de sauvegarder la liste (format Excel/PDF).
+- Vous porrez voir le score d'état d'une résidence en appuyant sur "CTRL+P" 
+- les pop ups messages sont là pour vous conseillez par des instructions 
+
+================================================================
+4. GESTION DES SERVICES MUNICIPAUX (Page Services)
+================================================================
+Gérez ici les services offerts aux citoyens (Transport, Sécurité, Santé...).
+
+CHAMPS DISPONIBLES :
+- Identification : ID Service, Nom, Responsable.
+- Gestion : Type de service, Budget, Priorité (Faible/Moyen/Élevé), 
+  État (Actif/En attente), Date.
+
+ACTIONS :
+- Suivi Budgétaire : Surveillez les colonnes "Budget" dans le tableau.
+- Priorisation : Utilisez le menu "Trier par" (ex: Budget) ou le bouton 
+  "Priorité" pour organiser les services urgents.
+- Export PDF : Le bouton "btnExportPDF" génère un rapport officiel 
+  de la liste des services.
+
+================================================================
+5. GESTION DES ÉVÉNEMENTS (Page Evenement)
+================================================================
+Planification des activités culturelles, sportives et sociales.
+
+A. ONGLET "ACCUEIL" (Gestion des données)
+------------------------------------------------------
+
+CHAMPS DISPONIBLES :
+- ID Événement et ID Employé (l'organisateur).
+- Détails : Nom, Type, Lieu.
+- Planification : Date, Heure, Nombre de participants.
+
+B. ONGLET "FONCTIONNALITÉS" (Outils d'analyse)
+------------------------------------------------------
+
+Cliquez sur l'onglet "Fonctionnalités" en haut pour accéder aux 
+outils visuels :
+
+1. Statistiques :
+   - Affiche un diagramme circulaire montrant la 
+     répartition des types d'événements (ex: % Musique, % Cinéma).
+   - Cliquez sur le bouton "Statistiques" pour rafraîchir le graphe.
+
+2. Localisation de l'événement :
+   - Saisissez l' "Identifiant Événement" dans la zone dédiée.
+   - Bouton "Localiser" : Affiche le lieu exact sur la carte interactive.
+   - Bouton "Itinéraire" : Trace le chemin vers le lieu de l'événement.
+
+3. Prédiction D'impact :
+   - Permet d'estimer l'affluence ou l'impact d'un événement futur.
+   - Entrez l'ID de l'événement et cliquez sur "Prédire".
+
+ASTUCE :
+- Assurez-vous que l'"Id Employe" correspond à un employé existant 
+  dans le module RH.
+- Utilisez "Exporter En Excel" pour transmettre le planning.
+
+================================================================
+6. QUESTIONS FRÉQUENTES (FAQ)
+================================================================
+
+Q : Comment modifier une ligne dans le tableau ?
+R : Cliquez simplement sur la ligne concernée dans le tableau (grille 
+    de droite). Les champs de gauche se rempliront automatiquement. 
+    Changez la valeur souhaitée et cliquez sur le bouton "Modifier".
+
+Q : Je n'arrive pas à ajouter un élément (ID dupliqué).
+R : Chaque ID (Identifiant) doit être unique. Vérifiez que le numéro 
+    choisi n'existe pas déjà dans le tableau.
+
+Q : Comment fonctionne la recherche ?
+R : Tapez les premières lettres du nom ou l'ID dans la barre de texte 
+    située en haut de chaque page, puis cliquez sur "Rechercher".
+
+Q : Où sont enregistrés mes fichiers exportés ?
+R : Les fichiers Excel ou PDF sont généralement enregistrés dans le 
+    dossier racine de l'application ou dans vos "Documents".
+
+Pour plus de détail contactez notre groupe Solyvia par mail :
+
+
+		A vous de jouer mainteant!!
+
+================================================================
+                © 2025 NEOCITY - Tous droits réservés
+================================================================

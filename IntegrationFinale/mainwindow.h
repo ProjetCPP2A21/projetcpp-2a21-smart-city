@@ -189,6 +189,7 @@ private slots:
     void on_Ajouterbutton_clicked();
 
     void on_Modifier_2_clicked();
+    void on_btn_StartMonitoring_clicked();
 
 
     //void on_Rechercher_clicked();
@@ -214,7 +215,10 @@ private slots:
     void on_Modifier_Residence_2_clicked();
 
         // Arduino
-    void update_rfid(); // Youssef
+    void read_serial_data();           // Le "Chef de gare" (connecté au readyRead)
+    void traiter_rfid(QString uid);    // Fonction 1 : Gère l'accès RFID
+    void traiter_temperature(QString message); // Fonction 2 : Gère la ventilation
+    void on_Aide_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -246,6 +250,8 @@ private:
     double myLongitude;
     Arduino A; // L'objet Arduino
     QByteArray data;
+    int id_residence_surveillance; // L'ID saisi par l'utilisateur
+    bool monitoring_actif;
 
     QMediaPlayer *player;
     QLabel *videoLabel;       // Le nouveau conteneur

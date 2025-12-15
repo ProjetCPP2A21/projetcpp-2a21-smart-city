@@ -20,6 +20,8 @@
 #include <QRandomGenerator>
 #include <cstdlib>
 #include "toastnotification.h"
+#include <QGraphicsDropShadowEffect>
+#include <QHBoxLayout>
 
 
 
@@ -435,61 +437,89 @@ QString MainWindow::getMessageForCurrentTime()
 
 void MainWindow::afficherNotification(const QString &message)
 {
-    // 1. Création du widget ENFANT de la fenêtre principale (this)
-    // C'est ce "this" qui change tout : il colle la notif à l'application.
+    // 1. Création du widget
     QWidget *popup = new QWidget(this);
-
-    // 2. Flags : On garde juste "Frameless" pour enlever la barre de titre moche.
-    // On enlève "WindowStaysOnTopHint" pour qu'elle ne flotte pas sur Chrome.
     popup->setWindowFlags(Qt::FramelessWindowHint | Qt::SubWindow);
-
-    // Important : Supprime le widget de la mémoire quand il se ferme
     popup->setAttribute(Qt::WA_DeleteOnClose);
 
-    // 3. LE DESIGN MODERNE (CSS)
-    // On force le style ici pour être sûr qu'il s'applique
+    // 2. STYLISATION MODERNE (Smart City)
+    // On utilise un dégradé bleu-cyan et des coins bien arrondis
     popup->setStyleSheet(
         "QWidget {"
-        "   background-color: #2c3e50;"     /* Fond Bleu Nuit (Thème NeoCity) */
-        "   color: white;"                  /* Texte Blanc */
-        "   border: 2px solid #1abc9c;"     /* Bordure Cyan fluo */
-        "   border-radius: 10px;"           /* Coins arrondis */
+        "   background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 #141E30, stop:1 #243B55);" /* Dégradé sombre élégant */
+        "   border-radius: 12px;"           /* Arrondi doux */
+        "   border: 1px solid rgba(255, 255, 255, 30);" /* Bordure subtile semi-transparente */
         "}"
-        "QLabel {"
-        "   color: white;"
-        "   background-color: transparent;" /* Fond transparent pour le texte */
+        "QLabel#IconLabel {"
+        "   color: #00d2ff;"                /* Couleur Cyan Neon pour l'icône */
+        "   background: transparent;"
+        "   font-size: 24px;"
         "   border: none;"
-        "   font-size: 14px;"               /* Texte plus grand */
-        "   font-weight: bold;"
-        "   padding: 10px;"
+        "}"
+        "QLabel#TextLabel {"
+        "   color: white;"
+        "   background: transparent;"
+        "   border: none;"
+        "   font-family: 'Segoe UI', sans-serif;" /* Police moderne */
+        "   font-size: 14px;"
         "}"
         );
 
-    // 4. Mise en page du contenu
-    QVBoxLayout *layout = new QVBoxLayout(popup);
+    // 3. MISE EN PAGE HORIZONTALE (Icône + Texte)
+    QHBoxLayout *layout = new QHBoxLayout(popup);
+    layout->setContentsMargins(15, 10, 15, 10); // Marges internes aérées
+    layout->setSpacing(15);
+
+    // -- L'icône (On utilise un emoji ou un caractère unicode pour simuler une icône moderne)
+    QLabel *icon = new QLabel("💡", popup);
+    icon->setObjectName("IconLabel"); // Pour le CSS
+    icon->setAlignment(Qt::AlignCenter);
+    layout->addWidget(icon);
+
+    // -- Le texte
     QLabel *lbl = new QLabel(message, popup);
-    lbl->setAlignment(Qt::AlignCenter);
-    lbl->setWordWrap(true); // Permet d'écrire sur plusieurs lignes
+    lbl->setObjectName("TextLabel"); // Pour le CSS
+    lbl->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    lbl->setWordWrap(true);
     layout->addWidget(lbl);
 
-    // 5. TAILLE ET POSITION (Dans l'application)
-    popup->resize(350, 100); // Une taille fixe assez large
+    // 4. EFFET D'OMBRE (Pour l'effet "Flottant")
+    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(popup);
+    shadow->setBlurRadius(20);
+    shadow->setXOffset(0);
+    shadow->setYOffset(5);
+    shadow->setColor(QColor(0, 0, 0, 100)); // Ombre noire semi-transparente
+    popup->setGraphicsEffect(shadow);
 
-    // Calcul pour mettre en bas à droite DE L'APPLICATION
-    // this->width() est la largeur de votre fenêtre NeoCity
-    int x = this->width() - popup->width() - 20;
-    int y = this->height() - popup->height() - 20;
+    // 5. TAILLE ET POSITION
+    popup->resize(400, 90); // Plus large et moins haut pour un look "Toast"
 
+    // Position : Bas Droite avec une marge
+    int x = this->width() - popup->width() - 30;
+    int y = this->height() - popup->height() - 30;
     popup->move(x, y);
 
-    // 6. Afficher
+    // 6. ANIMATION D'ENTRÉE (Optionnel : petit fondu)
+    popup->setWindowOpacity(0.0);
     popup->show();
-    popup->raise(); // Important : Force la notif à se mettre DEVANT les autres widgets de l'appli
+    popup->raise();
 
-    // Fermeture automatique après 5 secondes
-    QTimer::singleShot(5000, popup, &QWidget::close);
+    // Petit timer pour l'effet d'apparition (fade in) fait main
+    QTimer *fadeTimer = new QTimer(popup);
+    connect(fadeTimer, &QTimer::timeout, [popup, fadeTimer](){
+        double op = popup->windowOpacity();
+        if(op < 1.0) {
+            popup->setWindowOpacity(op + 0.1);
+        } else {
+            fadeTimer->stop();
+            fadeTimer->deleteLater();
+        }
+    });
+    fadeTimer->start(30); // Vitesse de l'animation
+
+    // Fermeture automatique après 6 secondes
+    QTimer::singleShot(6000, popup, &QWidget::close);
 }
-
 
 void MainWindow::handlePopupTimer()
 {
